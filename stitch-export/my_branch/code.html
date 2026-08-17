@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ANC Unity - My Branch</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#f3f3f3",
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6",
+                        "primary-container": "#008542",
+                        "surface-bright": "#f9f9f9",
+                        "on-tertiary-fixed": "#1b1b1b",
+                        "surface-tint": "#006d35",
+                        "anc-gold-muted": "#E5B800",
+                        "tertiary-container": "#737373",
+                        "on-background": "#1a1c1c",
+                        "on-tertiary-fixed-variant": "#474747",
+                        "surface-container-highest": "#e2e2e2",
+                        "surface-variant": "#e2e2e2",
+                        "secondary-fixed": "#ffe089",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed": "#00210c",
+                        "inverse-primary": "#71dc8e",
+                        "primary": "#006933",
+                        "primary-fixed-dim": "#71dc8e",
+                        "on-primary-fixed-variant": "#005226",
+                        "primary-fixed": "#8df9a8",
+                        "on-surface": "#1a1c1c",
+                        "tertiary": "#5a5a5a",
+                        "background": "#f9f9f9",
+                        "status-active": "#008542",
+                        "tertiary-fixed-dim": "#c6c6c6",
+                        "surface-dim": "#dadada",
+                        "surface-container-high": "#e8e8e8",
+                        "on-tertiary-container": "#fafafa",
+                        "on-secondary-fixed-variant": "#574500",
+                        "on-secondary-container": "#6e5700",
+                        "surface": "#f9f9f9",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#eeffec",
+                        "outline": "#6e7a6e",
+                        "surface-border": "#E2E8F0",
+                        "on-surface-variant": "#3e4a3f",
+                        "on-tertiary": "#ffffff",
+                        "outline-variant": "#bdcabc",
+                        "anc-green-dark": "#006432",
+                        "tertiary-fixed": "#e2e2e2",
+                        "surface-container": "#eeeeee",
+                        "secondary-fixed-dim": "#f0c100",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed": "#241a00",
+                        "secondary-container": "#fecc00",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#2f3131",
+                        "secondary": "#735c00",
+                        "inverse-on-surface": "#f1f1f1",
+                        "text-secondary": "#4A5568"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "container-margin": "20px",
+                        "unit": "8px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "gutter": "16px",
+                        "stack-md": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body-md antialiased min-h-screen pb-24 md:pb-0 pt-16">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface-dim text-primary dark:text-primary-fixed fixed top-0 w-full z-50 border-b border-surface-border dark:border-outline-variant">
+<div class="flex justify-between items-center px-container-margin h-16 w-full max-w-7xl mx-auto">
+<button class="text-primary dark:text-primary-fixed hover:bg-surface-container-low transition-colors rounded-full p-2 flex items-center justify-center opacity-80 duration-150">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<div class="font-headline-md text-headline-md-mobile font-bold tracking-tight text-primary dark:text-primary-fixed">ANC UNITY</div>
+<button class="text-primary dark:text-primary-fixed hover:bg-surface-container-low transition-colors rounded-full p-2 flex items-center justify-center opacity-80 duration-150">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</div>
+<!-- Desktop Nav Cluster -->
+<nav class="hidden md:flex justify-center border-t border-surface-border dark:border-outline-variant bg-surface-container-lowest dark:bg-surface-dim h-12 items-center gap-8">
+<a class="text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors px-4 py-2 rounded" href="#">Home</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors px-4 py-2 rounded" href="#">Money</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors px-4 py-2 rounded" href="#">Participate</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-low transition-colors px-4 py-2 rounded" href="#">Updates</a>
+<a class="text-primary font-bold font-label-md text-label-md hover:bg-surface-container-low transition-colors px-4 py-2 rounded relative after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-8 after:h-0.5 after:bg-primary" href="#">Member</a>
+</nav>
+</header>
+<main class="max-w-7xl mx-auto md:pt-12">
+<!-- Hero Section -->
+<section class="relative w-full h-[353px] min-h-[300px] mb-stack-lg md:mb-10">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A high-quality, inspiring wide-angle photograph of a vibrant community gathering in South Africa. The scene is brightly lit with natural sunlight, capturing a diverse group of people engaged in discussion outdoors under a clear sky. The overall tone is statesmanlike, hopeful, and deeply rooted in community spirit, utilizing a warm color palette with subtle greens and golds typical of the ANC Unity aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBGUVPj2nEjBwqAZZz11Khd3RVBqdBvY6HvmzUxmy66L-NmOoJ03lxKO3tclMj2QNMt3OHDyHbLwkObCZOTk6sf13Z9yqUn5twQo46OVXAJtGcomGIpwF3SFjfIARAuzXpULd86ImNQhz2sn1DDjj9Y16Eqck3VBx5Ip0ZJJRY0PWwYdXPzRrC64v9F0liEf0beG691ENh_2UQgHq_9ZoxZi5SVY2uDUmzd8AM65J4BF0NwMy7sIDok')">
+<!-- Scrim for readability -->
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+</div>
+<div class="absolute bottom-0 left-0 w-full p-container-margin md:p-10 flex flex-col justify-end">
+<h1 class="font-display-lg text-display-lg text-white mb-2">Johannesburg Region Branch</h1>
+<p class="font-body-lg text-body-lg text-surface-container-low opacity-90">Gauteng Province</p>
+</div>
+</section>
+<!-- Content Grid -->
+<div class="px-container-margin md:px-10 grid grid-cols-1 md:grid-cols-12 gap-gutter md:gap-8">
+<!-- Main Column (Left on Desktop) -->
+<div class="col-span-1 md:col-span-8 flex flex-col gap-stack-lg">
+<!-- Branch Info Card -->
+<div class="bg-surface-container-lowest border border-surface-border rounded-xl p-6">
+<h2 class="font-headline-md text-headline-md text-primary mb-4">Branch Details</h2>
+<dl class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<dt class="font-label-sm text-label-sm text-text-secondary uppercase mb-1">Branch Name</dt>
+<dd class="font-body-md text-body-md font-semibold text-on-surface">Johannesburg Central</dd>
+</div>
+<div>
+<dt class="font-label-sm text-label-sm text-text-secondary uppercase mb-1">Region</dt>
+<dd class="font-body-md text-body-md font-semibold text-on-surface">Johannesburg</dd>
+</div>
+<div>
+<dt class="font-label-sm text-label-sm text-text-secondary uppercase mb-1">Province</dt>
+<dd class="font-body-md text-body-md font-semibold text-on-surface">Gauteng</dd>
+</div>
+<div>
+<dt class="font-label-sm text-label-sm text-text-secondary uppercase mb-1">Status</dt>
+<dd class="font-body-md text-body-md font-semibold text-status-active flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-status-active inline-block"></span> Active
+                            </dd>
+</div>
+</dl>
+</div>
+<!-- Upcoming Activity -->
+<div>
+<div class="flex items-center justify-between mb-4">
+<h2 class="font-headline-md text-headline-md text-primary">Upcoming Activity</h2>
+<a class="font-label-md text-label-md text-primary hover:underline" href="#">View All</a>
+</div>
+<div class="flex flex-col gap-4">
+<!-- Event Card 1 -->
+<div class="bg-surface-container-lowest border border-surface-border rounded-xl p-5 flex flex-col sm:flex-row gap-4 hover:shadow-md transition-shadow">
+<div class="bg-surface-container-low rounded-lg p-3 flex flex-col items-center justify-center min-w-[80px]">
+<span class="font-label-md text-label-md text-primary font-bold">SAT</span>
+<span class="font-headline-md text-headline-md-mobile text-on-surface">10:00</span>
+</div>
+<div class="flex-1 flex flex-col justify-between">
+<div>
+<h3 class="font-body-lg text-body-lg font-semibold text-on-surface mb-1">Branch General Meeting</h3>
+<p class="font-body-md text-body-md text-text-secondary flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+                                        Walter Sisulu House
+                                    </p>
+</div>
+<div class="mt-4 sm:mt-0 sm:text-right">
+<button class="font-label-md text-label-md text-primary font-bold hover:opacity-80 transition-opacity">View Event →</button>
+</div>
+</div>
+</div>
+<!-- Event Card 2 -->
+<div class="bg-surface-container-lowest border border-surface-border rounded-xl p-5 flex flex-col sm:flex-row gap-4 hover:shadow-md transition-shadow">
+<div class="bg-surface-container-low rounded-lg p-3 flex flex-col items-center justify-center min-w-[80px]">
+<span class="font-label-md text-label-md text-primary font-bold">SAT</span>
+<span class="font-headline-md text-headline-md-mobile text-on-surface">14:00</span>
+</div>
+<div class="flex-1 flex flex-col justify-between">
+<div>
+<h3 class="font-body-lg text-body-lg font-semibold text-on-surface mb-1">Community Dialogue</h3>
+<p class="font-body-md text-body-md text-text-secondary flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">group</span>
+                                        Virtual / Online
+                                    </p>
+</div>
+<div class="mt-4 sm:mt-0 sm:text-right">
+<button class="font-label-md text-label-md text-primary font-bold hover:opacity-80 transition-opacity">View Event →</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar (Right on Desktop) -->
+<div class="col-span-1 md:col-span-4 flex flex-col gap-stack-lg">
+<!-- Contact Section -->
+<div class="bg-surface-container-lowest border border-surface-border rounded-xl p-6">
+<h2 class="font-headline-md text-headline-md-mobile text-primary mb-4">Branch Contact</h2>
+<ul class="flex flex-col gap-4 mb-6">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-0.5">call</span>
+<div>
+<p class="font-label-sm text-label-sm text-text-secondary uppercase">Phone</p>
+<p class="font-body-md text-body-md text-on-surface">+27 11 123 4567</p>
+</div>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-0.5">mail</span>
+<div>
+<p class="font-label-sm text-label-sm text-text-secondary uppercase">Email</p>
+<p class="font-body-md text-body-md text-on-surface">branch@anc.org.za</p>
+</div>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-0.5">location_on</span>
+<div>
+<p class="font-label-sm text-label-sm text-text-secondary uppercase">Address</p>
+<p class="font-body-md text-body-md text-on-surface">Walter Sisulu House, Johannesburg</p>
+</div>
+</li>
+</ul>
+<div class="flex flex-col gap-3">
+<button class="w-full bg-primary text-white font-label-md text-label-md h-12 rounded-lg hover:bg-anc-green-dark transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[20px]">call</span> Call Branch
+                        </button>
+<button class="w-full bg-transparent border border-on-surface text-on-surface font-label-md text-label-md h-12 rounded-lg hover:bg-surface-container-low transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[20px]">mail</span> Email Branch
+                        </button>
+<button class="w-full bg-transparent border border-on-surface text-on-surface font-label-md text-label-md h-12 rounded-lg hover:bg-surface-container-low transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[20px]">directions</span> Get Directions
+                        </button>
+</div>
+</div>
+<!-- Get Involved Grid -->
+<div class="bg-surface-container-low rounded-xl p-6 border border-surface-border">
+<h2 class="font-headline-md text-headline-md-mobile text-primary mb-4">Get Involved</h2>
+<div class="grid grid-cols-3 gap-3">
+<button class="flex flex-col items-center justify-center gap-2 bg-surface-container-lowest p-3 rounded-lg border border-surface-border hover:shadow-sm transition-all hover:-translate-y-0.5">
+<span class="material-symbols-outlined text-primary fill text-[28px]">volunteer_activism</span>
+<span class="font-label-sm text-label-sm text-on-surface">Volunteer</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-2 bg-surface-container-lowest p-3 rounded-lg border border-surface-border hover:shadow-sm transition-all hover:-translate-y-0.5">
+<span class="material-symbols-outlined text-primary fill text-[28px]">event</span>
+<span class="font-label-sm text-label-sm text-on-surface">Events</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-2 bg-surface-container-lowest p-3 rounded-lg border border-surface-border hover:shadow-sm transition-all hover:-translate-y-0.5">
+<span class="material-symbols-outlined text-primary fill text-[28px]">poll</span>
+<span class="font-label-sm text-label-sm text-on-surface">Polls</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden bg-surface-container-lowest dark:bg-surface-dim text-primary dark:text-primary-fixed fixed bottom-0 w-full z-50 shadow-lg border-t border-surface-border dark:border-outline-variant">
+<div class="flex justify-around items-center h-16 px-2 w-full max-w-7xl mx-auto">
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-tertiary hover:bg-surface-container-high transition-all p-2 rounded-lg w-16">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm mt-1">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-tertiary hover:bg-surface-container-high transition-all p-2 rounded-lg w-16">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-label-sm text-label-sm mt-1">Money</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-tertiary hover:bg-surface-container-high transition-all p-2 rounded-lg w-16">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="font-label-sm text-label-sm mt-1">Participate</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-tertiary hover:bg-surface-container-high transition-all p-2 rounded-lg w-16">
+<span class="material-symbols-outlined" data-icon="news">news</span>
+<span class="font-label-sm text-label-sm mt-1">Updates</span>
+</button>
+<button class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed relative after:content-[''] after:absolute after:-top-2 after:w-8 after:h-0.5 after:bg-primary scale-95 duration-200 p-2 rounded-lg w-16">
+<span class="material-symbols-outlined fill" data-icon="badge">badge</span>
+<span class="font-label-sm text-label-sm mt-1 font-bold">Member</span>
+</button>
+</div>
+</nav>
+</body></html>

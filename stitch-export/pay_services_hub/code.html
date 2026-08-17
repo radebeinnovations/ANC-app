@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ANC Unity - Pay &amp; Services</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface": "#f9f9f9",
+                      "on-secondary-container": "#6e5700",
+                      "primary-fixed": "#8df9a8",
+                      "on-tertiary-fixed-variant": "#474747",
+                      "secondary-fixed": "#ffe089",
+                      "on-primary-container": "#eeffec",
+                      "on-background": "#1a1c1c",
+                      "secondary": "#735c00",
+                      "text-secondary": "#4A5568",
+                      "tertiary-fixed": "#e2e2e2",
+                      "anc-green-dark": "#006432",
+                      "on-error": "#ffffff",
+                      "surface-container-high": "#e8e8e8",
+                      "anc-gold-muted": "#E5B800",
+                      "background": "#f9f9f9",
+                      "outline": "#6e7a6e",
+                      "error": "#ba1a1a",
+                      "on-tertiary": "#ffffff",
+                      "surface-variant": "#e2e2e2",
+                      "on-primary-fixed-variant": "#005226",
+                      "on-secondary-fixed-variant": "#574500",
+                      "primary-container": "#008542",
+                      "on-error-container": "#93000a",
+                      "tertiary-fixed-dim": "#c6c6c6",
+                      "secondary-container": "#fecc00",
+                      "surface-dim": "#dadada",
+                      "on-primary": "#ffffff",
+                      "surface-bright": "#f9f9f9",
+                      "outline-variant": "#bdcabc",
+                      "on-secondary": "#ffffff",
+                      "tertiary-container": "#737373",
+                      "surface-border": "#E2E8F0",
+                      "on-surface-variant": "#3e4a3f",
+                      "primary": "#006933",
+                      "on-surface": "#1a1c1c",
+                      "surface-container": "#eeeeee",
+                      "on-secondary-fixed": "#241a00",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary-fixed": "#00210c",
+                      "primary-fixed-dim": "#71dc8e",
+                      "status-active": "#008542",
+                      "surface-container-low": "#f3f3f3",
+                      "secondary-fixed-dim": "#f0c100",
+                      "surface-tint": "#006d35",
+                      "on-tertiary-fixed": "#1b1b1b",
+                      "tertiary": "#5a5a5a",
+                      "error-container": "#ffdad6",
+                      "on-tertiary-container": "#fafafa",
+                      "surface-container-highest": "#e2e2e2",
+                      "inverse-surface": "#2f3131",
+                      "inverse-primary": "#71dc8e",
+                      "inverse-on-surface": "#f1f1f1"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "16px",
+                      "stack-lg": "32px",
+                      "stack-sm": "8px",
+                      "unit": "8px",
+                      "stack-md": "16px",
+                      "container-margin": "20px"
+              },
+              "fontFamily": {
+                      "label-sm": ["Inter"],
+                      "label-md": ["Inter"],
+                      "headline-md": ["Hanken Grotesk"],
+                      "headline-lg": ["Hanken Grotesk"],
+                      "body-md": ["Inter"],
+                      "display-lg": ["Hanken Grotesk"],
+                      "body-lg": ["Inter"],
+                      "headline-lg-mobile": ["Hanken Grotesk"]
+              },
+              "fontSize": {
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+          font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface antialiased font-body-md text-body-md min-h-screen pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-background fixed top-0 w-full z-50 border-b border-outline-variant dark:border-outline flex justify-between items-center px-gutter h-16">
+<button aria-label="Menu" class="p-2 -ml-2 text-primary dark:text-primary-fixed hover:bg-surface-container-low transition-colors rounded-full active:scale-95 duration-100">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed tracking-tight">ANC UNITY</h1>
+<button aria-label="Notifications" class="p-2 -mr-2 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full active:scale-95 duration-100">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-16 md:pt-24 px-container-margin md:max-w-7xl md:mx-auto pb-8 space-y-stack-lg">
+<!-- Header Section -->
+<section class="mt-stack-md">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-surface mb-stack-sm">Pay &amp; Services</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Everyday services, all in one place.</p>
+</section>
+<!-- Available Balance Card -->
+<section>
+<div class="bg-primary text-on-primary rounded-xl p-6 shadow-sm border border-transparent hover:border-outline-variant transition-colors relative overflow-hidden">
+<div class="absolute inset-0 opacity-10 pointer-events-none" data-alt="A subtle, abstract geometric pattern overlay in dark green tones, providing a sophisticated texture for a premium corporate digital card surface. The lighting is soft, enhancing the dignified aesthetic without distracting from foreground content." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBHJqIqguskGgBI5AbhWeoCAmybKKiXWKRqh05VxqSw8y07kSCl3AFzkckqdWlel55st0SQLORap3DxKHB0hPtCCTnTI2DoRkE59Au-bikOvQfZKJKZa86XsqK_sL3misB-qlGciMiHN594I64UOUOlIKF6957A73zgsU8Q00zpgx4jnMex2KqnSj6jSPm3KzS3s7PlzdTf6sCIC5HnsjgWprxrUWVHefky4sfhXhK0_N9OafjWLKJC')"></div>
+<div class="relative z-10">
+<p class="font-label-md text-label-md text-on-primary/80 uppercase tracking-wider mb-2">Available Balance</p>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-headline-md">R</span>
+<span class="font-display-lg text-display-lg">1,500.00</span>
+</div>
+<div class="mt-6 flex gap-4">
+<button class="bg-white/20 hover:bg-white/30 transition-colors text-white py-2 px-4 rounded-lg font-label-md text-label-md flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="add_circle">add_circle</span> Add Funds
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Favourites -->
+<section>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-stack-md">Favourites</h3>
+<div class="flex gap-4 overflow-x-auto pb-4 snap-x hide-scrollbar">
+<button class="flex-shrink-0 bg-surface-container-lowest border border-surface-border rounded-xl p-4 flex flex-col items-center justify-center gap-2 min-w-[120px] snap-center hover:bg-surface-container-low transition-colors active:scale-95 duration-100">
+<div class="w-12 h-12 bg-surface-container rounded-full flex items-center justify-center text-primary">
+<span class="material-symbols-outlined icon-fill" data-icon="smartphone">smartphone</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface text-center">MTN Airtime</span>
+</button>
+<button class="flex-shrink-0 bg-surface-container-lowest border border-surface-border rounded-xl p-4 flex flex-col items-center justify-center gap-2 min-w-[120px] snap-center hover:bg-surface-container-low transition-colors active:scale-95 duration-100">
+<div class="w-12 h-12 bg-surface-container rounded-full flex items-center justify-center text-secondary-container">
+<span class="material-symbols-outlined icon-fill" data-icon="electric_bolt">electric_bolt</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface text-center">Home Electricity</span>
+</button>
+<button class="flex-shrink-0 border-2 border-dashed border-outline-variant rounded-xl p-4 flex flex-col items-center justify-center gap-2 min-w-[120px] snap-center hover:bg-surface-container-low transition-colors active:scale-95 duration-100 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+<span class="font-label-sm text-label-sm text-center">Add New</span>
+</button>
+</div>
+</section>
+<!-- Service Grid -->
+<section>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-stack-md">All Services</h3>
+<div class="grid grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-6">
+<!-- Airtime -->
+<button class="bg-surface-container-lowest border border-surface-border rounded-xl aspect-square flex flex-col items-center justify-center gap-3 hover:bg-surface-container-low transition-all active:scale-95 duration-100 hover:shadow-sm">
+<span class="material-symbols-outlined text-3xl text-on-surface-variant" data-icon="phone_iphone">phone_iphone</span>
+<span class="font-label-sm text-label-sm text-on-surface">Airtime</span>
+</button>
+<!-- Data -->
+<button class="bg-surface-container-lowest border border-surface-border rounded-xl aspect-square flex flex-col items-center justify-center gap-3 hover:bg-surface-container-low transition-all active:scale-95 duration-100 hover:shadow-sm">
+<span class="material-symbols-outlined text-3xl text-on-surface-variant" data-icon="wifi">wifi</span>
+<span class="font-label-sm text-label-sm text-on-surface">Data</span>
+</button>
+<!-- Electricity -->
+<button class="bg-surface-container-lowest border border-surface-border rounded-xl aspect-square flex flex-col items-center justify-center gap-3 hover:bg-surface-container-low transition-all active:scale-95 duration-100 hover:shadow-sm">
+<span class="material-symbols-outlined text-3xl text-on-surface-variant" data-icon="electric_meter">electric_meter</span>
+<span class="font-label-sm text-label-sm text-on-surface">Electricity</span>
+</button>
+<!-- Bills -->
+<button class="bg-surface-container-lowest border border-surface-border rounded-xl aspect-square flex flex-col items-center justify-center gap-3 hover:bg-surface-container-low transition-all active:scale-95 duration-100 hover:shadow-sm">
+<span class="material-symbols-outlined text-3xl text-on-surface-variant" data-icon="receipt_long">receipt_long</span>
+<span class="font-label-sm text-label-sm text-on-surface">Bills</span>
+</button>
+<!-- Donations -->
+<button class="bg-surface-container-lowest border border-surface-border rounded-xl aspect-square flex flex-col items-center justify-center gap-3 hover:bg-surface-container-low transition-all active:scale-95 duration-100 hover:shadow-sm">
+<span class="material-symbols-outlined text-3xl text-on-surface-variant" data-icon="volunteer_activism">volunteer_activism</span>
+<span class="font-label-sm text-label-sm text-on-surface">Donations</span>
+</button>
+<!-- Membership -->
+<button class="bg-surface-container-lowest border border-surface-border rounded-xl aspect-square flex flex-col items-center justify-center gap-3 hover:bg-surface-container-low transition-all active:scale-95 duration-100 hover:shadow-sm">
+<span class="material-symbols-outlined text-3xl text-primary" data-icon="card_membership">card_membership</span>
+<span class="font-label-sm text-label-sm text-primary font-semibold">Membership</span>
+</button>
+</div>
+</section>
+<!-- Recent Activity -->
+<section class="pb-8">
+<div class="flex justify-between items-end mb-stack-md">
+<h3 class="font-headline-md text-headline-md text-on-surface">Recent Activity</h3>
+<a class="font-label-md text-label-md text-primary hover:underline" href="#">View All</a>
+</div>
+<div class="bg-surface-container-lowest border border-surface-border rounded-xl overflow-hidden">
+<!-- Item 1 -->
+<div class="flex items-center justify-between p-4 border-b border-surface-border hover:bg-surface-container-low transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-surface-container rounded-full flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="phone_iphone">phone_iphone</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Airtime Purchase</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Today, 09:42</p>
+</div>
+</div>
+<span class="font-label-md text-label-md text-on-surface">-R50.00</span>
+</div>
+<!-- Item 2 -->
+<div class="flex items-center justify-between p-4 hover:bg-surface-container-low transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-surface-container rounded-full flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="electric_meter">electric_meter</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Prepaid Electricity</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Yesterday, 18:20</p>
+</div>
+</div>
+<span class="font-label-md text-label-md text-on-surface">-R250.00</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="bg-surface dark:bg-background fixed bottom-0 w-full z-50 rounded-t-xl border-t border-outline-variant dark:border-outline shadow-lg flex justify-around items-center h-16 px-2 md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant pt-1.5 hover:bg-surface-container-highest transition-all active:scale-90 duration-200 w-full h-full" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed border-t-2 border-primary pt-1 hover:bg-surface-container-highest transition-all active:scale-90 duration-200 w-full h-full" href="#">
+<span class="material-symbols-outlined icon-fill" data-icon="payments">payments</span>
+<span class="font-label-sm text-label-sm mt-1">Money</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant pt-1.5 hover:bg-surface-container-highest transition-all active:scale-90 duration-200 w-full h-full" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="font-label-sm text-label-sm mt-1">Participate</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant pt-1.5 hover:bg-surface-container-highest transition-all active:scale-90 duration-200 w-full h-full" href="#">
+<span class="material-symbols-outlined" data-icon="campaign">campaign</span>
+<span class="font-label-sm text-label-sm mt-1">Updates</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant pt-1.5 hover:bg-surface-container-highest transition-all active:scale-90 duration-200 w-full h-full" href="#">
+<span class="material-symbols-outlined" data-icon="badge">badge</span>
+<span class="font-label-sm text-label-sm mt-1">Member</span>
+</a>
+</nav>
+<style>
+        /* Utility to hide scrollbar but allow scrolling */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</body></html>

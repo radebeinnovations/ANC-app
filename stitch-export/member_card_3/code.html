@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Digital Member Card - African National Congress</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "background": "#f9f9f9",
+                        "on-primary-fixed": "#00210c",
+                        "primary": "#006933",
+                        "anc-green-dark": "#006432",
+                        "surface-container-highest": "#e2e2e2",
+                        "surface-variant": "#e2e2e2",
+                        "on-tertiary-fixed-variant": "#474747",
+                        "surface-border": "#E2E8F0",
+                        "on-surface-variant": "#3e4a3f",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#fecc00",
+                        "anc-gold-muted": "#E5B800",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-high": "#e8e8e8",
+                        "tertiary-fixed-dim": "#c6c6c6",
+                        "on-primary": "#ffffff",
+                        "on-background": "#1a1c1c",
+                        "on-secondary-fixed-variant": "#574500",
+                        "on-error-container": "#93000a",
+                        "text-secondary": "#4A5568",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#1b1b1b",
+                        "primary-fixed-dim": "#71dc8e",
+                        "surface-bright": "#f9f9f9",
+                        "inverse-surface": "#2f3131",
+                        "error-container": "#ffdad6",
+                        "outline": "#6e7a6e",
+                        "primary-container": "#008542",
+                        "outline-variant": "#bdcabc",
+                        "on-primary-fixed-variant": "#005226",
+                        "secondary": "#735c00",
+                        "surface-container": "#eeeeee",
+                        "surface": "#f9f9f9",
+                        "on-secondary-container": "#6e5700",
+                        "surface-tint": "#006d35",
+                        "secondary-fixed": "#ffe089",
+                        "inverse-primary": "#71dc8e",
+                        "tertiary-container": "#737373",
+                        "tertiary-fixed": "#e2e2e2",
+                        "tertiary": "#5a5a5a",
+                        "on-surface": "#1a1c1c",
+                        "surface-dim": "#dadada",
+                        "secondary-fixed-dim": "#f0c100",
+                        "on-secondary-fixed": "#241a00",
+                        "primary-fixed": "#8df9a8",
+                        "on-primary-container": "#eeffec",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#f1f1f1",
+                        "on-tertiary": "#ffffff",
+                        "status-active": "#008542",
+                        "surface-container-low": "#f3f3f3",
+                        "on-tertiary-container": "#fafafa"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    spacing: {
+                        "gutter": "16px",
+                        "unit": "8px",
+                        "stack-md": "16px",
+                        "stack-sm": "8px",
+                        "container-margin": "20px",
+                        "stack-lg": "32px"
+                    },
+                    fontFamily: {
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "label-sm": ["Inter"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "body-md": ["Inter"]
+                    },
+                    fontSize: {
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        .card-texture {
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 0L100 50L50 100L0 50Z" fill="rgba(255,255,255,0.03)"/></svg>');
+            background-size: 40px 40px;
+        }
+
+        .hologram-effect {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.1) 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-[90px] md:pb-0 pt-16 font-body-md">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface border-b border-surface-border flat no shadows flex items-center justify-between px-container-margin h-16">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-primary flex items-center justify-center shrink-0">
+<img alt="ANC Logo" class="w-full h-full object-cover" data-alt="The official circular logo of the African National Congress featuring the spear, shield, and wheel in black, green, and gold colors on a white background. The logo is sharply rendered and authoritative." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTjM4P9UQDOhhHzGakTWDufYKB1qj7Z_VyjCVX7Q2DGarEU5Qh4braxcVUi2RKlKeW4WGQiqJBBX5ZtSQradpqx_U4u-fpa6admbGDyxfZ5FbPcDQWclI0enHJ9KQchdtOTAGjOfMDFuxudULkYSgqOnXA1jlvxwAoNfBK-GC4WHZv5dRZjLdGIlnmGkh_KGFrquFfxAZSOgBBKd6M0MoE2uBmwz6CbseInuxIgep86yqjzFaLUx2G"/>
+</div>
+<h1 class="font-headline-md text-headline-md-mobile font-bold text-primary">African National Congress</h1>
+</div>
+<button class="text-on-surface-variant hover:bg-surface-container transition-colors active:scale-95 duration-150 p-2 rounded-full">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+</header>
+<main class="max-w-7xl mx-auto px-container-margin py-stack-lg md:px-[40px] md:grid md:grid-cols-12 md:gap-gutter">
+<!-- Left Column: Digital Card -->
+<div class="md:col-span-12 lg:col-span-7 flex flex-col gap-stack-lg">
+<!-- Digital Member Card Component -->
+<div class="relative w-full aspect-[1.586/1] max-w-lg mx-auto bg-primary rounded-xl overflow-hidden shadow-lg card-texture text-on-primary">
+<!-- Gold Accent Header -->
+<div class="absolute top-0 left-0 w-full h-1 bg-secondary-container"></div>
+<div class="hologram-effect absolute inset-0 z-0 pointer-events-none"></div>
+<div class="relative z-10 p-6 h-full flex flex-col justify-between">
+<!-- Header -->
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 bg-white rounded-full p-1 shrink-0">
+<img alt="ANC Logo" class="w-full h-full object-contain" data-alt="The official circular logo of the African National Congress featuring the spear, shield, and wheel in black, green, and gold colors on a white background. Crisp and official." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBF4I4zCQ06GAuHUq-XsRFJRb-clAmvxfgrcF1SoHOnE3z-VQntybiznFjshS8QLOX15yxB7ccSVsRJcsGxYjdSEnd-uYr0gP_CmmchDN0VdHjpwEMoPbaz3G82q8r0mYRTqVSVFM9lwcOng7ZVYCHrEfafRyG7CFAh9gxw3ptKaT-w1XJMfxWQ3eFHqB6d1kDYuHebNyxY_z8Gw9uKXeKgNH6zQu98cx6bvvYLmH9ZJv_NjA62rF_a"/>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md-mobile leading-tight">AFRICAN NATIONAL CONGRESS</h2>
+<p class="font-label-sm text-label-sm text-primary-fixed-dim tracking-widest uppercase mt-1">Digital Membership</p>
+</div>
+</div>
+<!-- SA Flag Representation -->
+<div class="w-8 h-6 rounded-sm overflow-hidden shrink-0 border border-white/20">
+<img alt="SA Flag" class="w-full h-full object-cover" data-alt="A clean, flat graphic representation of the South African national flag featuring vibrant red, blue, green, black, white, and yellow colors in their correct geometric arrangement. High contrast and official." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDi2lTnLCBpatUUoR1bL6q5WITkhqRzCAs40_ozFLXWKFxiCwnVm1ZiJWs2gj_L1Vw6XEBEMiJbki7h10NonPTdyVNxRt3_kTpAPBFZGMT0uobnCLUin_FZkud3em0_-b2siHrR9r58snlstelRnmfJL29vgXlih-9sYGcC3WFIjymPSg512tgxT839lNOSs-QTlJkSyoKhwK00JQDWYhdBSn6k6crRw0XU2Gjx7Z2HNVp0rDLFFFAL"/>
+</div>
+</div>
+<!-- Member Details -->
+<div class="mt-6">
+<h3 class="font-display-lg text-display-lg-mobile md:text-display-lg tracking-tight leading-none mb-1">LERUMO THABO</h3>
+<div class="flex items-center gap-2 mt-2">
+<span class="inline-flex items-center px-2 py-0.5 rounded bg-status-active text-white font-label-md text-label-md uppercase tracking-wider">
+                                MEMBER
+                            </span>
+<span class="font-body-lg text-body-lg text-white/90 font-mono tracking-wider">ANC-1234567</span>
+</div>
+</div>
+<!-- Footer Info & QR -->
+<div class="flex justify-between items-end mt-4 pt-4 border-t border-white/20">
+<div class="grid grid-cols-1 gap-1">
+<div>
+<span class="font-label-sm text-label-sm text-primary-fixed-dim block uppercase">Province</span>
+<span class="font-body-md text-body-md font-semibold">GAUTENG</span>
+</div>
+<div class="flex gap-4 mt-2">
+<div>
+<span class="font-label-sm text-label-sm text-primary-fixed-dim block uppercase">Region</span>
+<span class="font-label-md text-label-md">JOHANNESBURG</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-primary-fixed-dim block uppercase">Branch</span>
+<span class="font-label-md text-label-md">Johannesburg Region</span>
+</div>
+</div>
+</div>
+<!-- QR Code Container -->
+<div class="bg-white p-2 rounded-lg shrink-0">
+<img alt="Member QR Code" class="w-20 h-20 object-cover mix-blend-multiply" data-alt="A high-contrast, perfectly square black and white QR code. The code is crisp, geometric, and designed for easy scanning by mobile devices. It stands out clearly against its white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0MPW9FW8KmJr-3X67OWN7LCS_ctjdNuW8QU2BE2eL3vDX9nKc2QMAOdhMcC_iKA_1DcHR32g9bKyrjdmZ7CHKX4KdrA-vUMgu6410uCKmcerpYoVkSCGevLYa6AHUIHWIMaq8Pn0D3eRd0TfcBPBwwwMs_X41r4tKyklPA3rWReWRCJqGCMUo3fK-_zstbzuuFjdGFDvWfMXZVKr1PIO4T1VVFdLyf4qoj7iJZVsaRIMMt7IR2irj"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Segmented Tab Bar -->
+<div class="flex bg-surface-container-low p-1 rounded-lg border border-surface-border max-w-lg mx-auto w-full">
+<button class="flex-1 py-2 text-center rounded-md bg-surface text-on-surface font-label-md text-label-md shadow-sm border border-surface-border transition-all">
+                    CARD
+                </button>
+<button class="flex-1 py-2 text-center rounded-md text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all">
+                    DETAILS
+                </button>
+</div>
+<!-- Secondary Actions -->
+<div class="grid grid-cols-3 gap-3 max-w-lg mx-auto w-full">
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container-lowest border border-surface-border rounded-xl hover:bg-surface-container-low transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-primary mb-2 text-[28px]" data-icon="share">share</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant text-center">Share Card</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container-lowest border border-surface-border rounded-xl hover:bg-surface-container-low transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-primary mb-2 text-[28px]" data-icon="qr_code_scanner">qr_code_scanner</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant text-center">Show QR</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container-lowest border border-surface-border rounded-xl hover:bg-surface-container-low transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-primary mb-2 text-[28px]" data-icon="verified_user">verified_user</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant text-center">Verify Identity</span>
+</button>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 bg-surface border-t border-surface-border flex justify-around items-center pb-safe pt-2 h-[72px]">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-200 pt-[3px] w-16" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="home">home</span>
+<span class="font-label-sm text-[10px]">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-200 pt-[3px] w-16" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="payments">payments</span>
+<span class="font-label-sm text-[10px]">Money</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-200 pt-[3px] w-16" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="groups">groups</span>
+<span class="font-label-sm text-[10px]">Participate</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-200 pt-[3px] w-16" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="newspaper">newspaper</span>
+<span class="font-label-sm text-[10px]">Updates</span>
+</a>
+<!-- Active Tab: Member -->
+<a class="flex flex-col items-center justify-center text-primary border-t-2 border-primary pt-1 w-16 active:scale-90 duration-200 transition-transform relative top-[-4px]" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="badge" data-weight="fill">badge</span>
+<span class="font-label-sm text-[10px]">Member</span>
+</a>
+</nav>
+</body></html>

@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "ANC Unity",
+    "slug": "anc-unity",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "platforms": [
+      "android",
+      "ios",
+      "web"
+    ],
+    "android": {
+      "package": "za.org.anc.unity"
+    },
+    "ios": {
+      "bundleIdentifier": "za.org.anc.unity"
+    },
+    "plugins": [
+      "expo-asset"
+    ]
+  }
+}

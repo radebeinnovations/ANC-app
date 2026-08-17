@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ANC Unity - Donations</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#ffffff",
+                        "surface": "#f9f9f9",
+                        "primary-fixed-dim": "#71dc8e",
+                        "surface-container-highest": "#e2e2e2",
+                        "on-tertiary-fixed": "#1b1b1b",
+                        "tertiary": "#5a5a5a",
+                        "surface-container-low": "#f3f3f3",
+                        "on-background": "#1a1c1c",
+                        "status-active": "#008542",
+                        "surface-tint": "#006d35",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#2f3131",
+                        "surface-bright": "#f9f9f9",
+                        "on-primary-fixed-variant": "#005226",
+                        "text-secondary": "#4A5568",
+                        "on-error-container": "#93000a",
+                        "primary": "#006933",
+                        "primary-container": "#008542",
+                        "outline": "#6e7a6e",
+                        "on-primary-fixed": "#00210c",
+                        "on-surface": "#1a1c1c",
+                        "anc-gold-muted": "#E5B800",
+                        "on-secondary-container": "#6e5700",
+                        "surface-container": "#eeeeee",
+                        "anc-green-dark": "#006432",
+                        "on-surface-variant": "#3e4a3f",
+                        "tertiary-container": "#737373",
+                        "primary-fixed": "#8df9a8",
+                        "secondary": "#735c00",
+                        "on-secondary-fixed-variant": "#574500",
+                        "surface-dim": "#dadada",
+                        "on-tertiary-container": "#fafafa",
+                        "secondary-container": "#fecc00",
+                        "secondary-fixed-dim": "#f0c100",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-border": "#E2E8F0",
+                        "on-tertiary-fixed-variant": "#474747",
+                        "tertiary-fixed-dim": "#c6c6c6",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#71dc8e",
+                        "surface-variant": "#e2e2e2",
+                        "surface-container-high": "#e8e8e8",
+                        "outline-variant": "#bdcabc",
+                        "secondary-fixed": "#ffe089",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#f1f1f1",
+                        "tertiary-fixed": "#e2e2e2",
+                        "background": "#f9f9f9",
+                        "on-secondary-fixed": "#241a00",
+                        "on-primary-container": "#eeffec"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "stack-lg": "32px",
+                        "stack-md": "16px",
+                        "container-margin": "20px",
+                        "gutter": "16px",
+                        "stack-sm": "8px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background antialiased min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-on-background w-full top-0 sticky border-b border-outline-variant dark:border-on-surface-variant flex justify-between items-center px-container-margin h-16 z-40">
+<button class="text-primary dark:text-primary-fixed-dim hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors rounded-full p-2 active:scale-95 transition-transform duration-150 flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">menu</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-extrabold text-primary dark:text-primary-fixed-dim tracking-tight">ANC UNITY</h1>
+<button class="text-primary dark:text-primary-fixed-dim hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors rounded-full overflow-hidden w-[40px] h-[40px] active:scale-95 transition-transform duration-150 border border-outline-variant flex items-center justify-center">
+<img alt="Member Profile Avatar" class="w-full h-full object-cover" data-alt="A portrait photo of an individual representing a member profile avatar in an app. The lighting is bright and even, set against a neutral, light-grey background. The aesthetic is clean, professional, and corporate modern." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpCxHjulnjE1zU5Izp45dkxwbFL4ITCUz95c8eT2QfYTHhzrD86QKYdPxiLg-KBcrkILy0h65Mj7Tem6F9G_y7jc87ixD9I787osI4bTZrMh9S6VDVzye7meGTxvAZjV-cUxwXDJznLPC5elUiNop6s36xGsXl4JkgJxcYhHqTD34nP0NgseVPfRoYAz6gKiwS6By8Z3tgVGBLbU42aloe4i0g11nfdSVWmH_U_nVGkm9MgMFr5WOA"/>
+</button>
+</header>
+<!-- Main Canvas -->
+<main class="flex-grow w-full max-w-[1280px] mx-auto px-container-margin md:px-[40px] pb-24 pt-8">
+<!-- Header Section -->
+<div class="mb-stack-lg">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-surface mb-stack-sm">Donations</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Support the work happening in communities across South Africa.</p>
+</div>
+<!-- Featured Campaign Card -->
+<section class="mb-stack-lg">
+<div class="bg-surface-container-lowest rounded-xl border border-surface-border p-6 shadow-sm relative overflow-hidden flex flex-col md:flex-row gap-6">
+<div class="w-full md:w-1/2 rounded-lg overflow-hidden h-[200px] md:h-auto shrink-0 relative">
+<img alt="Community Development" class="w-full h-full object-cover absolute inset-0" data-alt="A high-quality editorial photograph showing a diverse group of South African community members engaging in a local development project. The scene is brightly lit with natural sunlight, capturing a sense of unity, progress, and hope. The color palette emphasizes rich greens and warm earth tones, aligning with a statesmanlike and community-centric brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCq4c30KqEcHAhxUrnTbIJKg5qb8BcDeXlHBAqaJcmkGx9j3ICY_hqo2AGsFLMMggLM3tTf87s8uYv8yswr9oelFCUaddtUBksPxFKNHrlG2xUDMirZ1Vj31ZKiSUO7IWso66h8tbTg5O8h5ivWSSm8yfFnJ7OgUQnvz2xyTa1hkvrhibDYHMtNdR2S0CZP4nmRw5Ich2bgfd7PMAoCBrITvwLIViD5qDxZ-oQH2S-CKZe91ajOyfIP"/>
+</div>
+<div class="flex flex-col justify-between w-full">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-md text-label-md text-primary uppercase tracking-wider">Featured Campaign</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">NATIONAL FUND</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Help support programmes and initiatives serving communities.</p>
+</div>
+<div>
+<div class="flex justify-between font-label-sm text-label-sm mb-2 text-on-surface">
+<span class="font-semibold">R1.8M raised</span>
+<span class="text-on-surface-variant">of R3M goal</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-2 mb-6 overflow-hidden">
+<div class="bg-primary h-2 rounded-full" style="width: 60%"></div>
+</div>
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-3 rounded-lg hover:bg-anc-green-dark transition-colors active:scale-[0.98] h-12 flex items-center justify-center">
+                            Donate Now
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Support a Cause Grid -->
+<section class="mb-stack-lg">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-stack-md">Support a Cause</h3>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-gutter">
+<div class="bg-surface-container-lowest border border-surface-border rounded-xl p-4 flex flex-col items-center text-center hover:bg-surface-container-low cursor-pointer transition-colors active:scale-[0.98]">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center mb-3 text-on-surface">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">account_balance</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">National Fund</span>
+</div>
+<div class="bg-surface-container-lowest border border-surface-border rounded-xl p-4 flex flex-col items-center text-center hover:bg-surface-container-low cursor-pointer transition-colors active:scale-[0.98]">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center mb-3 text-on-surface">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">groups</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Community Programmes</span>
+</div>
+<div class="bg-surface-container-lowest border border-surface-border rounded-xl p-4 flex flex-col items-center text-center hover:bg-surface-container-low cursor-pointer transition-colors active:scale-[0.98]">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center mb-3 text-on-surface">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">school</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Youth Development</span>
+</div>
+<div class="bg-surface-container-lowest border border-surface-border rounded-xl p-4 flex flex-col items-center text-center hover:bg-surface-container-low cursor-pointer transition-colors active:scale-[0.98]">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center mb-3 text-on-surface">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">woman</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Women's Development</span>
+</div>
+<div class="bg-surface-container-lowest border border-surface-border rounded-xl p-4 flex flex-col items-center text-center hover:bg-surface-container-low cursor-pointer transition-colors active:scale-[0.98]">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center mb-3 text-on-surface">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">how_to_vote</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Election Campaign</span>
+</div>
+<div class="bg-surface-container-lowest border border-surface-border rounded-xl p-4 flex flex-col items-center text-center hover:bg-surface-container-low cursor-pointer transition-colors active:scale-[0.98]">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center mb-3 text-on-surface">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">volunteer_activism</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Humanitarian Support</span>
+</div>
+</div>
+</section>
+<!-- Your Contributions -->
+<section class="mb-stack-lg">
+<div class="flex justify-between items-center mb-stack-md">
+<h3 class="font-headline-md text-headline-md text-on-surface">Your Contributions</h3>
+</div>
+<div class="bg-surface-container-lowest border border-surface-border rounded-xl overflow-hidden divide-y divide-surface-border">
+<div class="p-4 flex justify-between items-center hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">receipt_long</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">National Fund</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">12 Aug 2026</p>
+</div>
+</div>
+<div class="font-label-md text-label-md text-on-surface font-semibold">
+                        R100
+                    </div>
+</div>
+<div class="p-4 flex justify-between items-center hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 0;">receipt_long</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Youth Development</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">04 Jul 2026</p>
+</div>
+</div>
+<div class="font-label-md text-label-md text-on-surface font-semibold">
+                        R250
+                    </div>
+</div>
+</div>
+</section>
+<!-- Transparency Link -->
+<section class="mt-stack-lg flex justify-center pb-8">
+<a class="inline-flex items-center gap-2 text-primary hover:text-anc-green-dark font-label-md text-label-md transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 0;">info</span>
+                Where your contribution goes
+            </a>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-surface-container-lowest dark:bg-on-background fixed bottom-0 w-full z-50 h-20 border-t border-outline-variant dark:border-on-surface-variant shadow-lg flex justify-around items-center px-2 md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant pt-2 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors active:opacity-80 transition-opacity flex-1" href="#">
+<span class="material-symbols-outlined mb-1 text-[24px]" style="font-variation-settings: 'FILL' 0;">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<!-- Active Tab -->
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed-dim border-t-2 border-primary dark:border-primary-fixed-dim pt-2 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors active:opacity-80 transition-opacity flex-1" href="#">
+<span class="material-symbols-outlined mb-1 text-[24px]" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+<span class="font-label-sm text-label-sm">Money</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant pt-2 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors active:opacity-80 transition-opacity flex-1" href="#">
+<span class="material-symbols-outlined mb-1 text-[24px]" style="font-variation-settings: 'FILL' 0;">diversity_3</span>
+<span class="font-label-sm text-label-sm">Participate</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant pt-2 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors active:opacity-80 transition-opacity flex-1" href="#">
+<span class="material-symbols-outlined mb-1 text-[24px]" style="font-variation-settings: 'FILL' 0;">campaign</span>
+<span class="font-label-sm text-label-sm">Updates</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant pt-2 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors active:opacity-80 transition-opacity flex-1" href="#">
+<span class="material-symbols-outlined mb-1 text-[24px]" style="font-variation-settings: 'FILL' 0;">person</span>
+<span class="font-label-sm text-label-sm">Member</span>
+</a>
+</nav>
+</body></html>

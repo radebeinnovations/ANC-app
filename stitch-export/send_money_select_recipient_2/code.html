@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Select Recipient - ANC Member</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-primary": "#71dc8e",
+                    "surface-container-highest": "#e2e2e2",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-container": "#6e5700",
+                    "anc-gold-muted": "#E5B800",
+                    "primary": "#006933",
+                    "tertiary-container": "#737373",
+                    "on-surface-variant": "#3e4a3f",
+                    "anc-green-dark": "#006432",
+                    "secondary-container": "#fecc00",
+                    "surface": "#f9f9f9",
+                    "on-secondary-fixed": "#241a00",
+                    "tertiary-fixed-dim": "#c6c6c6",
+                    "inverse-on-surface": "#f1f1f1",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "error-container": "#ffdad6",
+                    "background": "#f9f9f9",
+                    "tertiary": "#5a5a5a",
+                    "surface-container": "#eeeeee",
+                    "status-active": "#008542",
+                    "secondary-fixed": "#ffe089",
+                    "on-primary": "#ffffff",
+                    "surface-dim": "#dadada",
+                    "outline": "#6e7a6e",
+                    "on-tertiary-fixed": "#1b1b1b",
+                    "text-secondary": "#4A5568",
+                    "on-primary-fixed-variant": "#005226",
+                    "on-error": "#ffffff",
+                    "outline-variant": "#bdcabc",
+                    "surface-container-high": "#e8e8e8",
+                    "primary-fixed": "#8df9a8",
+                    "inverse-surface": "#2f3131",
+                    "surface-bright": "#f9f9f9",
+                    "surface-border": "#E2E8F0",
+                    "on-secondary-fixed-variant": "#574500",
+                    "on-background": "#1a1c1c",
+                    "surface-container-low": "#f3f3f3",
+                    "on-primary-fixed": "#00210c",
+                    "tertiary-fixed": "#e2e2e2",
+                    "primary-container": "#008542",
+                    "on-tertiary-fixed-variant": "#474747",
+                    "on-primary-container": "#eeffec",
+                    "on-tertiary-container": "#fafafa",
+                    "surface-tint": "#006d35",
+                    "primary-fixed-dim": "#71dc8e",
+                    "secondary-fixed-dim": "#f0c100",
+                    "on-surface": "#1a1c1c",
+                    "surface-variant": "#e2e2e2",
+                    "error": "#ba1a1a",
+                    "secondary": "#735c00"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "stack-md": "16px",
+                    "unit": "8px",
+                    "stack-sm": "8px",
+                    "gutter": "16px",
+                    "container-margin": "20px",
+                    "stack-lg": "32px"
+            },
+            "fontFamily": {
+                    "body-lg": [
+                            "Inter"
+                    ],
+                    "headline-md": [
+                            "Hanken Grotesk"
+                    ],
+                    "headline-lg-mobile": [
+                            "Hanken Grotesk"
+                    ],
+                    "body-md": [
+                            "Inter"
+                    ],
+                    "headline-lg": [
+                            "Hanken Grotesk"
+                    ],
+                    "label-md": [
+                            "Inter"
+                    ],
+                    "display-lg": [
+                            "Hanken Grotesk"
+                    ],
+                    "label-sm": [
+                            "Inter"
+                    ]
+            },
+            "fontSize": {
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "headline-lg-mobile": [
+                            "28px",
+                            {
+                                    "lineHeight": "36px",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "40px",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "label-md": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "display-lg": [
+                            "48px",
+                            {
+                                    "lineHeight": "56px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "800"
+                            }
+                    ],
+                    "label-sm": [
+                            "12px",
+                            {
+                                    "lineHeight": "16px",
+                                    "fontWeight": "500"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-[120px] md:pb-0 font-body-md antialiased selection:bg-primary selection:text-on-primary">
+<!-- Top Navigation Container (Transactional context - Back button) -->
+<header class="sticky top-0 z-40 bg-surface/90 backdrop-blur-md border-b border-surface-border">
+<div class="max-w-screen-xl mx-auto flex items-center px-container-margin h-[64px]">
+<button aria-label="Go back" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">arrow_back</span>
+</button>
+<div class="flex-1 text-center pr-10">
+<span class="font-label-md text-label-md text-text-secondary uppercase tracking-widest">Step 1 of 3</span>
+</div>
+</div>
+</header>
+<main class="max-w-2xl mx-auto px-container-margin pt-stack-lg md:pt-12">
+<!-- Header Section -->
+<section class="mb-stack-lg">
+<h1 class="font-display-lg text-display-lg text-on-background mb-stack-sm md:hidden">Who are you sending to?</h1>
+<h1 class="font-display-lg text-display-lg text-on-background mb-stack-sm hidden md:block">Who are you sending to?</h1>
+<p class="font-body-md text-body-md text-text-secondary">Select a contact from your list or search for a new recipient by name or phone number.</p>
+</section>
+<!-- Search Bar -->
+<section class="mb-stack-lg relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline" style="font-variation-settings: 'FILL' 0;">search</span>
+</div>
+<input class="block w-full pl-12 pr-4 py-4 bg-surface-container-lowest border border-outline-variant rounded-xl font-body-md text-on-background focus:ring-2 focus:ring-primary focus:border-primary transition-all placeholder:text-outline shadow-sm" placeholder="Search name, phone, or ANC ID" type="text"/>
+</section>
+<!-- Recent Recipients (Horizontal Scroll) -->
+<section class="mb-stack-lg">
+<h2 class="font-label-md text-label-md text-text-secondary uppercase tracking-widest mb-stack-md">Recent Recipients</h2>
+<div class="flex overflow-x-auto pb-4 -mx-container-margin px-container-margin md:mx-0 md:px-0 space-x-4 hide-scrollbar snap-x snap-mandatory">
+<!-- Recent Item 1 -->
+<button class="snap-start flex flex-col items-center min-w-[72px] space-y-2 group">
+<div class="w-16 h-16 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all shadow-sm">
+<img alt="Thandi Modise" class="w-full h-full object-cover" data-alt="A close-up, high-quality portrait of a South African woman smiling confidently against a clean, modern white background. The lighting is soft and flattering, highlighting her professional attire. The image should convey trust and civic engagement, suitable for a professional profile avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOy6k5YcBkxo8AjhzGdmTaqPT3P8hbXsn0yCY_1NsV3GoiWfEDvFZFxV83WqXQBreFozAiwH5fjmxGHMD9_WIQJAqkDIQok0ALOIZ4_3GMwJHOIecgbuIKci_ihDNAWIKGCDfU-JW2V90BaYqZhVgPmUf9qttSfU_QHRrRu2P6FVWtJX_zpVzNu9bgZCcOm7TXtpiXemf-YbpLrb6OW2AUI4jwRINz7tGt3QzgW7wmMiiqdouoCPTD"/>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface truncate w-full text-center group-hover:text-primary transition-colors">Thandi M.</span>
+</button>
+<!-- Recent Item 2 -->
+<button class="snap-start flex flex-col items-center min-w-[72px] space-y-2 group">
+<div class="w-16 h-16 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all shadow-sm">
+<img alt="Sipho Khumalo" class="w-full h-full object-cover" data-alt="A portrait of a mature South African man in a neat collared shirt, standing outdoors with a subtly blurred urban background. Natural daylight illuminates his features. He has a dignified expression. The aesthetic is documentary-style yet polished, conveying reliability." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJnwzQk17QPWEBQKKPD_ZH6otpt3_87R8qPRolRHDE3W6HSybUki2_8GnvzyXiaNvjAknD56rgPfzdkp5AOad7N6j1qb7EMNiFKVWniTB82R65VRqWxS0kYgJvEFLa-FaTqIbD6VFG5RyMfh1GB6aPTkfhXepi5mMl-kk1won8HTmpx4NxyeDYA2eP3ZqSKeGuawhkJUsPBKWNQIVHb6B7h2o96hcTm1YOTFG-idY0nog59x6w-ZbS"/>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface truncate w-full text-center group-hover:text-primary transition-colors">Sipho K.</span>
+</button>
+<!-- Recent Item 3 -->
+<button class="snap-start flex flex-col items-center min-w-[72px] space-y-2 group">
+<div class="w-16 h-16 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center border-2 border-transparent group-hover:border-primary transition-all shadow-sm">
+<span class="font-headline-md text-headline-md">L</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface truncate w-full text-center group-hover:text-primary transition-colors">Lerato</span>
+</button>
+<!-- Recent Item 4 -->
+<button class="snap-start flex flex-col items-center min-w-[72px] space-y-2 group">
+<div class="w-16 h-16 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all shadow-sm">
+<img alt="Kagiso" class="w-full h-full object-cover" data-alt="A well-lit, professional headshot of a young South African man in a casual business suit, looking directly at the camera. The background is a soft, out-of-focus modern office setting. The mood is optimistic and forward-looking, reflecting a modern digital citizen." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3n1IThgFDIrGpUepcBEfD-yq7UBZOwft-vNQQ4SQyXLaklVWc3aNobdoaVZnUdQnCFLU3T7ICUov57m-FXWhzcSJdkv1xJuPl3bpQ2nUWX3m-YlgLy7IkA5n4iEQp5OQLJS094IlZ1glWLnCJ5QJfKy_1KifdyPP6vAEmrRfYmntGYo_gooSCF4SBsViKGccY5lnWdtS207yKC9m5eTUFh40YCzXqJMmhJXEHJCfNX4aReDgBSwJ-"/>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface truncate w-full text-center group-hover:text-primary transition-colors">Kagiso P.</span>
+</button>
+</div>
+</section>
+<!-- Contacts List -->
+<section class="bg-surface-container-lowest rounded-xl border border-surface-border overflow-hidden shadow-sm">
+<!-- Section Header A -->
+<div class="bg-surface-container px-4 py-2 border-b border-surface-border">
+<span class="font-label-md text-label-md text-on-surface-variant font-bold">A</span>
+</div>
+<!-- Contact Item -->
+<label class="flex items-center px-4 py-3 hover:bg-surface-container-low cursor-pointer border-b border-surface-border transition-colors group">
+<input class="w-5 h-5 text-primary border-outline-variant focus:ring-primary rounded-full mr-4" name="recipient" type="radio"/>
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed text-on-tertiary-fixed-variant flex items-center justify-center mr-4 shrink-0">
+<span class="font-label-md text-label-md">AM</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-body-md text-body-md text-on-surface truncate group-hover:text-primary transition-colors">Anele Mandela</p>
+<p class="font-label-sm text-label-sm text-text-secondary truncate">+27 82 123 4567</p>
+</div>
+</label>
+<!-- Section Header M -->
+<div class="bg-surface-container px-4 py-2 border-b border-surface-border">
+<span class="font-label-md text-label-md text-on-surface-variant font-bold">M</span>
+</div>
+<!-- Contact Item -->
+<label class="flex items-center px-4 py-3 hover:bg-surface-container-low cursor-pointer border-b border-surface-border transition-colors group">
+<input class="w-5 h-5 text-primary border-outline-variant focus:ring-primary rounded-full mr-4" name="recipient" type="radio"/>
+<div class="w-10 h-10 rounded-full overflow-hidden mr-4 shrink-0">
+<img alt="Mbali Zulu" class="w-full h-full object-cover" data-alt="A bright, clear headshot of a South African woman with natural hair, wearing minimalist silver jewelry. The background is a stark white to ensure focus remains entirely on her face. The image style is clean, modern, and aligned with a premium digital application's contact list." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBt2fhvs_lSZzvbWK7IrMXPKsagnefux2iMxQigezRfLBi9UjYxPdbUUK3146eZfg_Hu4PVt8nFNJ9K1hIDbvKr2qAQ2zz3UdM4sOKg-AAQQhZZu-zMZ9ikQLAOVl9ml7aUrin121-DGOQzwSFFldLGR5TZNZtOEhZwuj1Cr6mcbyKf7jIbez-dBm-591g_3qmt-hLHM7Hqkgp-x0bvlwx1jGccdxcDcIUZ1ANeSBdHdOKFsP1cLF8l"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-body-md text-body-md text-on-surface truncate group-hover:text-primary transition-colors">Mbali Zulu</p>
+<p class="font-label-sm text-label-sm text-text-secondary truncate">+27 73 987 6543</p>
+</div>
+<span class="bg-primary/10 text-primary px-2 py-1 rounded text-xs font-bold tracking-wider ml-2 shrink-0">MEMBER</span>
+</label>
+<!-- Contact Item -->
+<label class="flex items-center px-4 py-3 hover:bg-surface-container-low cursor-pointer border-b border-surface-border transition-colors group">
+<input class="w-5 h-5 text-primary border-outline-variant focus:ring-primary rounded-full mr-4" name="recipient" type="radio"/>
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed text-on-tertiary-fixed-variant flex items-center justify-center mr-4 shrink-0">
+<span class="font-label-md text-label-md">MN</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-body-md text-body-md text-on-surface truncate group-hover:text-primary transition-colors">Musa Ndlovu</p>
+<p class="font-label-sm text-label-sm text-text-secondary truncate">+27 61 555 0192</p>
+</div>
+</label>
+</section>
+</main>
+<!-- Fixed Bottom CTA (Transactional) -->
+<div class="fixed bottom-0 left-0 w-full bg-surface/95 backdrop-blur-sm border-t border-surface-border p-4 z-50 md:sticky md:bg-transparent md:border-none md:p-0 md:mt-stack-lg md:mb-12 max-w-2xl mx-auto">
+<button class="w-full bg-primary text-on-primary py-4 rounded-xl font-label-md text-label-md uppercase tracking-wider hover:bg-anc-green-dark active:bg-primary transition-colors shadow-md flex items-center justify-center space-x-2">
+<span>Continue</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">arrow_forward</span>
+</button>
+<div class="text-center mt-3 mb-safe md:hidden">
+<span class="font-label-sm text-label-sm text-outline tracking-widest uppercase">Powered by YAMI</span>
+</div>
+</div>
+<div class="hidden md:block text-center mt-8 mb-12">
+<span class="font-label-sm text-label-sm text-outline tracking-widest uppercase">Powered by YAMI</span>
+</div>
+<style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        .mb-safe {
+            margin-bottom: env(safe-area-inset-bottom);
+        }
+    </style>
+</body></html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>ANC Member - Home</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed-dim": "#71dc8e",
+                      "inverse-surface": "#2f3131",
+                      "inverse-primary": "#71dc8e",
+                      "anc-gold-muted": "#E5B800",
+                      "surface": "#f9f9f9",
+                      "on-surface-variant": "#3e4a3f",
+                      "on-secondary-fixed-variant": "#574500",
+                      "on-error-container": "#93000a",
+                      "outline-variant": "#bdcabc",
+                      "surface-container-high": "#e8e8e8",
+                      "tertiary": "#5a5a5a",
+                      "tertiary-container": "#737373",
+                      "secondary-fixed": "#ffe089",
+                      "secondary-container": "#fecc00",
+                      "on-secondary": "#ffffff",
+                      "surface-container-lowest": "#ffffff",
+                      "background": "#f9f9f9",
+                      "on-background": "#1a1c1c",
+                      "surface-variant": "#e2e2e2",
+                      "primary-fixed": "#8df9a8",
+                      "text-secondary": "#4A5568",
+                      "primary": "#006933",
+                      "on-primary-fixed": "#00210c",
+                      "surface-dim": "#dadada",
+                      "anc-green-dark": "#006432",
+                      "error-container": "#ffdad6",
+                      "surface-container-highest": "#e2e2e2",
+                      "on-tertiary-fixed-variant": "#474747",
+                      "on-primary-fixed-variant": "#005226",
+                      "surface-container": "#eeeeee",
+                      "on-surface": "#1a1c1c",
+                      "outline": "#6e7a6e",
+                      "tertiary-fixed-dim": "#c6c6c6",
+                      "status-active": "#008542",
+                      "on-primary": "#ffffff",
+                      "on-tertiary-container": "#fafafa",
+                      "on-secondary-container": "#6e5700",
+                      "primary-container": "#008542",
+                      "on-tertiary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "secondary": "#735c00",
+                      "surface-container-low": "#f3f3f3",
+                      "tertiary-fixed": "#e2e2e2",
+                      "surface-border": "#E2E8F0",
+                      "surface-tint": "#006d35",
+                      "on-error": "#ffffff",
+                      "secondary-fixed-dim": "#f0c100",
+                      "on-primary-container": "#eeffec",
+                      "on-secondary-fixed": "#241a00",
+                      "inverse-on-surface": "#f1f1f1",
+                      "surface-bright": "#f9f9f9",
+                      "on-tertiary-fixed": "#1b1b1b"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "stack-md": "16px",
+                      "container-margin": "20px",
+                      "stack-lg": "32px",
+                      "stack-sm": "8px",
+                      "gutter": "16px",
+                      "unit": "8px"
+              },
+              "fontFamily": {
+                      "body-md": ["Inter"],
+                      "headline-md": ["Hanken Grotesk"],
+                      "display-lg": ["Hanken Grotesk"],
+                      "headline-lg-mobile": ["Hanken Grotesk"],
+                      "label-md": ["Inter"],
+                      "label-sm": ["Inter"],
+                      "headline-lg": ["Hanken Grotesk"],
+                      "body-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+          font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Smooth scrolling for anchor links */
+        html { scroll-behavior: smooth; }
+        
+        /* Subtly hide scrollbar for horizontal scrolling containers */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background antialiased pb-24 max-w-7xl mx-auto md:px-10 lg:px-20 relative">
+<!-- Top App Bar (Hidden on Mobile, Visible on md+) -->
+<header class="hidden md:flex justify-between items-center w-full px-container-margin py-unit bg-surface border-b border-outline-variant sticky top-0 z-50">
+<div class="flex items-center gap-4 hover:bg-surface-container opacity-80 scale-95 transition-all p-2 rounded-lg cursor-pointer">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold overflow-hidden">
+<img alt="User Avatar" class="object-cover w-full h-full" data-alt="A dignified corporate portrait of a South African professional. Warm lighting, high contrast, studio background in muted tones. Crisp focus on the face." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1EKNubsm8t5qL702IdlGNTp-UVR5w5Zq41um054Wff2Uilj7480rRT59jZXd7538wy_UJPH8L0w024V4gIw8V-o8TLlwRJSsF3Bp4KgA7_dy5-kwcJ_m2lCKQsLcU2eBy9akR4kybgei7cq1WiMy42VJtcoZUEvqtxqbQ-jWL_twEFnGFU6A45niavAIGgD9BByEjq4jHMoJEqjmk6sa7TjlTKULDkG17p1tq1-8caiTvUr89bKd3">
+</div>
+<span class="font-headline-md text-headline-md font-bold text-primary">ANC Member</span>
+</div>
+<nav class="flex gap-8">
+<a class="text-primary font-bold font-label-md text-label-md hover:bg-surface-container px-3 py-2 rounded-md transition-all" href="#">Home</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:bg-surface-container px-3 py-2 rounded-md transition-all" href="#">Money</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:bg-surface-container px-3 py-2 rounded-md transition-all" href="#">Participate</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:bg-surface-container px-3 py-2 rounded-md transition-all" href="#">Updates</a>
+<a class="text-on-surface-variant font-label-md text-label-md hover:bg-surface-container px-3 py-2 rounded-md transition-all" href="#">Member</a>
+</nav>
+<div class="hover:bg-surface-container p-2 rounded-full cursor-pointer transition-all">
+<span class="material-symbols-outlined text-primary text-2xl">search</span>
+</div>
+</header>
+<!-- Mobile Header (Visible on Mobile only for the greeting) -->
+<div class="md:hidden px-container-margin pt-8 pb-4">
+<div class="flex justify-between items-start">
+<div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-background mb-1">Good morning, Lerumo</h1>
+<p class="font-label-md text-label-md text-text-secondary">ANC MEMBER · Johannesburg Region · Branch Name</p>
+</div>
+<div class="w-12 h-12 rounded-full bg-primary overflow-hidden border-2 border-surface-container-high shadow-sm flex-shrink-0">
+<img alt="User Avatar" class="object-cover w-full h-full" data-alt="A dignified corporate portrait of a South African professional. Warm lighting, high contrast, studio background in muted tones. Crisp focus on the face." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrqYetCBmAlp-mUDn8l5OIU6o0F7dliMQ9YlMujyt2i_rw30eTSl5oX57V5RvG6Uv3novo6hQqHuqXuxjPxnmQ64VJZhNknXZ4DhoAIDRlB_MEzW3GQdjyQXMzACivKaJvy5hjkaEoKyU3UZdq-hV15u4icDUiVm2q9ySZXpXL4mnHx7ueBa9KQERLutb2BCwMThrQ9XvvjjdL2bm8Hr_FTeNs1NvAV7TP1lenmhyAfTUTexR7q-_2">
+</div>
+</div>
+</div>
+<!-- Desktop Header -->
+<div class="hidden md:block px-container-margin pt-12 pb-8">
+<h1 class="font-display-lg text-display-lg text-on-background mb-2">Good morning, Lerumo</h1>
+<p class="font-body-lg text-body-lg text-text-secondary">ANC MEMBER · Johannesburg Region · Branch Name</p>
+</div>
+<main class="px-container-margin md:px-0 flex flex-col gap-stack-lg">
+<!-- Member Status Card -->
+<section class="w-full">
+<div class="bg-surface-container-lowest border border-surface-border rounded-xl p-6 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-md duration-300">
+<!-- Subtle texture overlay -->
+<div class="absolute inset-0 opacity-5 pointer-events-none" style="background-image: radial-gradient(#006933 1px, transparent 1px); background-size: 20px 20px;"></div>
+<div class="flex flex-col gap-3 z-10">
+<div class="flex items-center gap-2">
+<span class="bg-status-active/10 text-status-active px-2 py-1 rounded font-label-sm text-label-sm uppercase tracking-wider flex items-center gap-1 border border-status-active/20">
+<span class="w-2 h-2 rounded-full bg-status-active animate-pulse"></span>
+                            ACTIVE
+                        </span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-text-secondary uppercase mb-1">Membership Number</p>
+<p class="font-headline-md text-headline-md text-on-background tracking-tight font-mono">ANC-1234567</p>
+</div>
+<div>
+<p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">location_on</span>
+                            Johannesburg Region Branch
+                        </p>
+</div>
+</div>
+<div class="w-full md:w-auto z-10">
+<button class="w-full md:w-auto bg-primary text-on-primary font-label-md text-label-md px-6 py-4 md:py-3 rounded-lg hover:bg-primary-container transition-colors flex items-center justify-center gap-2 shadow-sm">
+                        View Member Card
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</section><div class="flex gap-3 overflow-x-auto no-scrollbar pb-2 -mx-container-margin px-container-margin md:mx-0 md:px-0">
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-label-md whitespace-nowrap shadow-sm">Important Dates</button>
+<button class="bg-surface-container text-on-surface-variant px-6 py-2 rounded-full font-label-md whitespace-nowrap hover:bg-surface-container-high transition-colors">My Community</button>
+<button class="bg-surface-container text-on-surface-variant px-6 py-2 rounded-full font-label-md whitespace-nowrap hover:bg-surface-container-high transition-colors">Quick Services</button>
+<button class="bg-surface-container text-on-surface-variant px-6 py-2 rounded-full font-label-md whitespace-nowrap hover:bg-surface-container-high transition-colors">Latest Updates</button>
+</div>
+<!-- Two Column Layout for Desktop -->
+<div class="grid-cols-1 gap-stack-lg">
+<!-- Left Column: Dates & Community -->
+<div class="flex flex-col gap-stack-lg">
+<!-- Important Dates -->
+<section>
+<div class="flex justify-between items-end mb-4 border-b border-surface-border pb-2">
+<h2 class="font-label-md text-label-md text-text-secondary uppercase tracking-widest">Important Dates</h2>
+<button class="font-label-sm text-label-sm text-primary font-bold hover:text-primary-container transition-colors">View all</button>
+</div>
+<div class="bg-surface-container-lowest border border-surface-border rounded-xl p-5 hover:border-primary/30 transition-colors cursor-pointer group flex items-start gap-4 shadow-sm">
+<div class="bg-surface-container rounded-lg p-3 flex flex-col items-center justify-center min-w-[60px] border border-surface-border group-hover:bg-primary/5 transition-colors">
+<span class="font-label-sm text-label-sm text-text-secondary uppercase">Nov</span>
+<span class="font-headline-md text-headline-md text-primary">04</span>
+</div>
+<div class="flex-1">
+<h3 class="font-headline-md text-headline-md text-on-background mb-1 group-hover:text-primary transition-colors">2026 Local Government Elections</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Nationwide</p>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary self-center transition-colors">chevron_right</span>
+</div>
+</section>
+<!-- My Community -->
+
+</div>
+<!-- Right Column: Quick Services -->
+<div class="md:col-span-5 flex flex-col gap-stack-lg hidden">
+<section>
+<div class="flex justify-between items-end mb-4 border-b border-surface-border pb-2">
+<h2 class="font-label-md text-label-md text-text-secondary uppercase tracking-widest">Quick Services</h2>
+</div>
+<div class="grid grid-cols-2 lg:grid-cols-3 gap-3">
+<!-- Service Item -->
+<div class="bg-surface-container-low border border-surface-border rounded-lg p-4 flex flex-col items-center justify-center gap-2 aspect-square hover:bg-surface hover:shadow-md hover:-translate-y-1 transition-all cursor-pointer group">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">send_money</span>
+</div>
+<span class="font-label-sm text-label-sm text-center text-on-background">Send Money</span>
+</div>
+<!-- Service Item -->
+<div class="bg-surface-container-low border border-surface-border rounded-lg p-4 flex flex-col items-center justify-center gap-2 aspect-square hover:bg-surface hover:shadow-md hover:-translate-y-1 transition-all cursor-pointer group">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<span class="font-label-sm text-label-sm text-center text-on-background">Receive Money</span>
+</div>
+<!-- Service Item -->
+<div class="bg-surface-container-low border border-surface-border rounded-lg p-4 flex flex-col items-center justify-center gap-2 aspect-square hover:bg-surface hover:shadow-md hover:-translate-y-1 transition-all cursor-pointer group">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">phone_iphone</span>
+</div>
+<span class="font-label-sm text-label-sm text-center text-on-background">Airtime</span>
+</div>
+<!-- Service Item -->
+<div class="bg-surface-container-low border border-surface-border rounded-lg p-4 flex flex-col items-center justify-center gap-2 aspect-square hover:bg-surface hover:shadow-md hover:-translate-y-1 transition-all cursor-pointer group">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">wifi</span>
+</div>
+<span class="font-label-sm text-label-sm text-center text-on-background">Data</span>
+</div>
+<!-- Service Item -->
+<div class="bg-surface-container-low border border-surface-border rounded-lg p-4 flex flex-col items-center justify-center gap-2 aspect-square hover:bg-surface hover:shadow-md hover:-translate-y-1 transition-all cursor-pointer group">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">electric_bolt</span>
+</div>
+<span class="font-label-sm text-label-sm text-center text-on-background">Electricity</span>
+</div>
+<!-- Service Item -->
+<div class="bg-surface-container-low border border-surface-border rounded-lg p-4 flex flex-col items-center justify-center gap-2 aspect-square hover:bg-surface hover:shadow-md hover:-translate-y-1 transition-all cursor-pointer group">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">volunteer_activism</span>
+</div>
+<span class="font-label-sm text-label-sm text-center text-on-background">Donate</span>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- Latest from the ANC (Editorial Card) -->
+<section class="mt-4 hidden">
+<div class="flex justify-between items-end mb-4 border-b border-surface-border pb-2">
+<h2 class="font-label-md text-label-md text-text-secondary uppercase tracking-widest">Latest from the ANC</h2>
+<button class="font-label-sm text-label-sm text-primary font-bold hover:text-primary-container transition-colors">Newsroom</button>
+</div>
+<div class="relative w-full rounded-xl overflow-hidden group cursor-pointer shadow-sm border border-surface-border aspect-[4/3] md:aspect-[21/9]">
+<!-- High-quality image background -->
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="A wide, sweeping photo of a vibrant community gathering in South Africa. Warm afternoon sunlight, people engaged in active discussion, dignified and official atmosphere. Cinematic lighting, rich colors, focus on unity and heritage. High contrast, professional editorial style." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBKP63Fo4xzQB73s09RdUZdVj8PBAguxzD9v7PdRtZUIi-KcvD5jkk-Hn7cr8Yg2aRvDgmFJhx1rU5GVJ0Si7IkNc7fOAGMpPatRyTgShHz2O8RWDyOOlH7aD5M1oTU2daPShpRNjCOGaTGT1mUWib7bhclB-QkA_WQA5GyaRsES47RU29XXq_WYVhW_5FthqacZ2PUOWZBK82gyAvZ2wheardxqFjgU71U6WC9jEPiTru0obm9udev')"></div>
+<!-- Dark gradient scrim for text legibility (bottom 40%) -->
+<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+<!-- Content overlay -->
+<div class="absolute inset-0 p-6 md:p-8 flex flex-col justify-end">
+<span class="bg-anc-gold-muted text-on-secondary-fixed-variant px-2 py-1 rounded font-label-sm text-label-sm uppercase tracking-wider self-start mb-3 shadow-sm font-bold">Community Initiative</span>
+<h3 class="font-headline-lg-mobile md:font-headline-lg text-white mb-2 max-w-2xl leading-tight">National Working Committee outlines key priorities for upcoming quarter</h3>
+<p class="font-body-md text-body-md text-surface-container-highest mb-4 max-w-xl hidden md:block opacity-90">The committee has detailed a comprehensive approach to addressing municipal service delivery and expanding community engagement programs across all regions.</p>
+<button class="text-white font-label-md text-label-md flex items-center gap-1 group-hover:text-primary-fixed transition-colors w-fit">
+                        Read update <span class="material-symbols-outlined text-sm transform group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation (Hidden on md+, visible on Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center bg-surface border-t border-outline-variant pb-safe shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-50 rounded-t-xl h-[72px]">
+<!-- Active Tab: Home -->
+<a class="flex flex-col items-center justify-center text-primary border-t-2 border-primary pt-2 h-full min-w-[64px] scale-90 transition-transform duration-150 relative" href="#">
+<!-- Tiny indicator bar above icon -->
+<div class="absolute top-0 w-8 h-[2px] bg-primary rounded-b-full"></div>
+<span class="material-symbols-outlined filled text-2xl mb-1">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low pt-2 h-full min-w-[64px] transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined text-2xl mb-1">payments</span>
+<span class="font-label-sm text-label-sm">Money</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low pt-2 h-full min-w-[64px] transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined text-2xl mb-1">groups</span>
+<span class="font-label-sm text-label-sm">Participate</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low pt-2 h-full min-w-[64px] transition-colors rounded-lg relative" href="#">
+<!-- Notification dot -->
+<div class="absolute top-3 right-4 w-2 h-2 bg-error rounded-full border border-surface"></div>
+<span class="material-symbols-outlined text-2xl mb-1">notifications</span>
+<span class="font-label-sm text-label-sm">Updates</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low pt-2 h-full min-w-[64px] transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined text-2xl mb-1">account_circle</span>
+<span class="font-label-sm text-label-sm">Member</span>
+</a>
+</nav>
+<!-- Safe area padding for bottom nav on mobile -->
+<div class="h-6 md:hidden"></div>
+
+
+</body></html>

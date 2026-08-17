@@ -1,0 +1,291 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>ANC Member Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#2f3131",
+                        "primary": "#006933",
+                        "tertiary-container": "#737373",
+                        "surface-tint": "#006d35",
+                        "secondary-fixed": "#ffe089",
+                        "surface-container-low": "#f3f3f3",
+                        "on-tertiary-fixed": "#1b1b1b",
+                        "on-surface-variant": "#3e4a3f",
+                        "background": "#f9f9f9",
+                        "surface": "#f9f9f9",
+                        "secondary": "#735c00",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#8df9a8",
+                        "on-secondary-fixed-variant": "#574500",
+                        "anc-green-dark": "#006432",
+                        "on-secondary-container": "#6e5700",
+                        "outline": "#6e7a6e",
+                        "error-container": "#ffdad6",
+                        "surface-border": "#E2E8F0",
+                        "tertiary-fixed": "#e2e2e2",
+                        "on-secondary": "#ffffff",
+                        "surface-dim": "#dadada",
+                        "primary-container": "#008542",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-container": "#fecc00",
+                        "anc-gold-muted": "#E5B800",
+                        "on-secondary-fixed": "#241a00",
+                        "surface-container-highest": "#e2e2e2",
+                        "text-secondary": "#4A5568",
+                        "surface-variant": "#e2e2e2",
+                        "tertiary-fixed-dim": "#c6c6c6",
+                        "surface-container-high": "#e8e8e8",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#005226",
+                        "secondary-fixed-dim": "#f0c100",
+                        "on-tertiary-container": "#fafafa",
+                        "on-tertiary-fixed-variant": "#474747",
+                        "surface-bright": "#f9f9f9",
+                        "primary-fixed-dim": "#71dc8e",
+                        "inverse-on-surface": "#f1f1f1",
+                        "on-error": "#ffffff",
+                        "on-surface": "#1a1c1c",
+                        "inverse-primary": "#71dc8e",
+                        "on-background": "#1a1c1c",
+                        "on-primary-container": "#eeffec",
+                        "status-active": "#008542",
+                        "tertiary": "#5a5a5a",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#eeeeee",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed": "#00210c",
+                        "outline-variant": "#bdcabc"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "stack-md": "16px",
+                        "unit": "8px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "container-margin": "20px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter", "sans-serif"],
+                        "headline-lg": ["Hanken Grotesk", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"],
+                        "headline-lg-mobile": ["Hanken Grotesk", "sans-serif"],
+                        "headline-md": ["Hanken Grotesk", "sans-serif"],
+                        "label-sm": ["Inter", "sans-serif"],
+                        "body-lg": ["Inter", "sans-serif"],
+                        "display-lg": ["Hanken Grotesk", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Hanken Grotesk', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background antialiased pb-24">
+<!-- Header Section -->
+<header class="bg-surface-container-lowest sticky top-0 z-10 px-gutter py-stack-md flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-3">
+<div class="size-12 rounded-full overflow-hidden border-2 border-surface-container-high shrink-0">
+<img class="w-full h-full object-cover" data-alt="A professional, well-lit headshot portrait of a mature African man smiling warmly. The lighting is soft and flattering, highlighting his features. He is wearing a neat, casual button-down shirt. The background is a slightly blurred, bright, modern indoor setting, evoking a sense of approachability and professionalism within an organizational context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDP7zlfBNbg5jSucUfG5tPD3BtnVuTQAY2I1kjxSuVqrYNxWqB2lpmvbct4HtE9rdYUrNvLmyCoODdPJBfEqJlKcTv1n486W4ZiNoD2hMMB6ygx62xZumjQQcA9Q5uBGXVyeqgizdBJTJZhYHK0e2jGRtVRt-uNnljNFVUKXpdgq2Cyhy3xUtsvwfSISYHxtEhER8JSmDx9fJe9hVTzN3FqNWNa4aOez8vY3D9vx2YwUd9oJmGKaKmb">
+</div>
+<div>
+<h1 class="text-headline-md font-semibold text-on-surface">Good morning, Lerumo Thabo</h1>
+<p class="text-body-md text-text-secondary">ANC Member · Johannesburg Region</p>
+</div>
+</div>
+<button class="relative p-2 text-on-surface hover:bg-surface-container rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications" style="font-variation-settings: &quot;FILL&quot; 0;">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-error rounded-full border-2 border-surface-container-lowest"></span>
+</button>
+</header>
+<main class="px-gutter py-stack-md space-y-stack-lg">
+<!-- Section 1: Member Status -->
+<section>
+<div class="bg-surface-container-lowest rounded-xl p-stack-md shadow-sm border border-surface-border">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-label-md uppercase tracking-widest text-text-secondary">Member Status</h2>
+<span class="bg-primary-container/10 text-primary-container px-2 py-1 rounded text-label-sm font-semibold flex items-center gap-1">
+<span class="size-2 rounded-full bg-status-active"></span> ACTIVE
+                    </span>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-4">
+<div>
+<p class="text-label-sm text-text-secondary mb-1">Membership Number</p>
+<p class="font-semibold text-on-surface">ANC-1234567</p>
+</div>
+<div>
+<p class="text-label-sm text-text-secondary mb-1">Branch</p>
+<p class="font-semibold text-on-surface">Johannesburg Region</p>
+</div>
+<div>
+<p class="text-label-sm text-text-secondary mb-1">Validity</p>
+<p class="font-semibold text-on-surface">31 December 2026</p>
+</div>
+</div>
+<button class="w-full py-2 bg-surface-container hover:bg-surface-container-high text-on-surface font-semibold rounded-lg transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="badge">badge</span> View Member Card
+                </button>
+</div>
+</section>
+<!-- Section 2: Important -->
+<section>
+<h2 class="text-headline-md font-semibold text-on-surface mb-stack-sm">Important</h2>
+<div class="bg-secondary-container text-on-secondary-container rounded-xl p-stack-md relative overflow-hidden">
+<div class="absolute -right-8 -top-8 size-32 bg-anc-gold-muted/20 rounded-full blur-xl"></div>
+<div class="relative z-10">
+<div class="flex items-start gap-3 mb-2">
+<span class="material-symbols-outlined mt-1" data-icon="event_upcoming">event_upcoming</span>
+<div>
+<h3 class="font-bold text-lg leading-tight">2026 Local Government Elections</h3>
+<p class="opacity-80">04 November 2026</p>
+</div>
+</div>
+<button class="mt-4 px-4 py-2 bg-on-secondary-container text-secondary-container text-sm font-semibold rounded-lg hover:bg-opacity-90 transition-opacity">
+                        View Important Dates
+                    </button>
+</div>
+</div>
+</section>
+<!-- Section 3: My Community -->
+<section>
+<h2 class="text-headline-md font-semibold text-on-surface mb-stack-sm">My Community</h2>
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm border border-surface-border flex flex-col md:flex-row">
+<div class="h-40 md:h-auto md:w-1/3 bg-surface-container-high relative">
+<img class="absolute inset-0 w-full h-full object-cover" data-alt="A dynamic, well-composed photograph of a vibrant community meeting in a spacious hall. People are seated and attentively listening to a speaker. The room is brightly lit with natural sunlight streaming through large windows. The atmosphere is energetic, collaborative, and focused on civic engagement, featuring subtle green and gold accents in the environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHtomXsNt6ZfeyvGZOeE5XMikoE5zxU6RquvkfvLhr4T0JYKXccFIuYI8r2T8-9ZZlaqqwWNNziIBcMoWa6jD-ILIRWc02WFG9hRmYaM5BbCiDBXKNUaGsyOhxcgb2bbd-Rzx6m0FPLxfh6dQLM5XA30dGG_LKc4u72FFmXlnnxQsZ_gmIR0jV8GlW5p6QYUO-h6qfrqHZGSfWJY6mootTuO2zTIRBZjmzjM-J9VHYQU1WxM4WEO0i">
+</div>
+<div class="p-stack-md flex-1">
+<p class="text-label-sm text-primary uppercase font-bold tracking-wider mb-1">Branch Meeting</p>
+<h3 class="text-lg font-bold text-on-surface mb-2">Monthly Strategy Session</h3>
+<p class="text-body-md text-text-secondary flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-[18px]" data-icon="schedule">schedule</span>
+                        Saturday · 10:00 at Walter Sisulu House
+                    </p>
+<button class="px-4 py-2 bg-primary text-on-primary font-semibold rounded-lg hover:bg-primary-container transition-colors w-full md:w-auto text-center">
+                        View Event
+                    </button>
+</div>
+</div>
+</section>
+<!-- Section 4: Quick Services -->
+<section>
+<h2 class="text-headline-md font-semibold text-on-surface mb-stack-sm">Quick Services</h2>
+<div class="grid grid-cols-3 gap-3">
+<button class="bg-surface-container-lowest border border-surface-border rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-surface-container-low transition-colors shadow-sm">
+<div class="size-10 bg-primary/10 text-primary rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="send_money">send_money</span>
+</div>
+<span class="text-label-sm font-semibold text-on-surface text-center">Send<br>Money</span>
+</button>
+<button class="bg-surface-container-lowest border border-surface-border rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-surface-container-low transition-colors shadow-sm">
+<div class="size-10 bg-primary/10 text-primary rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="request_quote">request_quote</span>
+</div>
+<span class="text-label-sm font-semibold text-on-surface text-center">Receive<br>Money</span>
+</button>
+<button class="bg-surface-container-lowest border border-surface-border rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-surface-container-low transition-colors shadow-sm">
+<div class="size-10 bg-tertiary-container/20 text-on-surface rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="phone_iphone">phone_iphone</span>
+</div>
+<span class="text-label-sm font-semibold text-on-surface text-center">Buy<br>Airtime</span>
+</button>
+<button class="bg-surface-container-lowest border border-surface-border rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-surface-container-low transition-colors shadow-sm">
+<div class="size-10 bg-tertiary-container/20 text-on-surface rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="wifi">wifi</span>
+</div>
+<span class="text-label-sm font-semibold text-on-surface text-center">Buy<br>Data</span>
+</button>
+<button class="bg-surface-container-lowest border border-surface-border rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-surface-container-low transition-colors shadow-sm">
+<div class="size-10 bg-tertiary-container/20 text-on-surface rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="electric_bolt">electric_bolt</span>
+</div>
+<span class="text-label-sm font-semibold text-on-surface text-center">Buy<br>Electricity</span>
+</button>
+<button class="bg-surface-container-lowest border border-surface-border rounded-xl p-4 flex flex-col items-center justify-center gap-2 hover:bg-surface-container-low transition-colors shadow-sm">
+<div class="size-10 bg-secondary-container/30 text-on-secondary-container rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="volunteer_activism">volunteer_activism</span>
+</div>
+<span class="text-label-sm font-semibold text-on-surface text-center">Donate<br>Now</span>
+</button>
+</div>
+</section>
+<!-- Section 5: Latest from ANC -->
+<section>
+<div class="flex items-center justify-between mb-stack-sm">
+<h2 class="text-headline-md font-semibold text-on-surface">Latest from ANC</h2>
+<a class="text-label-md text-primary hover:underline" href="#">View all</a>
+</div>
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm border border-surface-border">
+<div class="h-48 bg-surface-container-high relative">
+<img class="absolute inset-0 w-full h-full object-cover" data-alt="A powerful, high-quality editorial photograph illustrating infrastructure development and local governance. The image shows a modern, newly constructed community center or public facility under a bright, clear sky. Construction workers and community leaders are seen in the foreground, signifying progress and teamwork. The visual tone is optimistic and forward-looking, aligned with a modern light-mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHR1a7BGP_bULWHfBqmlTZgAdHLDUGaQ9n42EuYpuscyM7zEqqysnBEFBchrBndc5olw-z7m9zHt8J2f1KlBsIEJcbViTOgrDKxoOMDSxwyhbm6Celjx0pd0-OYh-6kDsXNsIIzcF7FU30QbvhS_w9U5M0GZjAah-V1bZR0ig9UAONPSann0NLQ6JAl8wcx2iBNtAuzSB1IZwBp7qqfHtgzBTb68fJZD2IlcmApjWzMBVXT3-_Ba0X">
+</div>
+<div class="p-stack-md">
+<div class="flex items-center justify-between mb-2">
+<span class="text-label-sm text-text-secondary uppercase tracking-widest font-bold">ANC Statement</span>
+<span class="text-label-sm text-text-secondary">12 August 2026</span>
+</div>
+<h3 class="text-xl font-bold text-on-surface mb-3">Building Stronger Local Government</h3>
+<p class="text-body-md text-text-secondary mb-4 line-clamp-2">Our commitment to service delivery and community empowerment remains steadfast as we approach the upcoming municipal elections.</p>
+<button class="text-primary font-semibold hover:text-primary-container transition-colors flex items-center gap-1">
+                        Read Update <span class="material-symbols-outlined text-[20px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar (Shared Component) -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface-container-lowest dark:bg-surface-dim border-t border-surface-border dark:border-outline-variant shadow-lg md:hidden">
+<div class="flex justify-around items-center h-16 px-2 w-full max-w-7xl mx-auto font-label-sm text-label-sm">
+<!-- Active: Home -->
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed relative after:content-[''] after:absolute after:-top-2 after:w-8 after:h-0.5 after:bg-primary scale-95 duration-200 flex-1 h-full rounded-lg bg-surface-container-low" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-bold">Home</span>
+</a>
+<!-- Inactive: Money -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-tertiary hover:bg-surface-container-high transition-all flex-1 h-full rounded-lg" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="payments">payments</span>
+<span class="">Money</span>
+</a>
+<!-- Inactive: Participate -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-tertiary hover:bg-surface-container-high transition-all flex-1 h-full rounded-lg" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="groups">groups</span>
+<span class="">Participate</span>
+</a>
+<!-- Inactive: Updates -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-tertiary hover:bg-surface-container-high transition-all flex-1 h-full rounded-lg" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="campaign">campaign</span>
+<span class="">Updates</span>
+</a>
+<!-- Inactive: Member -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-tertiary hover:bg-surface-container-high transition-all flex-1 h-full rounded-lg" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="badge">badge</span>
+<span class="">Member</span>
+</a>
+</div>
+</nav>
+
+
+</body></html>

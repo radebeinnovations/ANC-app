@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ANC Unity - Buy Airtime</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface": "#f9f9f9",
+                      "on-secondary-container": "#6e5700",
+                      "primary-fixed": "#8df9a8",
+                      "on-tertiary-fixed-variant": "#474747",
+                      "secondary-fixed": "#ffe089",
+                      "on-primary-container": "#eeffec",
+                      "on-background": "#1a1c1c",
+                      "secondary": "#735c00",
+                      "text-secondary": "#4A5568",
+                      "tertiary-fixed": "#e2e2e2",
+                      "anc-green-dark": "#006432",
+                      "on-error": "#ffffff",
+                      "surface-container-high": "#e8e8e8",
+                      "anc-gold-muted": "#E5B800",
+                      "background": "#f9f9f9",
+                      "outline": "#6e7a6e",
+                      "error": "#ba1a1a",
+                      "on-tertiary": "#ffffff",
+                      "surface-variant": "#e2e2e2",
+                      "on-primary-fixed-variant": "#005226",
+                      "on-secondary-fixed-variant": "#574500",
+                      "primary-container": "#008542",
+                      "on-error-container": "#93000a",
+                      "tertiary-fixed-dim": "#c6c6c6",
+                      "secondary-container": "#fecc00",
+                      "surface-dim": "#dadada",
+                      "on-primary": "#ffffff",
+                      "surface-bright": "#f9f9f9",
+                      "outline-variant": "#bdcabc",
+                      "on-secondary": "#ffffff",
+                      "tertiary-container": "#737373",
+                      "surface-border": "#E2E8F0",
+                      "on-surface-variant": "#3e4a3f",
+                      "primary": "#006933",
+                      "on-surface": "#1a1c1c",
+                      "surface-container": "#eeeeee",
+                      "on-secondary-fixed": "#241a00",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary-fixed": "#00210c",
+                      "primary-fixed-dim": "#71dc8e",
+                      "status-active": "#008542",
+                      "surface-container-low": "#f3f3f3",
+                      "secondary-fixed-dim": "#f0c100",
+                      "surface-tint": "#006d35",
+                      "on-tertiary-fixed": "#1b1b1b",
+                      "tertiary": "#5a5a5a",
+                      "error-container": "#ffdad6",
+                      "on-tertiary-container": "#fafafa",
+                      "surface-container-highest": "#e2e2e2",
+                      "inverse-surface": "#2f3131",
+                      "inverse-primary": "#71dc8e",
+                      "inverse-on-surface": "#f1f1f1"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "16px",
+                      "stack-lg": "32px",
+                      "stack-sm": "8px",
+                      "unit": "8px",
+                      "stack-md": "16px",
+                      "container-margin": "20px"
+              },
+              "fontFamily": {
+                      "label-sm": ["Inter"],
+                      "label-md": ["Inter"],
+                      "headline-md": ["Hanken Grotesk"],
+                      "headline-lg": ["Hanken Grotesk"],
+                      "body-md": ["Inter"],
+                      "display-lg": ["Hanken Grotesk"],
+                      "body-lg": ["Inter"],
+                      "headline-lg-mobile": ["Hanken Grotesk"]
+              },
+              "fontSize": {
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-surface');
+        }
+        /* Custom scrollbar for horizontal network list */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased min-h-screen flex flex-col items-center">
+<!-- Transactional Screen: Navigation Shell Suppressed (Bottom Nav Hidden) -->
+<!-- TopAppBar for Transactional Flow with Back Button -->
+<header class="bg-surface dark:bg-background fixed top-0 w-full z-50 border-b border-surface-border flat no shadows flex justify-between items-center px-gutter h-16 max-w-7xl">
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors active:scale-95 duration-100 p-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">
+            ANC UNITY
+        </div>
+<!-- Empty div to balance flex layout since trailing icon is removed for transactional flow -->
+<div class="w-10"></div>
+</header>
+<main class="w-full max-w-2xl px-container-margin pt-[88px] pb-[100px] flex-grow flex flex-col gap-stack-lg">
+<!-- Header Section -->
+<section class="flex flex-col gap-stack-sm">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-surface">Buy Airtime</h1>
+<p class="font-body-lg text-body-lg text-text-secondary">Top up your mobile in seconds.</p>
+</section>
+<!-- Form Section -->
+<form class="flex flex-col gap-stack-lg">
+<!-- Mobile Number Input -->
+<section class="bg-surface-container-lowest p-gutter rounded-xl border border-surface-border shadow-sm flex flex-col gap-stack-md">
+<div class="flex justify-between items-center">
+<label class="font-label-md text-label-md text-on-surface uppercase" for="mobile-number">Mobile Number</label>
+<button class="font-label-sm text-label-sm text-primary font-bold hover:underline flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[16px]" data-icon="contact_page">contact_page</span>
+                        Use my number
+                    </button>
+</div>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none font-body-lg text-body-lg text-text-secondary">+27</span>
+<input class="w-full pl-12 pr-4 py-3 bg-surface border border-outline-variant rounded-lg font-body-lg text-body-lg text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" id="mobile-number" placeholder="82 123 4567" type="tel" value="82 123 4567"/>
+</div>
+<!-- Recent Contacts -->
+<div class="flex flex-col gap-unit mt-2">
+<span class="font-label-sm text-label-sm text-text-secondary uppercase">Recent</span>
+<div class="flex gap-stack-sm overflow-x-auto hide-scrollbar pb-2">
+<button class="flex-shrink-0 flex items-center gap-2 px-3 py-2 bg-surface-container-low rounded-full border border-surface-border hover:bg-surface-container transition-colors" type="button">
+<div class="w-6 h-6 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-label-sm text-label-sm font-bold">M</div>
+<span class="font-label-md text-label-md text-on-surface">My Number</span>
+</button>
+<button class="flex-shrink-0 flex items-center gap-2 px-3 py-2 bg-surface-container-low rounded-full border border-surface-border hover:bg-surface-container transition-colors" type="button">
+<div class="w-6 h-6 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-label-sm text-label-sm font-bold">T</div>
+<span class="font-label-md text-label-md text-on-surface">Thabo</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Network Selector -->
+<section class="flex flex-col gap-stack-sm">
+<h2 class="font-label-md text-label-md text-on-surface uppercase px-1">Select Network</h2>
+<div class="flex gap-stack-md overflow-x-auto hide-scrollbar snap-x pb-2">
+<!-- Network Cards -->
+<label class="flex-shrink-0 snap-start cursor-pointer relative">
+<input checked="" class="peer sr-only" name="network" type="radio" value="mtn"/>
+<div class="w-24 h-24 bg-surface-container-lowest rounded-xl border border-surface-border flex flex-col items-center justify-center gap-2 peer-checked:border-primary peer-checked:bg-primary-container/10 transition-all">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="font-headline-md text-headline-md text-on-secondary-container font-bold">M</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface font-semibold">MTN</span>
+</div>
+<div class="absolute top-2 right-2 hidden peer-checked:block text-primary">
+<span class="material-symbols-outlined fill text-[18px]" data-icon="check_circle">check_circle</span>
+</div>
+</label>
+<label class="flex-shrink-0 snap-start cursor-pointer relative">
+<input class="peer sr-only" name="network" type="radio" value="vodacom"/>
+<div class="w-24 h-24 bg-surface-container-lowest rounded-xl border border-surface-border flex flex-col items-center justify-center gap-2 peer-checked:border-primary peer-checked:bg-primary-container/10 transition-all hover:bg-surface-container-low">
+<div class="w-10 h-10 rounded-full bg-[#E50000] flex items-center justify-center">
+<span class="font-headline-md text-headline-md text-white font-bold">V</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface font-semibold">Vodacom</span>
+</div>
+</label>
+<label class="flex-shrink-0 snap-start cursor-pointer relative">
+<input class="peer sr-only" name="network" type="radio" value="telkom"/>
+<div class="w-24 h-24 bg-surface-container-lowest rounded-xl border border-surface-border flex flex-col items-center justify-center gap-2 peer-checked:border-primary peer-checked:bg-primary-container/10 transition-all hover:bg-surface-container-low">
+<div class="w-10 h-10 rounded-full bg-[#0099FF] flex items-center justify-center">
+<span class="font-headline-md text-headline-md text-white font-bold">T</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface font-semibold">Telkom</span>
+</div>
+</label>
+<label class="flex-shrink-0 snap-start cursor-pointer relative">
+<input class="peer sr-only" name="network" type="radio" value="cellc"/>
+<div class="w-24 h-24 bg-surface-container-lowest rounded-xl border border-surface-border flex flex-col items-center justify-center gap-2 peer-checked:border-primary peer-checked:bg-primary-container/10 transition-all hover:bg-surface-container-low">
+<div class="w-10 h-10 rounded-full bg-black flex items-center justify-center">
+<span class="font-headline-md text-headline-md text-white font-bold">C</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface font-semibold">Cell C</span>
+</div>
+</label>
+</div>
+</section>
+<!-- Amount Selection -->
+<section class="flex flex-col gap-stack-sm">
+<h2 class="font-label-md text-label-md text-on-surface uppercase px-1">Select Amount</h2>
+<div class="grid grid-cols-3 gap-stack-sm">
+<label class="cursor-pointer">
+<input class="peer sr-only" name="amount" type="radio" value="10"/>
+<div class="py-3 px-2 bg-surface-container-lowest rounded-lg border border-surface-border text-center peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary transition-all hover:border-outline-variant font-headline-md text-headline-md">
+                            R10
+                        </div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="amount" type="radio" value="20"/>
+<div class="py-3 px-2 bg-surface-container-lowest rounded-lg border border-surface-border text-center peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary transition-all hover:border-outline-variant font-headline-md text-headline-md">
+                            R20
+                        </div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="amount" type="radio" value="30"/>
+<div class="py-3 px-2 bg-surface-container-lowest rounded-lg border border-surface-border text-center peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary transition-all hover:border-outline-variant font-headline-md text-headline-md">
+                            R30
+                        </div>
+</label>
+<label class="cursor-pointer">
+<input checked="" class="peer sr-only" name="amount" type="radio" value="50"/>
+<div class="py-3 px-2 bg-surface-container-lowest rounded-lg border border-surface-border text-center peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary transition-all hover:border-outline-variant font-headline-md text-headline-md">
+                            R50
+                        </div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="amount" type="radio" value="100"/>
+<div class="py-3 px-2 bg-surface-container-lowest rounded-lg border border-surface-border text-center peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary transition-all hover:border-outline-variant font-headline-md text-headline-md">
+                            R100
+                        </div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="amount" type="radio" value="200"/>
+<div class="py-3 px-2 bg-surface-container-lowest rounded-lg border border-surface-border text-center peer-checked:bg-primary peer-checked:text-white peer-checked:border-primary transition-all hover:border-outline-variant font-headline-md text-headline-md">
+                            R200
+                        </div>
+</label>
+</div>
+<div class="mt-2">
+<label class="font-label-sm text-label-sm text-text-secondary uppercase mb-1 block" for="other-amount">Other Amount</label>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none font-headline-md text-headline-md text-text-secondary">R</span>
+<input class="w-full pl-10 pr-4 py-3 bg-surface border border-outline-variant rounded-lg font-headline-md text-headline-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" id="other-amount" placeholder="0.00" type="number"/>
+</div>
+</div>
+</section>
+<!-- Purchase Summary -->
+<section class="bg-surface-container-low p-gutter rounded-xl border border-surface-border flex flex-col gap-stack-md mt-4">
+<h3 class="font-label-md text-label-md text-on-surface uppercase border-b border-surface-border pb-2">Purchase Summary</h3>
+<div class="flex flex-col gap-unit">
+<div class="flex justify-between items-center font-body-md text-body-md text-text-secondary">
+<span>Airtime</span>
+<span>R50.00</span>
+</div>
+<div class="flex justify-between items-center font-body-md text-body-md text-text-secondary">
+<span>Fee</span>
+<span>R0.00</span>
+</div>
+<div class="flex justify-between items-center font-headline-md text-headline-md text-on-surface pt-2 border-t border-surface-border mt-1">
+<span>Total</span>
+<span class="text-primary font-bold">R50.00</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-3 rounded-lg border border-surface-border flex items-center justify-between mt-2">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">ANC Member Money</span>
+<span class="font-label-sm text-label-sm text-text-secondary">Balance: R1,500.00</span>
+</div>
+</div>
+<button class="text-primary hover:text-anc-green-dark" type="button">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+</button>
+</div>
+</section>
+</form>
+</main>
+<!-- Fixed Bottom Action Bar for Transactional Flow -->
+<div class="fixed bottom-0 w-full max-w-7xl bg-surface-container-lowest border-t border-surface-border p-gutter z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+<button class="w-full bg-primary hover:bg-anc-green-dark text-white font-label-md text-label-md py-4 rounded-xl transition-colors active:scale-[0.98] duration-150 flex items-center justify-center gap-2 shadow-sm">
+<span>Review Purchase</span>
+<span class="material-symbols-outlined text-[20px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</body></html>

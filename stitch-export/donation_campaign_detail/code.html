@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Community Development - ANC Unity</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary": "#ffffff",
+                      "surface": "#f9f9f9",
+                      "primary-fixed-dim": "#71dc8e",
+                      "surface-container-highest": "#e2e2e2",
+                      "on-tertiary-fixed": "#1b1b1b",
+                      "tertiary": "#5a5a5a",
+                      "surface-container-low": "#f3f3f3",
+                      "on-background": "#1a1c1c",
+                      "status-active": "#008542",
+                      "surface-tint": "#006d35",
+                      "error": "#ba1a1a",
+                      "inverse-surface": "#2f3131",
+                      "surface-bright": "#f9f9f9",
+                      "on-primary-fixed-variant": "#005226",
+                      "text-secondary": "#4A5568",
+                      "on-error-container": "#93000a",
+                      "primary": "#006933",
+                      "primary-container": "#008542",
+                      "outline": "#6e7a6e",
+                      "on-primary-fixed": "#00210c",
+                      "on-surface": "#1a1c1c",
+                      "anc-gold-muted": "#E5B800",
+                      "on-secondary-container": "#6e5700",
+                      "surface-container": "#eeeeee",
+                      "anc-green-dark": "#006432",
+                      "on-surface-variant": "#3e4a3f",
+                      "tertiary-container": "#737373",
+                      "primary-fixed": "#8df9a8",
+                      "secondary": "#735c00",
+                      "on-secondary-fixed-variant": "#574500",
+                      "surface-dim": "#dadada",
+                      "on-tertiary-container": "#fafafa",
+                      "secondary-container": "#fecc00",
+                      "secondary-fixed-dim": "#f0c100",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-border": "#E2E8F0",
+                      "on-tertiary-fixed-variant": "#474747",
+                      "tertiary-fixed-dim": "#c6c6c6",
+                      "on-error": "#ffffff",
+                      "on-tertiary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "inverse-primary": "#71dc8e",
+                      "surface-variant": "#e2e2e2",
+                      "surface-container-high": "#e8e8e8",
+                      "outline-variant": "#bdcabc",
+                      "secondary-fixed": "#ffe089",
+                      "on-primary": "#ffffff",
+                      "inverse-on-surface": "#f1f1f1",
+                      "tertiary-fixed": "#e2e2e2",
+                      "background": "#f9f9f9",
+                      "on-secondary-fixed": "#241a00",
+                      "on-primary-container": "#eeffec"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "unit": "8px",
+                      "stack-lg": "32px",
+                      "stack-md": "16px",
+                      "container-margin": "20px",
+                      "gutter": "16px",
+                      "stack-sm": "8px"
+              },
+              "fontFamily": {
+                      "label-sm": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "display-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg-mobile": [
+                              "Hanken Grotesk"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Hanken Grotesk"
+                      ]
+              },
+              "fontSize": {
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "800"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "36px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body-md antialiased min-h-screen flex flex-col relative pb-[100px]">
+<!-- Top Navigation (Contextual Back) -->
+<header class="bg-surface top-0 sticky z-40 border-b border-surface-border flat no shadows flex justify-between items-center px-container-margin h-16 w-full">
+<button aria-label="Go back" class="flex items-center justify-center p-2 rounded-full hover:bg-surface-container-low transition-colors text-on-surface">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-extrabold text-primary tracking-tight">ANC UNITY</h1>
+<div class="w-10"></div> <!-- Spacer for centering -->
+</header>
+<!-- Main Content -->
+<main class="flex-grow">
+<!-- Campaign Header -->
+<section class="relative w-full h-[397px] min-h-[300px] bg-on-surface">
+<div class="absolute inset-0 bg-cover bg-center w-full h-full opacity-80" data-alt="A high-quality, professional photograph of a vibrant, diverse South African community gathering. People are engaged in positive, collaborative activities like building or planning, conveying a sense of unity and progress. The lighting is bright and natural, reflecting a hopeful and statesmanlike aesthetic consistent with the ANC brand. The image should have a clear focal point but also work well as a hero background." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAGRPtyMm8M9jj81RAxbdx3c6DAm6jAEEaFnTTv8AvsF5lu8M903oiWJKvwaQwsfsyZ7ItkYmlQElBNAx4LmdUS02GWKbxPwBAdMeEH5sqHUQ8tbxzhS5kn2t_Tr_0qnjJ2-6dGxTOXF7DdKBut4OeFIc1BVcjpM33clogcJOTafo29JvLSU3X5KhsHeJersn1xvPB78mh08U4Ny4vQw0P2r28BNbOfMpydttbwaxDtivai_pEoe7Sy')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+<div class="absolute bottom-0 left-0 w-full p-container-margin md:p-10 max-w-[1280px] mx-auto z-10 flex flex-col justify-end h-full">
+<span class="bg-anc-gold-muted text-on-secondary-container font-label-md text-label-md px-3 py-1 rounded-full w-max mb-stack-sm uppercase tracking-widest">Active Campaign</span>
+<h2 class="font-display-lg text-display-lg text-white mb-stack-md leading-tight">Community Development</h2>
+<!-- Progress Bar -->
+<div class="bg-surface/10 backdrop-blur-sm p-4 rounded-xl border border-white/20">
+<div class="flex justify-between items-end mb-2">
+<div>
+<span class="font-headline-md text-headline-md text-white">R1.8M</span>
+<span class="font-body-md text-body-md text-surface-dim ml-2">raised of R3M goal</span>
+</div>
+<span class="font-label-md text-label-md text-primary-fixed font-bold">60%</span>
+</div>
+<div class="w-full bg-white/20 rounded-full h-3 overflow-hidden">
+<div class="bg-primary-fixed h-3 rounded-full" style="width: 60%"></div>
+</div>
+</div>
+</div>
+</section>
+<div class="max-w-[1280px] mx-auto px-container-margin md:px-10 py-stack-lg grid grid-cols-1 md:grid-cols-12 gap-stack-lg">
+<!-- Left Column: Details -->
+<div class="md:col-span-8 flex flex-col gap-stack-lg">
+<!-- About -->
+<section class="bg-surface-container-lowest rounded-xl p-stack-md md:p-stack-lg border border-surface-border">
+<h3 class="font-headline-md text-headline-md text-primary mb-stack-sm flex items-center gap-2">
+<span class="material-symbols-outlined fill" data-icon="info">info</span>
+                        About this campaign
+                    </h3>
+<p class="font-body-lg text-body-lg text-text-secondary leading-relaxed">
+                        Supporting local development efforts across the nation. This campaign focuses on building sustainable infrastructure, providing essential resources, and fostering economic growth in communities that need it most. Your contribution directly empowers local leaders and citizens to create lasting change.
+                    </p>
+</section>
+<!-- Impact Metrics -->
+<section>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-stack-md">Campaign Impact</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-gutter">
+<!-- Metric 1 -->
+<div class="bg-surface-container-lowest border border-surface-border p-stack-md rounded-xl flex items-start gap-4 hover:shadow-md transition-shadow">
+<div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined fill text-3xl" data-icon="diversity_3">diversity_3</span>
+</div>
+<div>
+<h4 class="font-headline-md text-headline-md text-primary mb-1">24</h4>
+<p class="font-body-md text-body-md text-text-secondary">Communities supported across 5 provinces.</p>
+</div>
+</div>
+<!-- Metric 2 -->
+<div class="bg-surface-container-lowest border border-surface-border p-stack-md rounded-xl flex items-start gap-4 hover:shadow-md transition-shadow">
+<div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined fill text-3xl" data-icon="construction">construction</span>
+</div>
+<div>
+<h4 class="font-headline-md text-headline-md text-primary mb-1">12</h4>
+<p class="font-body-md text-body-md text-text-secondary">Infrastructure projects currently underway.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Latest Update -->
+<section class="bg-surface-container-low p-stack-md rounded-xl border-l-4 border-primary">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<span class="font-label-sm text-label-sm text-text-secondary block mb-1 uppercase tracking-wider">Latest Update • 12 August 2026</span>
+<h4 class="font-headline-md text-headline-md text-on-surface">Community programme update</h4>
+</div>
+<a class="font-label-md text-label-md text-primary font-bold hover:underline flex items-center gap-1 shrink-0" href="#">
+                            Read update
+                            <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</section>
+</div>
+<!-- Right Column: Sticky Context (Desktop) -->
+<div class="md:col-span-4 hidden md:block">
+<div class="sticky top-24 bg-surface-container-lowest border border-surface-border p-stack-lg rounded-xl shadow-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-stack-sm">Make a Difference</h3>
+<p class="font-body-md text-body-md text-text-secondary mb-stack-md">Your donation helps us reach our goal and continue vital community work.</p>
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-4 rounded-lg flex items-center justify-center gap-2 hover:bg-primary-container transition-colors shadow-md">
+<span class="material-symbols-outlined" data-icon="volunteer_activism">volunteer_activism</span>
+                        Donate Now
+                    </button>
+<div class="mt-stack-md pt-stack-md border-t border-surface-border flex items-center justify-center gap-2 text-text-secondary">
+<span class="material-symbols-outlined text-sm" data-icon="lock">lock</span>
+<span class="font-label-sm text-label-sm">Secure donation via ANC Pay</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Fixed Bottom CTA (Mobile) -->
+<div class="md:hidden fixed bottom-0 left-0 w-full bg-surface-container-lowest border-t border-surface-border p-container-margin shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-50">
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-4 rounded-lg flex items-center justify-center gap-2 active:scale-95 transition-transform duration-150 shadow-md">
+<span class="material-symbols-outlined" data-icon="volunteer_activism">volunteer_activism</span>
+            Donate Now
+        </button>
+</div>
+</body></html>

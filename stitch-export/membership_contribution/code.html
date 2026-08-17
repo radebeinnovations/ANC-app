@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Membership Contribution - ANC Unity</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Hanken+Grotesk:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary": "#ffffff",
+                      "surface": "#f9f9f9",
+                      "primary-fixed-dim": "#71dc8e",
+                      "surface-container-highest": "#e2e2e2",
+                      "on-tertiary-fixed": "#1b1b1b",
+                      "tertiary": "#5a5a5a",
+                      "surface-container-low": "#f3f3f3",
+                      "on-background": "#1a1c1c",
+                      "status-active": "#008542",
+                      "surface-tint": "#006d35",
+                      "error": "#ba1a1a",
+                      "inverse-surface": "#2f3131",
+                      "surface-bright": "#f9f9f9",
+                      "on-primary-fixed-variant": "#005226",
+                      "text-secondary": "#4A5568",
+                      "on-error-container": "#93000a",
+                      "primary": "#006933",
+                      "primary-container": "#008542",
+                      "outline": "#6e7a6e",
+                      "on-primary-fixed": "#00210c",
+                      "on-surface": "#1a1c1c",
+                      "anc-gold-muted": "#E5B800",
+                      "on-secondary-container": "#6e5700",
+                      "surface-container": "#eeeeee",
+                      "anc-green-dark": "#006432",
+                      "on-surface-variant": "#3e4a3f",
+                      "tertiary-container": "#737373",
+                      "primary-fixed": "#8df9a8",
+                      "secondary": "#735c00",
+                      "on-secondary-fixed-variant": "#574500",
+                      "surface-dim": "#dadada",
+                      "on-tertiary-container": "#fafafa",
+                      "secondary-container": "#fecc00",
+                      "secondary-fixed-dim": "#f0c100",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-border": "#E2E8F0",
+                      "on-tertiary-fixed-variant": "#474747",
+                      "tertiary-fixed-dim": "#c6c6c6",
+                      "on-error": "#ffffff",
+                      "on-tertiary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "inverse-primary": "#71dc8e",
+                      "surface-variant": "#e2e2e2",
+                      "surface-container-high": "#e8e8e8",
+                      "outline-variant": "#bdcabc",
+                      "secondary-fixed": "#ffe089",
+                      "on-primary": "#ffffff",
+                      "inverse-on-surface": "#f1f1f1",
+                      "tertiary-fixed": "#e2e2e2",
+                      "background": "#f9f9f9",
+                      "on-secondary-fixed": "#241a00",
+                      "on-primary-container": "#eeffec"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "unit": "8px",
+                      "stack-lg": "32px",
+                      "stack-md": "16px",
+                      "container-margin": "20px",
+                      "gutter": "16px",
+                      "stack-sm": "8px"
+              },
+              "fontFamily": {
+                      "label-sm": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "headline-md": ["Hanken Grotesk"],
+                      "display-lg": ["Hanken Grotesk"],
+                      "headline-lg-mobile": ["Hanken Grotesk"],
+                      "body-md": ["Inter"],
+                      "label-md": ["Inter"],
+                      "headline-lg": ["Hanken Grotesk"]
+              },
+              "fontSize": {
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col antialiased">
+<!-- TopAppBar Semantic Shell -->
+<header class="bg-surface dark:bg-on-background text-primary dark:text-primary-fixed-dim w-full top-0 sticky border-b border-outline-variant dark:border-on-surface-variant flex justify-between items-center px-container-margin h-16 w-full z-50">
+<div class="flex items-center gap-gutter">
+<button class="hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors active:scale-95 transition-transform duration-150 p-2 rounded-full flex items-center justify-center text-on-surface-variant dark:text-surface-variant">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-extrabold text-primary dark:text-primary-fixed-dim tracking-tight">ANC UNITY</h1>
+</div>
+<button class="hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors active:scale-95 transition-transform duration-150 p-1 rounded-full border border-surface-border overflow-hidden w-10 h-10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="person">person</span>
+</button>
+</header>
+<main class="flex-grow w-full max-w-[1280px] mx-auto px-container-margin md:px-[40px] lg:px-auto pb-32 pt-stack-md flex flex-col gap-stack-lg">
+<!-- Header Section -->
+<section class="flex flex-col gap-stack-sm">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-background">Membership</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Manage your membership contribution.</p>
+</section>
+<!-- Member Identity & Status (Bento Grid Style) -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Member Identity Card -->
+<div class="bg-surface-container-lowest border border-surface-border rounded-xl p-stack-md flex flex-col justify-between shadow-sm relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 opacity-5 pointer-events-none">
+<svg class="text-primary" fill="currentColor" viewbox="0 0 100 100"><path d="M50 0 C77.6 0 100 22.4 100 50 C100 77.6 77.6 100 50 100 C22.4 100 0 77.6 0 50 C0 22.4 22.4 0 50 0 Z"></path></svg>
+</div>
+<div class="flex items-start justify-between mb-stack-md relative z-10">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-text-secondary uppercase tracking-widest">Member Identity</span>
+<h3 class="font-headline-md text-headline-md mt-unit text-on-background">LERUMO THABO</h3>
+<p class="font-label-md text-label-md font-mono text-primary mt-1">ANC-1234567</p>
+</div>
+</div>
+</div>
+<!-- Membership Status Card -->
+<div class="bg-surface-container-lowest border border-surface-border rounded-xl p-stack-md flex flex-col gap-stack-sm shadow-sm">
+<div class="flex items-center justify-between pb-unit border-b border-surface-border">
+<span class="font-body-md text-body-md text-on-surface-variant">Membership Status</span>
+<span class="font-label-md text-label-md text-status-active bg-status-active/10 px-3 py-1 rounded-full uppercase">Active</span>
+</div>
+<div class="flex items-center justify-between py-unit border-b border-surface-border">
+<span class="font-body-md text-body-md text-on-surface-variant">Contribution Status</span>
+<span class="font-label-md text-label-md text-on-background">Up to date</span>
+</div>
+<div class="flex items-center justify-between pt-unit">
+<span class="font-body-md text-body-md text-on-surface-variant">Next Contribution</span>
+<span class="font-label-md text-label-md text-on-background">31 August 2026</span>
+</div>
+</div>
+</section>
+<!-- Contribution Options -->
+<section class="bg-surface-container-lowest border border-surface-border rounded-xl p-stack-md flex flex-col gap-stack-md shadow-sm">
+<h3 class="font-headline-md text-headline-md border-b border-surface-border pb-stack-sm text-on-background">Contribution Options</h3>
+<div class="flex flex-col gap-stack-sm">
+<label class="font-label-md text-label-md text-on-surface-variant">Select Amount</label>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-unit">
+<button class="bg-surface hover:bg-surface-container-low border border-surface-border rounded-lg py-3 px-4 font-label-md text-label-md text-on-background transition-colors focus:ring-2 focus:ring-primary focus:border-primary active:bg-primary/5">R50</button>
+<button class="bg-surface hover:bg-surface-container-low border border-surface-border rounded-lg py-3 px-4 font-label-md text-label-md text-on-background transition-colors focus:ring-2 focus:ring-primary focus:border-primary active:bg-primary/5">R100</button>
+<button class="bg-primary-container/10 border-2 border-primary rounded-lg py-3 px-4 font-label-md text-label-md text-primary transition-colors focus:ring-2 focus:ring-primary focus:border-primary">R250</button>
+<button class="bg-surface hover:bg-surface-container-low border border-surface-border rounded-lg py-3 px-4 font-label-md text-label-md text-on-background transition-colors focus:ring-2 focus:ring-primary focus:border-primary active:bg-primary/5">R500</button>
+</div>
+</div>
+<div class="flex flex-col gap-stack-sm">
+<label class="font-label-md text-label-md text-on-surface-variant" for="custom-amount">Custom Amount</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 font-body-lg text-body-lg text-text-secondary">R</span>
+<input class="w-full bg-surface border border-surface-border rounded-lg py-3 pl-8 pr-4 font-body-lg text-body-lg text-on-background focus:ring-2 focus:ring-primary focus:border-primary transition-colors" id="custom-amount" placeholder="Enter amount" type="number"/>
+</div>
+</div>
+</section>
+<!-- Frequency & Payment Method Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Frequency Selector -->
+<div class="bg-surface-container-lowest border border-surface-border rounded-xl p-stack-md flex flex-col gap-stack-md shadow-sm">
+<h3 class="font-headline-md text-headline-md border-b border-surface-border pb-stack-sm text-on-background">Frequency</h3>
+<div class="flex flex-col gap-unit">
+<label class="flex items-center gap-3 p-3 border border-surface-border rounded-lg hover:bg-surface-container-low cursor-pointer transition-colors bg-primary/5 border-primary">
+<input checked="" class="text-primary focus:ring-primary h-5 w-5" name="frequency" type="radio"/>
+<span class="font-body-md text-body-md text-on-background">Monthly</span>
+</label>
+<label class="flex items-center gap-3 p-3 border border-surface-border rounded-lg hover:bg-surface-container-low cursor-pointer transition-colors">
+<input class="text-primary focus:ring-primary h-5 w-5" name="frequency" type="radio"/>
+<span class="font-body-md text-body-md text-on-background">Annual</span>
+</label>
+<label class="flex items-center gap-3 p-3 border border-surface-border rounded-lg hover:bg-surface-container-low cursor-pointer transition-colors">
+<input class="text-primary focus:ring-primary h-5 w-5" name="frequency" type="radio"/>
+<span class="font-body-md text-body-md text-on-background">One-time</span>
+</label>
+</div>
+</div>
+<!-- Payment Method -->
+<div class="bg-surface-container-lowest border border-surface-border rounded-xl p-stack-md flex flex-col gap-stack-md shadow-sm">
+<h3 class="font-headline-md text-headline-md border-b border-surface-border pb-stack-sm text-on-background">Payment Method</h3>
+<div class="flex items-center justify-between p-4 bg-surface rounded-lg border border-surface-border">
+<div class="flex items-center gap-3">
+<div class="bg-primary/10 p-2 rounded-full text-primary">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-background">ANC Member Money</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Available Balance</span>
+</div>
+</div>
+<span class="font-headline-md text-headline-md text-on-background">R1,500.00</span>
+</div>
+</div>
+</section>
+<!-- Summary & CTA -->
+<section class="bg-surface-container-lowest border border-surface-border rounded-xl p-stack-md flex flex-col gap-stack-md shadow-sm">
+<h3 class="font-headline-md text-headline-md border-b border-surface-border pb-stack-sm text-on-background">Summary</h3>
+<div class="flex flex-col gap-unit">
+<div class="flex justify-between items-center py-2 border-b border-surface-border border-dashed">
+<span class="font-body-md text-body-md text-on-surface-variant">Membership Contribution</span>
+<span class="font-body-md text-body-md text-on-background">R250.00</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-surface-border border-dashed">
+<span class="font-body-md text-body-md text-on-surface-variant">Frequency</span>
+<span class="font-body-md text-body-md text-on-background">Monthly</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-surface-border border-dashed">
+<span class="font-body-md text-body-md text-on-surface-variant">Next payment date</span>
+<span class="font-body-md text-body-md text-on-background">31 August 2026</span>
+</div>
+<div class="flex justify-between items-center py-4 mt-2">
+<span class="font-headline-md text-headline-md text-on-background">Total</span>
+<span class="font-headline-md text-headline-md text-primary">R250.00</span>
+</div>
+</div>
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-4 rounded-lg uppercase tracking-wider hover:bg-primary-container transition-colors active:scale-[0.98] shadow-sm flex items-center justify-center gap-2">
+                Review Contribution
+                <span class="material-symbols-outlined text-[18px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</section>
+</main>
+<!-- BottomNavBar Semantic Shell (Visible on Mobile) -->
+<nav class="md:hidden bg-surface-container-lowest dark:bg-on-background fixed bottom-0 w-full z-50 h-20 border-t border-outline-variant dark:border-on-surface-variant shadow-lg flex justify-around items-center w-full px-2">
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant pt-2 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors active:opacity-80 transition-opacity w-16">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm mt-1">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant pt-2 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors active:opacity-80 transition-opacity w-16">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span class="font-label-sm text-label-sm mt-1">Money</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant pt-2 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors active:opacity-80 transition-opacity w-16">
+<span class="material-symbols-outlined" data-icon="diversity_3">diversity_3</span>
+<span class="font-label-sm text-label-sm mt-1">Participate</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant pt-2 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors active:opacity-80 transition-opacity w-16">
+<span class="material-symbols-outlined" data-icon="campaign">campaign</span>
+<span class="font-label-sm text-label-sm mt-1">Updates</span>
+</button>
+<!-- Active Tab: Member -->
+<button class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed-dim border-t-2 border-primary dark:border-primary-fixed-dim pt-2 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors active:opacity-80 transition-opacity w-16">
+<span class="material-symbols-outlined" data-icon="person" data-weight="fill">person</span>
+<span class="font-label-sm text-label-sm mt-1">Member</span>
+</button>
+</nav>
+<!-- Desktop Nav Shim (Hidden on Mobile) -->
+<nav class="hidden md:flex fixed top-0 right-container-margin h-16 items-center gap-gutter z-50">
+<button class="text-on-surface-variant hover:text-primary font-label-md text-label-md transition-colors px-3 py-2">Home</button>
+<button class="text-on-surface-variant hover:text-primary font-label-md text-label-md transition-colors px-3 py-2">Money</button>
+<button class="text-on-surface-variant hover:text-primary font-label-md text-label-md transition-colors px-3 py-2">Participate</button>
+<button class="text-on-surface-variant hover:text-primary font-label-md text-label-md transition-colors px-3 py-2">Updates</button>
+<button class="text-primary font-label-md text-label-md border-b-2 border-primary px-3 py-2 h-full flex items-center mt-[2px]">Member</button>
+</nav>
+</body></html>

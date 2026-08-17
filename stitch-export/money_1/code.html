@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ANC Unity - Money Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "error-container": "#ffdad6",
+                      "surface-variant": "#e2e2e2",
+                      "surface-container-highest": "#e2e2e2",
+                      "surface-container-high": "#e8e8e8",
+                      "status-active": "#008542",
+                      "inverse-surface": "#2f3131",
+                      "surface-container-low": "#f3f3f3",
+                      "secondary": "#735c00",
+                      "on-surface-variant": "#3e4a3f",
+                      "on-error": "#ffffff",
+                      "primary-fixed": "#8df9a8",
+                      "primary": "#006933",
+                      "surface-tint": "#006d35",
+                      "inverse-on-surface": "#f1f1f1",
+                      "tertiary-container": "#737373",
+                      "secondary-container": "#fecc00",
+                      "secondary-fixed-dim": "#f0c100",
+                      "on-secondary-fixed": "#241a00",
+                      "on-tertiary-container": "#fafafa",
+                      "primary-fixed-dim": "#71dc8e",
+                      "on-primary": "#ffffff",
+                      "on-primary-fixed-variant": "#005226",
+                      "background": "#f9f9f9",
+                      "secondary-fixed": "#ffe089",
+                      "on-surface": "#1a1c1c",
+                      "error": "#ba1a1a",
+                      "text-secondary": "#4A5568",
+                      "on-secondary": "#ffffff",
+                      "primary-container": "#008542",
+                      "on-error-container": "#93000a",
+                      "on-tertiary-fixed-variant": "#474747",
+                      "tertiary": "#5a5a5a",
+                      "on-primary-container": "#eeffec",
+                      "surface-dim": "#dadada",
+                      "outline": "#6e7a6e",
+                      "on-background": "#1a1c1c",
+                      "surface-container": "#eeeeee",
+                      "on-tertiary": "#ffffff",
+                      "tertiary-fixed-dim": "#c6c6c6",
+                      "inverse-primary": "#71dc8e",
+                      "tertiary-fixed": "#e2e2e2",
+                      "on-primary-fixed": "#00210c",
+                      "anc-gold-muted": "#E5B800",
+                      "surface-border": "#E2E8F0",
+                      "surface-bright": "#f9f9f9",
+                      "outline-variant": "#bdcabc",
+                      "on-secondary-fixed-variant": "#574500",
+                      "on-tertiary-fixed": "#1b1b1b",
+                      "anc-green-dark": "#006432",
+                      "surface": "#f9f9f9",
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary-container": "#6e5700"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "container-margin": "20px",
+                      "gutter": "16px",
+                      "unit": "8px",
+                      "stack-lg": "32px",
+                      "stack-md": "16px",
+                      "stack-sm": "8px"
+              },
+              "fontFamily": {
+                      "headline-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "display-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Hanken Grotesk"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "label-sm": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Hanken Grotesk"
+                      ]
+              },
+              "fontSize": {
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "800"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "36px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        /* Custom Utilities */
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom, 20px); }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background antialiased min-h-screen flex flex-col font-body-md text-body-md">
+<!-- TopAppBar (Web) / Header (Mobile) -->
+<header class="w-full top-0 sticky bg-surface dark:bg-surface-dim border-b border-surface-border dark:border-outline-variant flat no shadows flex justify-between items-center px-container-margin h-16 w-full z-40">
+<button class="text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low transition-colors active:scale-95 duration-150 p-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed" data-icon="menu">menu</span>
+</button>
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">ANC UNITY</div>
+<button class="text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low transition-colors active:scale-95 duration-150 p-1 rounded-full flex items-center justify-center overflow-hidden border border-surface-border">
+<img alt="Member Profile" class="w-8 h-8 object-cover rounded-full" data-alt="A small, professional avatar portrait of a mature African man in a formal setting, representing an established and dignified member of a civic organization. The lighting is bright and even, suited for a light-mode corporate UI. The overall tone is respectable and high-quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPBSIjVCFQZ-A98u9TWaZAlWd9SsP_NlQ91EX9ZRSb5f9FqIlKK_WijUHHFpygTJeVF9ZpWJR0U_Zh442wH2MkUausKMciV0nXvKBaSh_xqGo39xGiFyAh1rtX5WVmjJaXqzPEC2a6yslXXGM3cgPTl1PKICWOoNR3BhOgosv9MMoVn19cVO9s0QLcjEYI9BxQ4qsha6Yb7r_dgCBHuib2yD-FSfQGICqHAiqtqyls-B-2rfc3N_CY"/>
+</button>
+</header>
+<!-- Main Content Area -->
+<main class="flex-grow w-full max-w-[1280px] mx-auto px-container-margin md:px-[40px] lg:px-auto pb-32 pt-stack-md flex flex-col gap-stack-lg">
+<!-- Page Title & Context -->
+<div class="flex flex-col gap-stack-sm">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-background">Money</h1>
+<p class="font-body-md text-body-md text-text-secondary">Lerumo Thabo • ANC-1234567 • <span class="text-status-active font-label-md text-label-md uppercase">Active</span></p>
+</div>
+<!-- Balance Card -->
+<section class="bg-surface-container-lowest border border-surface-border rounded-xl p-6 flex flex-col gap-4 relative overflow-hidden shadow-sm">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-9xl text-primary" data-icon="account_balance">account_balance</span>
+</div>
+<div class="relative z-10 flex flex-col gap-1">
+<h2 class="font-label-md text-label-md text-text-secondary uppercase tracking-wider">Available Balance</h2>
+<div class="font-display-lg text-display-lg text-on-background">R1,500.00</div>
+</div>
+<div class="relative z-10 flex gap-gutter mt-stack-sm">
+<!-- Core Actions -->
+<button class="flex-1 flex flex-col items-center justify-center gap-2 p-4 bg-primary text-on-primary rounded-lg active:scale-95 transition-transform duration-150 hover:bg-primary-container">
+<span class="material-symbols-outlined" data-icon="send">send</span>
+<span class="font-label-md text-label-md">Send</span>
+</button>
+<button class="flex-1 flex flex-col items-center justify-center gap-2 p-4 bg-surface-container-high text-on-surface rounded-lg border border-surface-border active:scale-95 transition-transform duration-150 hover:bg-surface-container">
+<span class="material-symbols-outlined" data-icon="download">download</span>
+<span class="font-label-md text-label-md">Receive</span>
+</button>
+<button class="flex-1 flex flex-col items-center justify-center gap-2 p-4 bg-surface-container-high text-on-surface rounded-lg border border-surface-border active:scale-95 transition-transform duration-150 hover:bg-surface-container">
+<span class="material-symbols-outlined" data-icon="swap_horiz">swap_horiz</span>
+<span class="font-label-md text-label-md">Transfer</span>
+</button>
+</div>
+</section>
+<!-- Services & Contributions Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-lg">
+<!-- Pay Section -->
+<section class="flex flex-col gap-stack-md">
+<h3 class="font-headline-md text-headline-md text-on-background border-b border-surface-border pb-2">Pay Services</h3>
+<div class="grid grid-cols-4 gap-unit">
+<button class="aspect-square bg-surface-container-low border border-surface-border rounded-lg flex flex-col items-center justify-center gap-1 hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="phone_iphone">phone_iphone</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Airtime</span>
+</button>
+<button class="aspect-square bg-surface-container-low border border-surface-border rounded-lg flex flex-col items-center justify-center gap-1 hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="wifi">wifi</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Data</span>
+</button>
+<button class="aspect-square bg-surface-container-low border border-surface-border rounded-lg flex flex-col items-center justify-center gap-1 hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="bolt">bolt</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Electricity</span>
+</button>
+<button class="aspect-square bg-surface-container-low border border-surface-border rounded-lg flex flex-col items-center justify-center gap-1 hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="receipt_long">receipt_long</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Bills</span>
+</button>
+</div>
+</section>
+<!-- Contribute Section -->
+<section class="flex flex-col gap-stack-md">
+<h3 class="font-headline-md text-headline-md text-on-background border-b border-surface-border pb-2">Contribute</h3>
+<div class="flex flex-col gap-unit">
+<button class="w-full flex items-center justify-between p-4 bg-surface-container-lowest border border-surface-border rounded-lg hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="volunteer_activism">volunteer_activism</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Donate</span>
+</div>
+<span class="material-symbols-outlined text-text-secondary" data-icon="chevron_right">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-4 bg-surface-container-lowest border border-surface-border rounded-lg hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="card_membership">card_membership</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Membership</span>
+</div>
+<span class="material-symbols-outlined text-text-secondary" data-icon="chevron_right">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-4 bg-surface-container-lowest border border-surface-border rounded-lg hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="diversity_3">diversity_3</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Community</span>
+</div>
+<span class="material-symbols-outlined text-text-secondary" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</section>
+</div>
+<!-- Recent Activity -->
+<section class="flex flex-col gap-stack-md">
+<div class="flex items-center justify-between border-b border-surface-border pb-2">
+<h3 class="font-headline-md text-headline-md text-on-background">Recent Activity</h3>
+<button class="font-label-md text-label-md text-primary hover:underline">View All</button>
+</div>
+<div class="flex flex-col">
+<!-- Transaction 1 -->
+<div class="flex items-center justify-between py-4 border-b border-surface-container hover:bg-surface-container-low transition-colors px-2 -mx-2 rounded-lg">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="arrow_downward">arrow_downward</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Received from Thabo Mokoena</span>
+<span class="font-label-sm text-label-sm text-text-secondary">Today, 14:32</span>
+</div>
+</div>
+<span class="font-label-md text-label-md text-status-active">+R500.00</span>
+</div>
+<!-- Transaction 2 -->
+<div class="flex items-center justify-between py-4 border-b border-surface-container hover:bg-surface-container-low transition-colors px-2 -mx-2 rounded-lg">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Electricity</span>
+<span class="font-label-sm text-label-sm text-text-secondary">Today, 10:15</span>
+</div>
+</div>
+<span class="font-label-md text-label-md text-on-surface">-R250.00</span>
+</div>
+<!-- Transaction 3 -->
+<div class="flex items-center justify-between py-4 hover:bg-surface-container-low transition-colors px-2 -mx-2 rounded-lg">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="phone_iphone">phone_iphone</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Airtime</span>
+<span class="font-label-sm text-label-sm text-text-secondary">Yesterday</span>
+</div>
+</div>
+<span class="font-label-md text-label-md text-on-surface">-R50.00</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 bg-surface-container-lowest dark:bg-inverse-surface border-t border-surface-border dark:border-outline-variant shadow-lg flex justify-around items-center w-full h-20 px-2 pb-safe">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant pt-1 hover:bg-surface-container dark:hover:bg-surface-variant active:opacity-80 transition-opacity w-16 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm mt-1">Home</span>
+</a>
+<!-- Active Tab: Money -->
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed border-t-2 border-primary pt-1 hover:bg-surface-container dark:hover:bg-surface-variant active:opacity-80 transition-opacity w-16 rounded-t-lg -mt-[2px]" href="#">
+<span class="material-symbols-outlined filled" data-icon="payments">payments</span>
+<span class="font-label-sm text-label-sm mt-1">Money</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant pt-1 hover:bg-surface-container dark:hover:bg-surface-variant active:opacity-80 transition-opacity w-16 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="font-label-sm text-label-sm mt-1">Participate</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant pt-1 hover:bg-surface-container dark:hover:bg-surface-variant active:opacity-80 transition-opacity w-16 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="campaign">campaign</span>
+<span class="font-label-sm text-label-sm mt-1">Updates</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant pt-1 hover:bg-surface-container dark:hover:bg-surface-variant active:opacity-80 transition-opacity w-16 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm mt-1">Member</span>
+</a>
+</nav>
+</body></html>
