@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Icon } from '../components/Icons';
 import { Colors } from '../theme/colors';
 
-export default function HomeScreen({ open }) {
-  const [filterTab, setFilterTab] = useState('My Community');
+export default function HomeScreen({ open, balance = 1500 }) {
+  const [filterTab, setFilterTab] = useState('Important Dates');
 
   return (
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
@@ -44,89 +45,147 @@ export default function HomeScreen({ open }) {
         </TouchableOpacity>
       </View>
 
-      {/* Filter Tabs (Important Dates / My Community) */}
-      <View style={s.tabBar}>
-        {['Important Dates', 'My Community'].map(tabName => (
-          <TouchableOpacity
-            key={tabName}
-            style={[s.filterPill, filterTab === tabName && s.filterPillOn]}
-            onPress={() => setFilterTab(tabName)}
-            activeOpacity={0.7}
-          >
-            <Text style={[s.filterPillText, filterTab === tabName && s.filterPillTextOn]}>{tabName}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+      {/* Tab Toggle Bar */}
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={s.tabScroll} contentContainerStyle={s.tabBar}>
+        {['Important Dates', 'My Community', 'Quick Services', 'Latest Updates'].map(tabName => {
+          const isActive = filterTab === tabName;
+          return (
+            <TouchableOpacity
+              key={tabName}
+              style={[s.filterPill, isActive && s.filterPillOn]}
+              onPress={() => setFilterTab(tabName)}
+              activeOpacity={0.7}
+            >
+              <Text style={[s.filterPillText, isActive && s.filterPillTextOn]}>{tabName}</Text>
+            </TouchableOpacity>
+          );
+        })}
+      </ScrollView>
 
-      {/* Tab Content Section */}
-      {filterTab === 'Important Dates' ? (
-        <View style={s.importantBanner}>
-          <Text style={s.bannerTag}>📢 ELECTION NOTICE</Text>
-          <Text style={s.bannerTitle}>2026 Local Government Elections</Text>
-          <Text style={s.bannerSub}>📅 Saturday, 04 November 2026</Text>
-          <TouchableOpacity style={s.bannerBtn} onPress={() => open('updates')}>
-            <Text style={s.bannerBtnText}>View Election Timetable  →</Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <View style={s.communityCard}>
-          <Text style={s.communityTag}>📢 BRANCH ALERT</Text>
-          <Text style={s.communityTitle}>Johannesburg Region Branch Meeting</Text>
-          <View style={s.eventTimeRow}>
-            <Text style={s.eventChip}>📅 Saturday</Text>
-            <Text style={s.eventChip}>⏰ 10:00 AM</Text>
+      {/* Section 1: Important Dates */}
+      {filterTab === 'Important Dates' && (
+        <View style={s.sectionBox}>
+          <View style={s.sectionHeaderRow}>
+            <Text style={s.sectionHeaderTitle}>IMPORTANT DATES</Text>
+            <TouchableOpacity><Text style={s.viewAllText}>View all</Text></TouchableOpacity>
           </View>
-          <TouchableOpacity style={s.viewEventBtn} onPress={() => open('branch')}>
-            <Text style={s.viewEventBtnText}>View Branch Venue  →</Text>
+
+          <TouchableOpacity style={s.importantCard} onPress={() => open('updates')} activeOpacity={0.8}>
+            <View style={s.dateBox}>
+              <Text style={s.dateMonth}>NOV</Text>
+              <Text style={s.dateNum}>04</Text>
+            </View>
+            <View style={{ flex: 1, marginLeft: 12 }}>
+              <Text style={s.importantTitle}>2026 Local Government Elections</Text>
+              <Text style={s.importantSub}>Saturday, 04 November 2026</Text>
+            </View>
+            <Text style={s.chevron}>›</Text>
           </TouchableOpacity>
         </View>
       )}
 
-      {/* Quick Services Section */}
-      <Text style={s.sectionHeader}>QUICK SERVICES</Text>
-      <View style={s.servicesGrid}>
-        <TouchableOpacity style={s.serviceCard} onPress={() => open('send')}>
-          <View style={s.serviceIconCircle}>
-            <Text style={s.serviceIcon}>↗</Text>
-          </View>
-          <Text style={s.serviceLabel}>Send Money</Text>
-        </TouchableOpacity>
+      {/* Section 2: My Community */}
+      {filterTab === 'My Community' && (
+        <View style={s.sectionBox}>
+          <Text style={s.sectionHeaderTitle}>MY COMMUNITY</Text>
 
-        <TouchableOpacity style={s.serviceCard} onPress={() => open('send')}>
-          <View style={s.serviceIconCircle}>
-            <Text style={s.serviceIcon}>↙</Text>
-          </View>
-          <Text style={s.serviceLabel}>Receive Money</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={s.communityCard} onPress={() => open('branch')} activeOpacity={0.8}>
+            <View style={s.alertBadgeRow}>
+              <Icon name="campaign" size={16} color={Colors.goldText} />
+              <Text style={s.communityTag}>BRANCH ALERT</Text>
+            </View>
+            <Text style={s.communityTitle}>Johannesburg Region Branch Meeting</Text>
 
-        <TouchableOpacity style={s.serviceCard} onPress={() => open('services')}>
-          <View style={s.serviceIconCircle}>
-            <Text style={s.serviceIcon}>📱</Text>
-          </View>
-          <Text style={s.serviceLabel}>Airtime</Text>
-        </TouchableOpacity>
+            <View style={s.eventTimeRow}>
+              <View style={s.eventChip}>
+                <Icon name="event" size={14} color={Colors.ink} />
+                <Text style={s.eventChipText}>Saturday</Text>
+              </View>
+              <View style={s.eventChip}>
+                <Icon name="schedule" size={14} color={Colors.ink} />
+                <Text style={s.eventChipText}>10:00 AM</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+        </View>
+      )}
 
-        <TouchableOpacity style={s.serviceCard} onPress={() => open('services')}>
-          <View style={s.serviceIconCircle}>
-            <Text style={s.serviceIcon}>📶</Text>
-          </View>
-          <Text style={s.serviceLabel}>Data</Text>
-        </TouchableOpacity>
+      {/* Section 3: Quick Services */}
+      {filterTab === 'Quick Services' && (
+        <View style={s.sectionBox}>
+          <Text style={s.sectionHeaderTitle}>QUICK SERVICES</Text>
 
-        <TouchableOpacity style={s.serviceCard} onPress={() => open('services')}>
-          <View style={s.serviceIconCircle}>
-            <Text style={s.serviceIcon}>⚡</Text>
-          </View>
-          <Text style={s.serviceLabel}>Electricity</Text>
-        </TouchableOpacity>
+          <View style={s.services2Grid}>
+            <TouchableOpacity style={s.serviceGridCard} onPress={() => open('send')} activeOpacity={0.8}>
+              <View style={s.serviceIconCircle}>
+                <Icon name="send" size={22} color={Colors.primary} />
+              </View>
+              <Text style={s.serviceGridLabel}>Send Money</Text>
+            </TouchableOpacity>
 
-        <TouchableOpacity style={s.serviceCard} onPress={() => open('donate')}>
-          <View style={s.serviceIconCircle}>
-            <Text style={s.serviceIcon}>🤝</Text>
+            <TouchableOpacity style={s.serviceGridCard} onPress={() => open('send')} activeOpacity={0.8}>
+              <View style={s.serviceIconCircle}>
+                <Icon name="file-download" size={22} color={Colors.primary} />
+              </View>
+              <Text style={s.serviceGridLabel}>Receive Money</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={s.serviceGridCard} onPress={() => open('services')} activeOpacity={0.8}>
+              <View style={s.serviceIconCircle}>
+                <Icon name="smartphone" size={22} color={Colors.primary} />
+              </View>
+              <Text style={s.serviceGridLabel}>Airtime</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={s.serviceGridCard} onPress={() => open('services')} activeOpacity={0.8}>
+              <View style={s.serviceIconCircle}>
+                <Icon name="wifi" size={22} color={Colors.primary} />
+              </View>
+              <Text style={s.serviceGridLabel}>Data</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={s.serviceGridCard} onPress={() => open('services')} activeOpacity={0.8}>
+              <View style={s.serviceIconCircle}>
+                <Icon name="bolt" size={22} color={Colors.primary} />
+              </View>
+              <Text style={s.serviceGridLabel}>Electricity</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={s.serviceGridCard} onPress={() => open('donate')} activeOpacity={0.8}>
+              <View style={s.serviceIconCircle}>
+                <Icon name="volunteer-activism" size={22} color={Colors.primary} />
+              </View>
+              <Text style={s.serviceGridLabel}>Donate</Text>
+            </TouchableOpacity>
           </View>
-          <Text style={s.serviceLabel}>Donate</Text>
-        </TouchableOpacity>
-      </View>
+        </View>
+      )}
+
+      {/* Section 4: Latest Updates */}
+      {filterTab === 'Latest Updates' && (
+        <View style={s.sectionBox}>
+          <View style={s.sectionHeaderRow}>
+            <Text style={s.sectionHeaderTitle}>LATEST FROM THE ANC</Text>
+            <TouchableOpacity><Text style={s.viewAllText}>View all</Text></TouchableOpacity>
+          </View>
+
+          <View style={s.newsCard}>
+            <View style={s.newsHeaderRow}>
+              <View style={s.newsTagBox}>
+                <Text style={s.newsTagText}>ANC STATEMENT</Text>
+              </View>
+              <Text style={s.newsDateText}>12 August 2026</Text>
+            </View>
+
+            <Text style={s.newsTitle}>Building Stronger Local Government</Text>
+            <Text style={s.newsBody}>Our commitment to service delivery and community empowerment remains steadfast as we approach municipal elections.</Text>
+
+            <TouchableOpacity style={s.readUpdateBtn} onPress={() => open('updates')}>
+              <Text style={s.readUpdateText}>Read Update  →</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
     </ScrollView>
   );
 }
@@ -150,7 +209,7 @@ const s = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 6,
     elevation: 2,
-    marginBottom: 18,
+    marginBottom: 16,
   },
   cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 },
   statusCardTitle: { fontSize: 10, fontWeight: '900', color: Colors.muted, letterSpacing: 1.2 },
@@ -164,31 +223,46 @@ const s = StyleSheet.create({
   viewCardBtn: { backgroundColor: Colors.primary, borderRadius: 10, paddingVertical: 12, alignItems: 'center' },
   viewCardBtnText: { color: Colors.white, fontWeight: '800', fontSize: 13 },
 
-  tabBar: { flexDirection: 'row', gap: 8, marginBottom: 16 },
-  filterPill: { flex: 1, paddingVertical: 10, borderRadius: 20, backgroundColor: Colors.surfaceContainer, alignItems: 'center' },
+  tabScroll: { marginBottom: 16 },
+  tabBar: { flexDirection: 'row', gap: 8 },
+  filterPill: { paddingVertical: 8, paddingHorizontal: 16, borderRadius: 20, backgroundColor: Colors.surfaceContainer, alignItems: 'center' },
   filterPillOn: { backgroundColor: Colors.primary },
   filterPillText: { fontSize: 12, fontWeight: '700', color: Colors.muted },
   filterPillTextOn: { color: Colors.white },
 
-  importantBanner: { backgroundColor: '#FFF8DF', borderRadius: 14, padding: 16, borderWidth: 1, borderColor: '#F0E0B0', marginBottom: 20 },
-  bannerTag: { fontSize: 10, color: Colors.goldText, fontWeight: '900', letterSpacing: 1 },
-  bannerTitle: { fontSize: 17, fontWeight: '900', color: Colors.ink, marginTop: 4 },
-  bannerSub: { fontSize: 12, color: Colors.muted, marginTop: 4, fontWeight: '600' },
-  bannerBtn: { backgroundColor: Colors.primary, borderRadius: 8, paddingVertical: 10, paddingHorizontal: 14, alignSelf: 'flex-start', marginTop: 12 },
-  bannerBtnText: { color: Colors.white, fontWeight: '800', fontSize: 12 },
+  sectionBox: { marginBottom: 16 },
+  sectionHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
+  sectionHeaderTitle: { fontSize: 10, fontWeight: '900', color: Colors.muted, letterSpacing: 1.2 },
+  viewAllText: { fontSize: 11, fontWeight: '800', color: Colors.primary },
 
-  communityCard: { backgroundColor: Colors.white, borderRadius: 14, padding: 16, borderWidth: 1, borderColor: Colors.surfaceBorder, marginBottom: 20 },
+  importantCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.white, borderRadius: 14, padding: 14, borderWidth: 1, borderColor: Colors.surfaceBorder },
+  dateBox: { width: 44, height: 44, borderRadius: 10, backgroundColor: Colors.surfaceContainerLow, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: Colors.surfaceBorder },
+  dateMonth: { fontSize: 9, fontWeight: '900', color: Colors.primary },
+  dateNum: { fontSize: 16, fontWeight: '900', color: Colors.ink, marginTop: -2 },
+  importantTitle: { fontSize: 14, fontWeight: '800', color: Colors.ink },
+  importantSub: { fontSize: 11, color: Colors.muted, marginTop: 2 },
+  chevron: { fontSize: 20, color: '#7B867E' },
+
+  communityCard: { backgroundColor: Colors.white, borderRadius: 14, padding: 16, borderWidth: 1, borderColor: Colors.surfaceBorder },
+  alertBadgeRow: { flexDirection: 'row', alignItems: 'center', gap: 4, marginBottom: 4 },
   communityTag: { fontSize: 10, color: Colors.goldText, fontWeight: '900', letterSpacing: 1 },
-  communityTitle: { fontSize: 17, fontWeight: '900', color: Colors.ink, marginTop: 4 },
+  communityTitle: { fontSize: 16, fontWeight: '900', color: Colors.ink },
   eventTimeRow: { flexDirection: 'row', gap: 8, marginTop: 10 },
-  eventChip: { backgroundColor: Colors.surfaceContainerLow, fontSize: 11, color: Colors.ink, paddingVertical: 5, paddingHorizontal: 10, borderRadius: 8, fontWeight: '700' },
-  viewEventBtn: { marginTop: 14, paddingTop: 10, borderTopWidth: 1, borderTopColor: Colors.line },
-  viewEventBtnText: { color: Colors.primary, fontWeight: '800', fontSize: 12 },
+  eventChip: { flexDirection: 'row', alignItems: 'center', gap: 4, backgroundColor: Colors.surfaceContainerLow, paddingVertical: 5, paddingHorizontal: 10, borderRadius: 8 },
+  eventChipText: { fontSize: 11, color: Colors.ink, fontWeight: '700' },
 
-  sectionHeader: { fontSize: 11, fontWeight: '900', color: Colors.muted, letterSpacing: 1.2, marginBottom: 12 },
-  servicesGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
-  serviceCard: { width: '31%', backgroundColor: Colors.white, borderRadius: 14, padding: 12, alignItems: 'center', borderWidth: 1, borderColor: Colors.surfaceBorder },
-  serviceIconCircle: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#E3F3E7', alignItems: 'center', justifyContent: 'center', marginBottom: 8 },
-  serviceIcon: { fontSize: 18, color: Colors.primary },
-  serviceLabel: { fontSize: 11, fontWeight: '700', color: Colors.ink, textAlign: 'center' },
+  services2Grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+  serviceGridCard: { width: '48%', backgroundColor: Colors.white, borderRadius: 14, padding: 18, alignItems: 'center', borderWidth: 1, borderColor: Colors.surfaceBorder },
+  serviceIconCircle: { width: 44, height: 44, borderRadius: 22, backgroundColor: Colors.surfaceContainerLow, alignItems: 'center', justifyContent: 'center', marginBottom: 8 },
+  serviceGridLabel: { fontSize: 12, fontWeight: '800', color: Colors.ink, textAlign: 'center' },
+
+  newsCard: { backgroundColor: Colors.white, borderRadius: 14, padding: 16, borderWidth: 1, borderColor: Colors.surfaceBorder },
+  newsHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
+  newsTagBox: { backgroundColor: Colors.goldContainer, paddingVertical: 3, paddingHorizontal: 8, borderRadius: 6 },
+  newsTagText: { fontSize: 9, fontWeight: '900', color: Colors.goldText, letterSpacing: 0.8 },
+  newsDateText: { fontSize: 11, color: Colors.muted },
+  newsTitle: { fontSize: 16, fontWeight: '900', color: Colors.ink },
+  newsBody: { fontSize: 12, color: Colors.muted, marginTop: 4, lineHeight: 18 },
+  readUpdateBtn: { marginTop: 12 },
+  readUpdateText: { color: Colors.primary, fontWeight: '800', fontSize: 13 },
 });

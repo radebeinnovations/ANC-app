@@ -1,35 +1,52 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Colors } from '../theme/colors';
+import { Icon } from './Icons';
 
-export default function Header({ screen, onBack, onOpenNotifications, unreadCount = 1 }) {
+export default function Header({ screen, onBack, onOpenNotifications, unreadCount = 1, stepText }) {
+  if (screen !== 'main' && screen !== 'welcome') {
+    return (
+      <View style={s.header}>
+        <TouchableOpacity style={s.headerBackBtn} onPress={onBack} activeOpacity={0.7}>
+          <Icon name="arrow-back" size={20} color={Colors.primary} />
+        </TouchableOpacity>
+
+        <View style={s.headerCenter}>
+          <Text style={s.headerTitle}>{getScreenTitle(screen)}</Text>
+          {stepText ? <Text style={s.stepSub}>{stepText}</Text> : null}
+        </View>
+
+        <View style={{ width: 40 }} />
+      </View>
+    );
+  }
+
   return (
     <View style={s.header}>
-      <View style={s.headerSide}>
-        {screen !== 'main' && screen !== 'welcome' ? (
-          <TouchableOpacity style={s.headerBackBtn} onPress={onBack} activeOpacity={0.7}>
-            <Text style={s.headerBackIcon}>‹</Text>
-            <Text style={s.headerBackText}>Back</Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity style={s.headerIconBtn} activeOpacity={0.7}>
-            <Text style={s.headerIcon}>☰</Text>
-          </TouchableOpacity>
-        )}
-      </View>
+      <TouchableOpacity style={s.headerIconBtn} activeOpacity={0.7}>
+        <Icon name="menu" size={22} color={Colors.primary} />
+      </TouchableOpacity>
 
       <Text style={s.headerBrand}>ANC UNITY</Text>
 
-      <View style={[s.headerSide, { alignItems: 'flex-end' }]}>
-        <TouchableOpacity style={s.headerIconBtn} onPress={onOpenNotifications} activeOpacity={0.7}>
-          <Text style={s.bellIcon}>🔔</Text>
-          {unreadCount > 0 && (
-            <View style={s.badgeDot} />
-          )}
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity style={s.headerIconBtn} onPress={onOpenNotifications} activeOpacity={0.7}>
+        <Icon name="notifications-none" size={22} color={Colors.primary} />
+        {unreadCount > 0 && <View style={s.badgeDot} />}
+      </TouchableOpacity>
     </View>
   );
+}
+
+function getScreenTitle(screen) {
+  if (screen === 'send') return 'Send Money';
+  if (screen === 'services') return 'Pay Services';
+  if (screen === 'donate') return 'Donate';
+  if (screen === 'membership') return 'Membership';
+  if (screen === 'profile') return 'Member Card';
+  if (screen === 'cards') return 'My Cards';
+  if (screen === 'branch') return 'My Branch';
+  if (screen === 'notifications') return 'Notifications';
+  return 'ANC UNITY';
 }
 
 const s = StyleSheet.create({
@@ -43,30 +60,25 @@ const s = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: Colors.surfaceBorder,
   },
-  headerBrand: { fontSize: 19, color: Colors.primary, fontWeight: '900', letterSpacing: 1 },
-  headerSide: { width: 80, justifyContent: 'center' },
+  headerBrand: { fontSize: 18, color: Colors.primary, fontWeight: '900', letterSpacing: 1 },
+  headerCenter: { alignItems: 'center' },
+  headerTitle: { fontSize: 16, fontWeight: '800', color: Colors.primary },
+  stepSub: { fontSize: 10, color: Colors.muted, fontWeight: '700', letterSpacing: 0.8, marginTop: 1 },
   headerIconBtn: { padding: 6, position: 'relative' },
-  headerIcon: { fontSize: 22, color: Colors.primary, textAlign: 'center' },
-  bellIcon: { fontSize: 20, textAlign: 'center' },
   headerBackBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 16,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     backgroundColor: Colors.surfaceContainerLow,
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-    alignSelf: 'flex-start',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  headerBackIcon: { color: Colors.primary, fontSize: 18, fontWeight: '800', marginRight: 3, marginTop: -1 },
-  headerBackText: { color: Colors.primary, fontWeight: '700', fontSize: 12 },
   badgeDot: {
     position: 'absolute',
-    top: 4,
-    right: 4,
+    top: 6,
+    right: 6,
     backgroundColor: Colors.error,
-    borderRadius: 5,
+    borderRadius: 4,
     width: 8,
     height: 8,
     borderWidth: 1.5,

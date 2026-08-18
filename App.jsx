@@ -28,12 +28,22 @@ export default function App() {
   const [screen, setScreen] = useState('main');
   const [notice, setNotice] = useState('');
 
+  // Interactive Demo Wallet Balance & Transactions State
+  const [balance, setBalance] = useState(1500.00);
+  const [recentActivity, setRecentActivity] = useState([
+    { id: '1', title: 'Deposit', amount: 500.00, time: 'Today, 10:23 AM', type: 'deposit' },
+    { id: '2', title: 'Airtime Purchase', amount: 50.00, time: 'Yesterday', type: 'expense' },
+    { id: '3', title: 'ANC Donation', amount: 100.00, time: '02 August 2026', type: 'expense' },
+  ]);
+
   const [cards, setCards] = useState([
     { id: '1', title: 'ANC Member Wallet Card', last4: '4821', brand: 'VISA', exp: '12/28', color: Colors.primary, isDefault: true },
     { id: '2', title: 'Standard Bank Gold', last4: '1092', brand: 'MASTERCARD', exp: '09/27', color: Colors.ink, isDefault: false },
   ]);
 
-  const open = (name) => { setNotice(''); setScreen(name); };
+  const [stepText, setStepText] = useState('STEP 1 OF 3');
+
+  const open = (name) => { setNotice(''); setStepText('STEP 1 OF 3'); setScreen(name); };
   const finish = (message) => { setScreen('main'); setNotice(message); };
 
   const handleAddCard = (newCard) => {
@@ -41,22 +51,43 @@ export default function App() {
     setNotice(`Card ending in •••• ${newCard.last4} added successfully.`);
   };
 
+  const handleDeductBalance = (amount, title) => {
+    const num = parseFloat(amount) || 0;
+    if (num <= 0) return;
+    setBalance(prev => Math.max(0, prev - num));
+    setRecentActivity(prev => [
+      { id: String(Date.now()), title: title || 'Payment', amount: num, time: 'Just now', type: 'expense' },
+      ...prev,
+    ]);
+  };
+
+  const handleDepositFunds = (amount) => {
+    const num = parseFloat(amount) || 0;
+    if (num <= 0) return;
+    setBalance(prev => prev + num);
+    setRecentActivity(prev => [
+      { id: String(Date.now()), title: 'Wallet Top Up', amount: num, time: 'Just now', type: 'deposit' },
+      ...prev,
+    ]);
+    setNotice(`R${num.toFixed(2)} loaded to wallet!`);
+  };
+
   const renderBody = () => {
-    if (screen === 'send') return <SendMoneyScreen finish={finish} cards={cards} />;
-    if (screen === 'services') return <ServicesScreen finish={finish} cards={cards} />;
-    if (screen === 'donate') return <DonationScreen finish={finish} cards={cards} />;
-    if (screen === 'membership') return <MembershipScreen finish={finish} cards={cards} />;
+    if (screen === 'send') return <SendMoneyScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} setStepText={setStepText} />;
+    if (screen === 'services') return <ServicesScreen finish={finish} cards={cards} onDeductBalance={handleDeductBalance} />;
+    if (screen === 'donate') return <DonationScreen finish={finish} cards={cards} onDeductBalance={handleDeductBalance} />;
+    if (screen === 'membership') return <MembershipScreen finish={finish} cards={cards} onDeductBalance={handleDeductBalance} />;
     if (screen === 'profile') return <ProfileScreen cards={cards} onOpenCards={() => open('cards')} />;
     if (screen === 'cards') return <CardManagerScreen cards={cards} onAddCard={handleAddCard} />;
     if (screen === 'branch') return <BranchScreen />;
     if (screen === 'notifications') return <NotificationsScreen />;
 
-    if (tab === 'Money') return <MoneyScreen open={open} cards={cards} />;
-    if (tab === 'Participate') return <DonationScreen finish={finish} cards={cards} />;
+    if (tab === 'Money') return <MoneyScreen open={open} cards={cards} balance={balance} onDepositFunds={handleDepositFunds} recentActivity={recentActivity} />;
+    if (tab === 'Participate') return <DonationScreen finish={finish} cards={cards} onDeductBalance={handleDeductBalance} />;
     if (tab === 'Updates') return <NotificationsScreen />;
     if (tab === 'Member') return <ProfileScreen cards={cards} onOpenCards={() => open('cards')} />;
 
-    return <HomeScreen open={open} />;
+    return <HomeScreen open={open} balance={balance} />;
   };
 
   return (
@@ -73,12 +104,13 @@ export default function App() {
           )
         ) : (
           <SafeAreaView style={s.safe}>
-            <StatusBar barStyle="light-content" backgroundColor={Colors.primary} />
+            <StatusBar barStyle="dark-content" backgroundColor={Colors.white} />
             <Header
               screen={screen}
+              stepText={stepText}
               onBack={() => setScreen('main')}
               onOpenNotifications={() => open('notifications')}
-              unreadCount={2}
+              unreadCount={1}
             />
             {notice ? (
               <TouchableOpacity style={s.toast} onPress={() => setNotice('')}>

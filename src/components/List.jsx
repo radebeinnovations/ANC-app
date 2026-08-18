@@ -2,10 +2,12 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Colors } from '../theme/colors';
 
-export default function List({ icon, title, sub, onPress }) {
+export default function List({ badge = '•', title, sub, onPress }) {
   return (
     <TouchableOpacity style={s.list} onPress={onPress} activeOpacity={0.7}>
-      <Text style={s.listIcon}>{icon}</Text>
+      <View style={s.badgeBox}>
+        <Text style={s.badgeText}>{badge}</Text>
+      </View>
       <View style={{ flex: 1 }}>
         <Text style={s.listTitle}>{title}</Text>
         <Text style={s.listSub}>{sub}</Text>
@@ -18,25 +20,24 @@ export default function List({ icon, title, sub, onPress }) {
 const s = StyleSheet.create({
   list: {
     borderBottomWidth: 1,
-    borderTopWidth: 1,
     borderColor: Colors.line,
-    paddingVertical: 13,
+    paddingVertical: 12,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
   },
-  listIcon: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
-    backgroundColor: '#E3F3E7',
-    textAlign: 'center',
-    paddingTop: 8,
-    color: Colors.primary,
-    fontWeight: '800',
-    fontSize: 16,
+  badgeBox: {
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    backgroundColor: Colors.surfaceContainerLow,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: Colors.surfaceBorder,
   },
-  listTitle: { fontSize: 14, fontWeight: '700', color: Colors.ink },
-  listSub: { fontSize: 12, color: Colors.muted, marginTop: 2 },
-  chevron: { fontSize: 24, color: '#7B867E' },
+  badgeText: { color: Colors.primary, fontWeight: '900', fontSize: 11 },
+  listTitle: { fontSize: 13, fontWeight: '700', color: Colors.ink },
+  listSub: { fontSize: 11, color: Colors.muted, marginTop: 1 },
+  chevron: { fontSize: 20, color: '#7B867E' },
 });

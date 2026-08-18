@@ -61,7 +61,7 @@ export default function CardManagerScreen({ cards = [], onAddCard }) {
       </TouchableOpacity>
 
       <View style={s.securityBadgeBox}>
-        <Text style={s.securityBadgeTitle}>🔒 PCI-DSS Compliant Tokenized Storage</Text>
+        <Text style={s.securityBadgeTitle}>PCI-DSS Compliant Tokenized Storage</Text>
         <Text style={s.securityBadgeSub}>Your payment details are tokenized and processed securely powered by Yami Payment Vault.</Text>
       </View>
 
@@ -73,7 +73,7 @@ export default function CardManagerScreen({ cards = [], onAddCard }) {
             <View style={s.row}>
               <Text style={s.modalTitle}>Add Payment Card</Text>
               <TouchableOpacity onPress={() => setShowAddModal(false)}>
-                <Text style={{ fontSize: 22, color: Colors.muted }}>✕</Text>
+                <Text style={{ fontSize: 18, fontWeight: '800', color: Colors.muted }}>✕</Text>
               </TouchableOpacity>
             </View>
             <Text style={s.muted}>Connect a credit or debit card for instant payments.</Text>
@@ -90,7 +90,7 @@ export default function CardManagerScreen({ cards = [], onAddCard }) {
               </View>
             </View>
 
-            <Button text="🔒  Save Card Securely" onPress={submitNewCard} />
+            <Button text="Save Card Securely" onPress={submitNewCard} />
           </View>
         </View>
       </Modal>
@@ -102,7 +102,7 @@ const s = StyleSheet.create({
   content: { padding: 20, paddingBottom: 100 },
   eyebrow: { color: Colors.primary, fontSize: 10, fontWeight: '900', letterSpacing: 1.2 },
   h1: { fontSize: 26, fontWeight: '900', color: Colors.ink, marginTop: 2, marginBottom: 4 },
-  modalTitle: { fontSize: 22, fontWeight: '900', color: Colors.ink },
+  modalTitle: { fontSize: 20, fontWeight: '900', color: Colors.ink },
   muted: { color: Colors.muted, fontSize: 13, lineHeight: 18 },
   row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   paymentCardVisual: { borderRadius: 16, padding: 18, marginBottom: 14, elevation: 4, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.2, shadowRadius: 8 },

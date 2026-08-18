@@ -8,10 +8,18 @@ import { Colors } from '../theme/colors';
 
 const rand = (n) => `R${Number(n || 0).toFixed(2)}`;
 
-export default function DonationScreen({ finish, cards = [] }) {
+export default function DonationScreen({ finish, cards = [], onDeductBalance }) {
   const [amount, setAmount] = useState('100');
   const [message, setMessage] = useState('');
   const [cardId, setCardId] = useState(cards[0]?.id || '1');
+
+  const handleDonate = () => {
+    const num = parseFloat(amount) || 0;
+    if (onDeductBalance) {
+      onDeductBalance(num, 'Community Campaign Donation');
+    }
+    finish(`Thank you for your ${rand(amount)} donation.`);
+  };
 
   return (
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
@@ -19,7 +27,7 @@ export default function DonationScreen({ finish, cards = [] }) {
       <Text style={s.h1}>Make a donation</Text>
 
       <View style={s.campaignCard}>
-        <Text style={s.campaignIcon}>✊</Text>
+        <Text style={s.campaignBadge}>ACTION</Text>
         <Text style={s.campaignTitle}>Build Stronger Communities</Text>
         <Text style={s.campaignCopy}>Every contribution directly supports local ward youth programmes and local community action.</Text>
       </View>
@@ -29,7 +37,7 @@ export default function DonationScreen({ finish, cards = [] }) {
       <CardSelector cards={cards} selectedId={cardId} onSelect={setCardId} />
       <Field label="MESSAGE OF SUPPORT (OPTIONAL)" value={message} onChangeText={setMessage} placeholder="Leave a message for your branch..." multiline />
 
-      <Button text={`Donate ${rand(amount)}  →`} onPress={() => finish(`Thank you for your ${rand(amount)} donation.`)} />
+      <Button text={`Donate ${rand(amount)}  →`} onPress={handleDonate} />
     </ScrollView>
   );
 }
@@ -39,7 +47,7 @@ const s = StyleSheet.create({
   eyebrow: { color: Colors.primary, fontSize: 10, fontWeight: '900', letterSpacing: 1.2 },
   h1: { fontSize: 26, fontWeight: '900', color: Colors.ink, marginTop: 2, marginBottom: 12 },
   campaignCard: { backgroundColor: Colors.primaryDark, borderRadius: 16, padding: 18, marginTop: 4 },
-  campaignIcon: { fontSize: 30 },
-  campaignTitle: { fontSize: 22, fontWeight: '900', color: Colors.white, marginTop: 8 },
+  campaignBadge: { color: Colors.gold, fontSize: 10, fontWeight: '900', letterSpacing: 1 },
+  campaignTitle: { fontSize: 20, fontWeight: '900', color: Colors.white, marginTop: 6 },
   campaignCopy: { color: '#D4E4D7', fontSize: 13, lineHeight: 18, marginTop: 6 },
 });

@@ -10,7 +10,7 @@ export default function WelcomeScreen({ onGetStarted, onSignInClick }) {
       <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
         <View style={s.topHero}>
           <View style={s.emblemBox}>
-            <Text style={s.emblemText}>✦</Text>
+            <Text style={s.emblemText}>ANC</Text>
           </View>
           <Text style={s.tagline}>AFRICAN NATIONAL CONGRESS</Text>
           <Text style={s.title}>ANC <Text style={s.brandLight}>UNITY</Text></Text>
@@ -19,7 +19,9 @@ export default function WelcomeScreen({ onGetStarted, onSignInClick }) {
 
         <View style={s.cardStack}>
           <View style={s.featureCard}>
-            <Text style={s.featureIcon}>🪪</Text>
+            <View style={s.featureBadge}>
+              <Text style={s.featureBadgeText}>ID</Text>
+            </View>
             <View style={{ flex: 1, marginLeft: 12 }}>
               <Text style={s.featureTitle}>Digital Member ID Card</Text>
               <Text style={s.featureSub}>Verify active membership status instantly anywhere across all structures.</Text>
@@ -27,7 +29,9 @@ export default function WelcomeScreen({ onGetStarted, onSignInClick }) {
           </View>
 
           <View style={s.featureCard}>
-            <Text style={s.featureIcon}>💳</Text>
+            <View style={s.featureBadge}>
+              <Text style={s.featureBadgeText}>PAY</Text>
+            </View>
             <View style={{ flex: 1, marginLeft: 12 }}>
               <Text style={s.featureTitle}>ANC Member Money</Text>
               <Text style={s.featureSub}>Send money to members, pay electricity, data & airtime securely.</Text>
@@ -35,7 +39,9 @@ export default function WelcomeScreen({ onGetStarted, onSignInClick }) {
           </View>
 
           <View style={s.featureCard}>
-            <Text style={s.featureIcon}>✊</Text>
+            <View style={s.featureBadge}>
+              <Text style={s.featureBadgeText}>ORG</Text>
+            </View>
             <View style={{ flex: 1, marginLeft: 12 }}>
               <Text style={s.featureTitle}>Community & Branch Action</Text>
               <Text style={s.featureSub}>Stay informed with local ward notices, voting events, and campaigns.</Text>
@@ -59,10 +65,10 @@ const s = StyleSheet.create({
   safe: { flex: 1, backgroundColor: '#F8FCF8' },
   content: { padding: 24, justifyContent: 'center', flexGrow: 1 },
   topHero: { alignItems: 'center', marginTop: 10 },
-  emblemBox: { width: 64, height: 64, borderRadius: 20, backgroundColor: '#DFF3E3', alignItems: 'center', justifyContent: 'center', marginBottom: 16 },
-  emblemText: { fontSize: 32, color: Colors.primary },
+  emblemBox: { width: 64, height: 40, borderRadius: 10, backgroundColor: '#DFF3E3', alignItems: 'center', justifyContent: 'center', marginBottom: 16 },
+  emblemText: { fontSize: 14, fontWeight: '900', color: Colors.primary },
   tagline: { fontSize: 10, fontWeight: '900', color: Colors.primary, letterSpacing: 1.5 },
-  title: { fontSize: 34, fontWeight: '900', color: Colors.ink, letterSpacing: 1, marginTop: 4 },
+  title: { fontSize: 32, fontWeight: '900', color: Colors.ink, letterSpacing: 1, marginTop: 4 },
   brandLight: { fontWeight: '400' },
   sub: { fontSize: 13, color: Colors.muted, textAlign: 'center', marginTop: 6, lineHeight: 18 },
   cardStack: { marginTop: 24 },
@@ -76,7 +82,8 @@ const s = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.line,
   },
-  featureIcon: { fontSize: 24 },
+  featureBadge: { width: 36, height: 36, borderRadius: 8, backgroundColor: Colors.surfaceContainerLow, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: Colors.surfaceBorder },
+  featureBadgeText: { fontSize: 10, fontWeight: '900', color: Colors.primary },
   featureTitle: { fontSize: 14, fontWeight: '800', color: Colors.ink },
   featureSub: { fontSize: 12, color: Colors.muted, marginTop: 2, lineHeight: 16 },
   secondaryBtn: { alignItems: 'center', marginTop: 14, padding: 10 },

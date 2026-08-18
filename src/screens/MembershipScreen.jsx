@@ -8,10 +8,18 @@ import { Colors } from '../theme/colors';
 
 const rand = (n) => `R${Number(n || 0).toFixed(2)}`;
 
-export default function MembershipScreen({ finish, cards = [] }) {
+export default function MembershipScreen({ finish, cards = [], onDeductBalance }) {
   const [amount, setAmount] = useState('250');
   const [frequency, setFrequency] = useState('Monthly');
   const [cardId, setCardId] = useState(cards[0]?.id || '1');
+
+  const handlePayContribution = () => {
+    const num = parseFloat(amount) || 0;
+    if (onDeductBalance) {
+      onDeductBalance(num, `Membership Contribution (${frequency})`);
+    }
+    finish(`Membership ${frequency.toLowerCase()} contribution of ${rand(amount)} completed.`);
+  };
 
   return (
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
@@ -38,11 +46,11 @@ export default function MembershipScreen({ finish, cards = [] }) {
         <TouchableOpacity
           key={item}
           onPress={() => setFrequency(item)}
-          style={s.radioRow}
+          style={[s.radioRow, frequency === item && s.radioRowOn]}
           activeOpacity={0.7}
         >
-          <Text style={s.radioIcon}>{frequency === item ? '◉' : '○'}</Text>
           <Text style={[s.radioText, frequency === item && s.radioTextOn]}>{item}</Text>
+          {frequency === item ? <Text style={s.selectedBadge}>SELECTED</Text> : null}
         </TouchableOpacity>
       ))}
 
@@ -53,8 +61,8 @@ export default function MembershipScreen({ finish, cards = [] }) {
       </View>
 
       <Button
-        text={`Review ${frequency} Contribution (${rand(amount)})  →`}
-        onPress={() => finish(`Membership ${frequency.toLowerCase()} contribution of ${rand(amount)} scheduled.`)}
+        text={`Pay ${frequency} Contribution (${rand(amount)})  →`}
+        onPress={handlePayContribution}
       />
     </ScrollView>
   );
@@ -70,10 +78,11 @@ const s = StyleSheet.create({
   statusReview: { backgroundColor: Colors.surfaceContainerLow, borderRadius: 14, padding: 16, marginTop: 4 },
   statusRow: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 },
   sectionTitle: { fontSize: 16, fontWeight: '800', color: Colors.ink, marginTop: 20, marginBottom: 10 },
-  radioRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 12 },
-  radioIcon: { fontSize: 18, color: Colors.primary, marginRight: 10 },
-  radioText: { fontSize: 14, color: Colors.ink },
+  radioRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderWidth: 1, borderColor: Colors.line, borderRadius: 10, padding: 12, marginBottom: 8, backgroundColor: Colors.white },
+  radioRowOn: { borderColor: Colors.primary, backgroundColor: '#F0F9F2' },
+  radioText: { fontSize: 13, color: Colors.ink },
   radioTextOn: { fontWeight: '800', color: Colors.primary },
+  selectedBadge: { color: Colors.primary, fontSize: 10, fontWeight: '900' },
   reviewBox: { backgroundColor: Colors.surfaceContainerLow, borderRadius: 14, padding: 16, marginTop: 20 },
   reviewLine: { flexDirection: 'row', justifyContent: 'space-between', marginVertical: 4 },
   totalLabel: { fontSize: 15, fontWeight: '700', color: Colors.ink },
