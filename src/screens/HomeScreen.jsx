@@ -1,28 +1,34 @@
-import React, { useState } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React from 'react';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Icon } from '../components/Icons';
 import { Colors } from '../theme/colors';
 
-export default function HomeScreen({ open, balance = 1500 }) {
-  const [filterTab, setFilterTab] = useState('Important Dates');
+const COMMUNITY_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAHtomXsNt6ZfeyvGZOeE5XMikoE5zxU6RquvkfvLhr4T0JYKXccFIuYI8r2T8-9ZZlaqqwWNNziIBcMoWa6jD-ILIRWc02WFG9hRmYaM5BbCiDBXKNUaGsyOhxcgb2bbd-Rzx6m0FPLxfh6dQLM5XA30dGG_LKc4u72FFmXlnnxQsZ_gmIR0jV8GlW5p6QYUO-h6qfrqHZGSfWJY6mootTuO2zTIRBZjmzjM-J9VHYQU1WxM4WEO0i';
+const NEWS_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAHR1a7BGP_bULWHfBqmlTZgAdHLDUGaQ9n42EuYpuscyM7zEqqysnBEFBchrBndc5olw-z7m9zHt8J2f1KlBsIEJcbViTOgrDKxoOMDSxwyhbm6Celjx0pd0-OYh-6kDsXNsIIzcF7FU30QbvhS_w9U5M0GZjAah-V1bZR0ig9UAONPSann0NLQ6JAl8wcx2iBNtAuzSB1IZwBp7qqfHtgzBTb68fJZD2IlcmApjWzMBVXT3-_Ba0X';
+const AVATAR_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDP7zlfBNbg5jSucUfG5tPD3BtnVuTQAY2I1kjxSuVqrYNxWqB2lpmvbct4HtE9rdYUrNvLmyCoODdPJBfEqJlKcTv1n486W4ZiNoD2hMMB6ygx62xZumjQQcA9Q5uBGXVyeqgizdBJTJZhYHK0e2jGRtVRt-uNnljNFVUKXpdgq2Cyhy3xUtsvwfSISYHxtEhER8JSmDx9fJe9hVTzN3FqNWNa4aOez8vY3D9vx2YwUd9oJmGKaKmb';
 
+export default function HomeScreen({ open }) {
   return (
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
       {/* Header Greeting */}
-      <View style={s.greetingRow}>
-        <View style={{ flex: 1 }}>
-          <Text style={s.greetingTitle}>Good morning, Lerumo</Text>
-          <Text style={s.greetingSub}>ANC MEMBER · Johannesburg Region - Branch Name</Text>
+      <View style={s.headerRow}>
+        <View style={s.avatarContainer}>
+          <Image source={{ uri: AVATAR_IMG_URL }} style={s.avatarImage} />
         </View>
-        <TouchableOpacity style={s.avatarBox} onPress={() => open('profile')}>
-          <Text style={s.avatarText}>LT</Text>
+        <View style={{ flex: 1, marginLeft: 12 }}>
+          <Text style={s.greetingTitle}>Good morning, Lerumo Thabo</Text>
+          <Text style={s.greetingSub}>ANC Member · Johannesburg Region</Text>
+        </View>
+        <TouchableOpacity style={s.bellBtn} onPress={() => open('notifications')}>
+          <Icon name="notifications-none" size={22} color={Colors.ink} />
+          <View style={s.bellDot} />
         </TouchableOpacity>
       </View>
 
       {/* Member Status Card */}
       <View style={s.statusCard}>
-        <View style={s.cardHeader}>
-          <Text style={s.statusCardTitle}>MEMBER STATUS</Text>
+        <View style={s.cardHeaderRow}>
+          <Text style={s.cardHeaderTitle}>MEMBER STATUS</Text>
           <View style={s.activeChip}>
             <View style={s.activeDot} />
             <Text style={s.activeText}>ACTIVE</Text>
@@ -31,238 +37,211 @@ export default function HomeScreen({ open, balance = 1500 }) {
 
         <View style={s.detailsGrid}>
           <View style={s.gridCol}>
-            <Text style={s.gridLabel}>MEMBERSHIP NUMBER</Text>
+            <Text style={s.gridLabel}>Membership Number</Text>
             <Text style={s.gridVal}>ANC-1234567</Text>
           </View>
+
           <View style={s.gridCol}>
-            <Text style={s.gridLabel}>BRANCH</Text>
+            <Text style={s.gridLabel}>Branch</Text>
             <Text style={s.gridVal}>Johannesburg Region</Text>
           </View>
         </View>
 
-        <TouchableOpacity style={s.viewCardBtn} onPress={() => open('profile')} activeOpacity={0.8}>
-          <Text style={s.viewCardBtnText}>View Member Card  →</Text>
+        <View style={{ marginTop: 10, marginBottom: 12 }}>
+          <Text style={s.gridLabel}>Validity</Text>
+          <Text style={s.gridVal}>31 December 2026</Text>
+        </View>
+
+        <TouchableOpacity style={s.viewCardGreyBtn} onPress={() => open('profile')} activeOpacity={0.8}>
+          <Icon name="badge" size={18} color={Colors.ink} />
+          <Text style={s.viewCardGreyText}>View Member Card</Text>
         </TouchableOpacity>
       </View>
 
-      {/* Tab Toggle Bar */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={s.tabScroll} contentContainerStyle={s.tabBar}>
-        {['Important Dates', 'My Community', 'Quick Services', 'Latest Updates'].map(tabName => {
-          const isActive = filterTab === tabName;
-          return (
-            <TouchableOpacity
-              key={tabName}
-              style={[s.filterPill, isActive && s.filterPillOn]}
-              onPress={() => setFilterTab(tabName)}
-              activeOpacity={0.7}
-            >
-              <Text style={[s.filterPillText, isActive && s.filterPillTextOn]}>{tabName}</Text>
-            </TouchableOpacity>
-          );
-        })}
-      </ScrollView>
+      {/* Section 1: Important */}
+      <View style={s.sectionContainer}>
+        <Text style={s.sectionTitle}>Important</Text>
 
-      {/* Section 1: Important Dates */}
-      {filterTab === 'Important Dates' && (
-        <View style={s.sectionBox}>
-          <View style={s.sectionHeaderRow}>
-            <Text style={s.sectionHeaderTitle}>IMPORTANT DATES</Text>
-            <TouchableOpacity><Text style={s.viewAllText}>View all</Text></TouchableOpacity>
+        <View style={s.importantYellowCard}>
+          <View style={s.importantHeaderRow}>
+            <Icon name="event-upcoming" size={22} color="#3E3000" />
+            <View style={{ flex: 1, marginLeft: 10 }}>
+              <Text style={s.importantCardTitle}>2026 Local Government Elections</Text>
+              <Text style={s.importantCardSub}>04 November 2026</Text>
+            </View>
           </View>
 
-          <TouchableOpacity style={s.importantCard} onPress={() => open('updates')} activeOpacity={0.8}>
-            <View style={s.dateBox}>
-              <Text style={s.dateMonth}>NOV</Text>
-              <Text style={s.dateNum}>04</Text>
-            </View>
-            <View style={{ flex: 1, marginLeft: 12 }}>
-              <Text style={s.importantTitle}>2026 Local Government Elections</Text>
-              <Text style={s.importantSub}>Saturday, 04 November 2026</Text>
-            </View>
-            <Text style={s.chevron}>›</Text>
+          <TouchableOpacity style={s.viewDatesBtn} onPress={() => open('updates')} activeOpacity={0.8}>
+            <Text style={s.viewDatesBtnText}>View Important Dates</Text>
           </TouchableOpacity>
         </View>
-      )}
+      </View>
 
       {/* Section 2: My Community */}
-      {filterTab === 'My Community' && (
-        <View style={s.sectionBox}>
-          <Text style={s.sectionHeaderTitle}>MY COMMUNITY</Text>
+      <View style={s.sectionContainer}>
+        <Text style={s.sectionTitle}>My Community</Text>
 
-          <TouchableOpacity style={s.communityCard} onPress={() => open('branch')} activeOpacity={0.8}>
-            <View style={s.alertBadgeRow}>
-              <Icon name="campaign" size={16} color={Colors.goldText} />
-              <Text style={s.communityTag}>BRANCH ALERT</Text>
-            </View>
-            <Text style={s.communityTitle}>Johannesburg Region Branch Meeting</Text>
+        <View style={s.communityCard}>
+          <Image source={{ uri: COMMUNITY_IMG_URL }} style={s.communityImage} resizeMode="cover" />
 
-            <View style={s.eventTimeRow}>
-              <View style={s.eventChip}>
-                <Icon name="event" size={14} color={Colors.ink} />
-                <Text style={s.eventChipText}>Saturday</Text>
-              </View>
-              <View style={s.eventChip}>
-                <Icon name="schedule" size={14} color={Colors.ink} />
-                <Text style={s.eventChipText}>10:00 AM</Text>
-              </View>
+          <View style={s.communityBody}>
+            <Text style={s.branchMeetingTag}>BRANCH MEETING</Text>
+            <Text style={s.meetingTitle}>Monthly Strategy Session</Text>
+
+            <View style={s.scheduleRow}>
+              <Icon name="schedule" size={16} color={Colors.muted} />
+              <Text style={s.scheduleText}>Saturday · 10:00 at Walter Sisulu House</Text>
             </View>
-          </TouchableOpacity>
+
+            <TouchableOpacity style={s.viewEventBtn} onPress={() => open('branch')} activeOpacity={0.8}>
+              <Text style={s.viewEventBtnText}>View Event</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      )}
+      </View>
 
       {/* Section 3: Quick Services */}
-      {filterTab === 'Quick Services' && (
-        <View style={s.sectionBox}>
-          <Text style={s.sectionHeaderTitle}>QUICK SERVICES</Text>
+      <View style={s.sectionContainer}>
+        <Text style={s.sectionTitle}>Quick Services</Text>
 
-          <View style={s.services2Grid}>
-            <TouchableOpacity style={s.serviceGridCard} onPress={() => open('send')} activeOpacity={0.8}>
-              <View style={s.serviceIconCircle}>
-                <Icon name="send" size={22} color={Colors.primary} />
-              </View>
-              <Text style={s.serviceGridLabel}>Send Money</Text>
-            </TouchableOpacity>
+        <View style={s.services3Grid}>
+          <TouchableOpacity style={s.serviceSquareCard} onPress={() => open('send')} activeOpacity={0.8}>
+            <View style={[s.serviceCircle, { backgroundColor: '#E2F4E5' }]}>
+              <Icon name="send" size={20} color={Colors.primary} />
+            </View>
+            <Text style={s.serviceSquareLabel}>Send{'\n'}Money</Text>
+          </TouchableOpacity>
 
-            <TouchableOpacity style={s.serviceGridCard} onPress={() => open('send')} activeOpacity={0.8}>
-              <View style={s.serviceIconCircle}>
-                <Icon name="file-download" size={22} color={Colors.primary} />
-              </View>
-              <Text style={s.serviceGridLabel}>Receive Money</Text>
-            </TouchableOpacity>
+          <TouchableOpacity style={s.serviceSquareCard} onPress={() => open('send')} activeOpacity={0.8}>
+            <View style={[s.serviceCircle, { backgroundColor: '#E2F4E5' }]}>
+              <Icon name="file-download" size={20} color={Colors.primary} />
+            </View>
+            <Text style={s.serviceSquareLabel}>Receive{'\n'}Money</Text>
+          </TouchableOpacity>
 
-            <TouchableOpacity style={s.serviceGridCard} onPress={() => open('services')} activeOpacity={0.8}>
-              <View style={s.serviceIconCircle}>
-                <Icon name="smartphone" size={22} color={Colors.primary} />
-              </View>
-              <Text style={s.serviceGridLabel}>Airtime</Text>
-            </TouchableOpacity>
+          <TouchableOpacity style={s.serviceSquareCard} onPress={() => open('services')} activeOpacity={0.8}>
+            <View style={s.serviceCircle}>
+              <Icon name="smartphone" size={20} color={Colors.ink} />
+            </View>
+            <Text style={s.serviceSquareLabel}>Buy{'\n'}Airtime</Text>
+          </TouchableOpacity>
 
-            <TouchableOpacity style={s.serviceGridCard} onPress={() => open('services')} activeOpacity={0.8}>
-              <View style={s.serviceIconCircle}>
-                <Icon name="wifi" size={22} color={Colors.primary} />
-              </View>
-              <Text style={s.serviceGridLabel}>Data</Text>
-            </TouchableOpacity>
+          <TouchableOpacity style={s.serviceSquareCard} onPress={() => open('services')} activeOpacity={0.8}>
+            <View style={s.serviceCircle}>
+              <Icon name="wifi" size={20} color={Colors.ink} />
+            </View>
+            <Text style={s.serviceSquareLabel}>Buy{'\n'}Data</Text>
+          </TouchableOpacity>
 
-            <TouchableOpacity style={s.serviceGridCard} onPress={() => open('services')} activeOpacity={0.8}>
-              <View style={s.serviceIconCircle}>
-                <Icon name="bolt" size={22} color={Colors.primary} />
-              </View>
-              <Text style={s.serviceGridLabel}>Electricity</Text>
-            </TouchableOpacity>
+          <TouchableOpacity style={s.serviceSquareCard} onPress={() => open('services')} activeOpacity={0.8}>
+            <View style={s.serviceCircle}>
+              <Icon name="bolt" size={20} color={Colors.ink} />
+            </View>
+            <Text style={s.serviceSquareLabel}>Buy{'\n'}Electricity</Text>
+          </TouchableOpacity>
 
-            <TouchableOpacity style={s.serviceGridCard} onPress={() => open('donate')} activeOpacity={0.8}>
-              <View style={s.serviceIconCircle}>
-                <Icon name="volunteer-activism" size={22} color={Colors.primary} />
-              </View>
-              <Text style={s.serviceGridLabel}>Donate</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity style={s.serviceSquareCard} onPress={() => open('donate')} activeOpacity={0.8}>
+            <View style={[s.serviceCircle, { backgroundColor: '#FFF4CE' }]}>
+              <Icon name="volunteer-activism" size={20} color="#6E5700" />
+            </View>
+            <Text style={s.serviceSquareLabel}>Donate{'\n'}Now</Text>
+          </TouchableOpacity>
         </View>
-      )}
+      </View>
 
-      {/* Section 4: Latest Updates */}
-      {filterTab === 'Latest Updates' && (
-        <View style={s.sectionBox}>
-          <View style={s.sectionHeaderRow}>
-            <Text style={s.sectionHeaderTitle}>LATEST FROM THE ANC</Text>
-            <TouchableOpacity><Text style={s.viewAllText}>View all</Text></TouchableOpacity>
-          </View>
+      {/* Section 4: Latest from ANC */}
+      <View style={s.sectionContainer}>
+        <View style={s.sectionHeaderRow}>
+          <Text style={s.sectionTitle}>Latest from ANC</Text>
+          <TouchableOpacity onPress={() => open('updates')}>
+            <Text style={s.viewAllLink}>View all</Text>
+          </TouchableOpacity>
+        </View>
 
-          <View style={s.newsCard}>
-            <View style={s.newsHeaderRow}>
-              <View style={s.newsTagBox}>
-                <Text style={s.newsTagText}>ANC STATEMENT</Text>
-              </View>
-              <Text style={s.newsDateText}>12 August 2026</Text>
+        <View style={s.newsCard}>
+          <Image source={{ uri: NEWS_IMG_URL }} style={s.newsImage} resizeMode="cover" />
+
+          <View style={s.newsBody}>
+            <View style={s.newsMetaRow}>
+              <Text style={s.newsMetaTag}>ANC STATEMENT</Text>
+              <Text style={s.newsMetaDate}>12 August 2026</Text>
             </View>
 
-            <Text style={s.newsTitle}>Building Stronger Local Government</Text>
-            <Text style={s.newsBody}>Our commitment to service delivery and community empowerment remains steadfast as we approach municipal elections.</Text>
+            <Text style={s.newsHeadline}>Building Stronger Local Government</Text>
+            <Text style={s.newsSnippet}>
+              Our commitment to service delivery and community empowerment remains steadfast as we approach the upcoming municipal elections.
+            </Text>
 
-            <TouchableOpacity style={s.readUpdateBtn} onPress={() => open('updates')}>
-              <Text style={s.readUpdateText}>Read Update  →</Text>
+            <TouchableOpacity style={s.readUpdateLink} onPress={() => open('updates')}>
+              <Text style={s.readUpdateText}>Read Update</Text>
+              <Icon name="arrow-forward" size={16} color={Colors.primary} />
             </TouchableOpacity>
           </View>
         </View>
-      )}
+      </View>
     </ScrollView>
   );
 }
 
 const s = StyleSheet.create({
-  content: { padding: 16, paddingBottom: 90, backgroundColor: Colors.background },
-  greetingRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
-  greetingTitle: { fontSize: 22, fontWeight: '900', color: Colors.ink },
-  greetingSub: { fontSize: 11, color: Colors.muted, marginTop: 2, fontWeight: '600' },
-  avatarBox: { width: 40, height: 40, borderRadius: 20, backgroundColor: Colors.gold, alignItems: 'center', justifyContent: 'center' },
-  avatarText: { fontWeight: '900', color: Colors.ink, fontSize: 13 },
-  
-  statusCard: {
-    backgroundColor: Colors.white,
-    borderRadius: 14,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 6,
-    elevation: 2,
-    marginBottom: 16,
-  },
-  cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 },
-  statusCardTitle: { fontSize: 10, fontWeight: '900', color: Colors.muted, letterSpacing: 1.2 },
+  content: { padding: 16, paddingBottom: 100, backgroundColor: Colors.background },
+
+  headerRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 18 },
+  avatarContainer: { width: 44, height: 44, borderRadius: 22, overflow: 'hidden', borderWidth: 2, borderColor: Colors.surfaceBorder },
+  avatarImage: { width: '100%', height: '100%' },
+  greetingTitle: { fontSize: 18, fontWeight: '900', color: Colors.ink },
+  greetingSub: { fontSize: 12, color: Colors.muted, marginTop: 1 },
+  bellBtn: { padding: 6, position: 'relative' },
+  bellDot: { position: 'absolute', top: 6, right: 6, width: 8, height: 8, borderRadius: 4, backgroundColor: Colors.error, borderWidth: 1.5, borderColor: Colors.white },
+
+  statusCard: { backgroundColor: Colors.white, borderRadius: 14, padding: 16, borderWidth: 1, borderColor: Colors.surfaceBorder, marginBottom: 20 },
+  cardHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 },
+  cardHeaderTitle: { fontSize: 10, fontWeight: '900', color: Colors.muted, letterSpacing: 1.2 },
   activeChip: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#E2F4E5', paddingVertical: 4, paddingHorizontal: 8, borderRadius: 12 },
   activeDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: Colors.activeDot, marginRight: 5 },
   activeText: { color: Colors.primary, fontSize: 10, fontWeight: '900', letterSpacing: 0.5 },
-  detailsGrid: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16 },
+  detailsGrid: { flexDirection: 'row', justifyContent: 'space-between' },
   gridCol: { width: '48%' },
-  gridLabel: { fontSize: 9, color: Colors.muted, fontWeight: '800', letterSpacing: 0.8 },
-  gridVal: { fontSize: 14, fontWeight: '800', color: Colors.ink, marginTop: 3 },
-  viewCardBtn: { backgroundColor: Colors.primary, borderRadius: 10, paddingVertical: 12, alignItems: 'center' },
-  viewCardBtnText: { color: Colors.white, fontWeight: '800', fontSize: 13 },
+  gridLabel: { fontSize: 11, color: Colors.muted },
+  gridVal: { fontSize: 14, fontWeight: '800', color: Colors.ink, marginTop: 2 },
+  viewCardGreyBtn: { backgroundColor: Colors.surfaceContainer, borderRadius: 10, paddingVertical: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6 },
+  viewCardGreyText: { color: Colors.ink, fontWeight: '800', fontSize: 13 },
 
-  tabScroll: { marginBottom: 16 },
-  tabBar: { flexDirection: 'row', gap: 8 },
-  filterPill: { paddingVertical: 8, paddingHorizontal: 16, borderRadius: 20, backgroundColor: Colors.surfaceContainer, alignItems: 'center' },
-  filterPillOn: { backgroundColor: Colors.primary },
-  filterPillText: { fontSize: 12, fontWeight: '700', color: Colors.muted },
-  filterPillTextOn: { color: Colors.white },
+  sectionContainer: { marginBottom: 20 },
+  sectionTitle: { fontSize: 18, fontWeight: '900', color: Colors.ink, marginBottom: 10 },
+  sectionHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  viewAllLink: { fontSize: 13, fontWeight: '800', color: Colors.primary },
 
-  sectionBox: { marginBottom: 16 },
-  sectionHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
-  sectionHeaderTitle: { fontSize: 10, fontWeight: '900', color: Colors.muted, letterSpacing: 1.2 },
-  viewAllText: { fontSize: 11, fontWeight: '800', color: Colors.primary },
+  importantYellowCard: { backgroundColor: Colors.gold, borderRadius: 16, padding: 18 },
+  importantHeaderRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  importantCardTitle: { fontSize: 16, fontWeight: '900', color: '#3E3000' },
+  importantCardSub: { fontSize: 12, color: '#3E3000', opacity: 0.8, marginTop: 2 },
+  viewDatesBtn: { backgroundColor: '#3E3000', borderRadius: 8, paddingVertical: 10, paddingHorizontal: 14, alignSelf: 'flex-start', marginTop: 14 },
+  viewDatesBtnText: { color: Colors.gold, fontWeight: '800', fontSize: 12 },
 
-  importantCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.white, borderRadius: 14, padding: 14, borderWidth: 1, borderColor: Colors.surfaceBorder },
-  dateBox: { width: 44, height: 44, borderRadius: 10, backgroundColor: Colors.surfaceContainerLow, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: Colors.surfaceBorder },
-  dateMonth: { fontSize: 9, fontWeight: '900', color: Colors.primary },
-  dateNum: { fontSize: 16, fontWeight: '900', color: Colors.ink, marginTop: -2 },
-  importantTitle: { fontSize: 14, fontWeight: '800', color: Colors.ink },
-  importantSub: { fontSize: 11, color: Colors.muted, marginTop: 2 },
-  chevron: { fontSize: 20, color: '#7B867E' },
+  communityCard: { backgroundColor: Colors.white, borderRadius: 16, overflow: 'hidden', borderWidth: 1, borderColor: Colors.surfaceBorder },
+  communityImage: { width: '100%', height: 180 },
+  communityBody: { padding: 16 },
+  branchMeetingTag: { fontSize: 10, fontWeight: '900', color: Colors.primary, letterSpacing: 1, marginBottom: 4 },
+  meetingTitle: { fontSize: 17, fontWeight: '900', color: Colors.ink },
+  scheduleRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 6, marginBottom: 14 },
+  scheduleText: { fontSize: 12, color: Colors.muted },
+  viewEventBtn: { backgroundColor: Colors.primary, borderRadius: 10, paddingVertical: 12, alignItems: 'center' },
+  viewEventBtnText: { color: Colors.white, fontWeight: '800', fontSize: 13 },
 
-  communityCard: { backgroundColor: Colors.white, borderRadius: 14, padding: 16, borderWidth: 1, borderColor: Colors.surfaceBorder },
-  alertBadgeRow: { flexDirection: 'row', alignItems: 'center', gap: 4, marginBottom: 4 },
-  communityTag: { fontSize: 10, color: Colors.goldText, fontWeight: '900', letterSpacing: 1 },
-  communityTitle: { fontSize: 16, fontWeight: '900', color: Colors.ink },
-  eventTimeRow: { flexDirection: 'row', gap: 8, marginTop: 10 },
-  eventChip: { flexDirection: 'row', alignItems: 'center', gap: 4, backgroundColor: Colors.surfaceContainerLow, paddingVertical: 5, paddingHorizontal: 10, borderRadius: 8 },
-  eventChipText: { fontSize: 11, color: Colors.ink, fontWeight: '700' },
+  services3Grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+  serviceSquareCard: { width: '31%', backgroundColor: Colors.white, borderRadius: 14, paddingVertical: 16, alignItems: 'center', borderWidth: 1, borderColor: Colors.surfaceBorder },
+  serviceCircle: { width: 40, height: 40, borderRadius: 20, backgroundColor: Colors.surfaceContainerLow, alignItems: 'center', justifyContent: 'center', marginBottom: 8 },
+  serviceSquareLabel: { fontSize: 11, fontWeight: '700', color: Colors.ink, textAlign: 'center', lineHeight: 14 },
 
-  services2Grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
-  serviceGridCard: { width: '48%', backgroundColor: Colors.white, borderRadius: 14, padding: 18, alignItems: 'center', borderWidth: 1, borderColor: Colors.surfaceBorder },
-  serviceIconCircle: { width: 44, height: 44, borderRadius: 22, backgroundColor: Colors.surfaceContainerLow, alignItems: 'center', justifyContent: 'center', marginBottom: 8 },
-  serviceGridLabel: { fontSize: 12, fontWeight: '800', color: Colors.ink, textAlign: 'center' },
-
-  newsCard: { backgroundColor: Colors.white, borderRadius: 14, padding: 16, borderWidth: 1, borderColor: Colors.surfaceBorder },
-  newsHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
-  newsTagBox: { backgroundColor: Colors.goldContainer, paddingVertical: 3, paddingHorizontal: 8, borderRadius: 6 },
-  newsTagText: { fontSize: 9, fontWeight: '900', color: Colors.goldText, letterSpacing: 0.8 },
-  newsDateText: { fontSize: 11, color: Colors.muted },
-  newsTitle: { fontSize: 16, fontWeight: '900', color: Colors.ink },
-  newsBody: { fontSize: 12, color: Colors.muted, marginTop: 4, lineHeight: 18 },
-  readUpdateBtn: { marginTop: 12 },
+  newsCard: { backgroundColor: Colors.white, borderRadius: 16, overflow: 'hidden', borderWidth: 1, borderColor: Colors.surfaceBorder },
+  newsImage: { width: '100%', height: 180 },
+  newsBody: { padding: 16 },
+  newsMetaRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
+  newsMetaTag: { fontSize: 10, fontWeight: '900', color: Colors.muted, letterSpacing: 1 },
+  newsMetaDate: { fontSize: 11, color: Colors.muted },
+  newsHeadline: { fontSize: 17, fontWeight: '900', color: Colors.ink },
+  newsSnippet: { fontSize: 12, color: Colors.muted, marginTop: 4, lineHeight: 18 },
+  readUpdateLink: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 14 },
   readUpdateText: { color: Colors.primary, fontWeight: '800', fontSize: 13 },
 });

@@ -96,11 +96,19 @@ export default function App() {
         {!signedIn ? (
           showWelcome ? (
             <WelcomeScreen
+              open={(target) => {
+                if (target === 'signin') setShowWelcome(false);
+                else if (target === 'home') setSignedIn(true);
+                else setShowWelcome(false);
+              }}
               onGetStarted={() => setShowWelcome(false)}
               onSignInClick={() => setShowWelcome(false)}
             />
           ) : (
-            <SignInScreen onSignIn={() => setSignedIn(true)} />
+            <SignInScreen
+              finish={() => setSignedIn(true)}
+              onSignIn={() => setSignedIn(true)}
+            />
           )
         ) : (
           <SafeAreaView style={s.safe}>
