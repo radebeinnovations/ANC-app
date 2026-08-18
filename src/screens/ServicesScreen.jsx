@@ -8,8 +8,13 @@ import { Colors } from '../theme/colors';
 
 const rand = (n) => `R${Number(n || 0).toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
-export default function ServicesScreen({ finish, balance = 1500, onDeductBalance, onDepositFunds }) {
-  const [activeSubScreen, setActiveSubScreen] = useState('hub'); // 'hub' | 'airtime' | 'data' | 'electricity'
+export default function ServicesScreen({ finish, balance = 1500, onDeductBalance, onDepositFunds, setStepText }) {
+  const [activeSubScreen, setActiveSubScreen] = useState('hub'); // 'hub' | 'airtime' | 'data' | 'electricity' | 'bills'
+
+  // Clear stepText header subtitle on Services screen so it doesn't show "STEP 1 OF 3"
+  React.useEffect(() => {
+    if (setStepText) setStepText('');
+  }, [setStepText]);
 
   // Dynamic Favourites State
   const [favourites, setFavourites] = useState([
@@ -45,6 +50,18 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
   // Electricity State
   const [meterNumber, setMeterNumber] = useState('1234 5678 9012');
   const [electricityAmount, setElectricityAmount] = useState('250');
+
+  // Bills State
+  const [selectedBiller, setSelectedBiller] = useState('City of Johannesburg');
+  const [billAccount, setBillAccount] = useState('9876 5432 10');
+  const [billAmount, setBillAmount] = useState('350');
+
+  const billers = [
+    { id: 'coj', name: 'City of Johannesburg', icon: 'location-city' },
+    { id: 'tshwane', name: 'City of Tshwane', icon: 'location-city' },
+    { id: 'ekurhuleni', name: 'Ekurhuleni Municipality', icon: 'location-city' },
+    { id: 'eskom', name: 'Eskom Direct', icon: 'bolt' },
+  ];
 
   const handleAddFavourite = () => {
     if (!newFavTitle.trim()) return;
@@ -109,6 +126,12 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
     finish(`Electricity purchase of ${rand(num)} complete.`);
   };
 
+  const handlePayBills = () => {
+    const num = parseFloat(billAmount) || 0;
+    if (onDeductBalance) onDeductBalance(num, `Bill Payment (${selectedBiller})`);
+    finish(`Bill payment of ${rand(num)} to ${selectedBiller} complete.`);
+  };
+
   // 1. HUB SCREEN (Matches Screenshot)
   if (activeSubScreen === 'hub') {
     return (
@@ -132,7 +155,7 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
             <TouchableOpacity
               key={fav.id}
               style={s.favouriteCard}
-              onPress={() => setActiveSubScreen(fav.type === 'electricity' ? 'electricity' : 'airtime')}
+              onPress={() => setActiveSubScreen(fav.type === 'electricity' ? 'electricity' : (fav.type === 'bills' ? 'bills' : 'airtime'))}
               activeOpacity={0.8}
             >
               <View style={[s.favIconSquare, { backgroundColor: fav.bg }]}>
@@ -175,7 +198,7 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
             <Text style={s.gridServiceText}>Electricity</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={s.gridServiceCard} onPress={() => setActiveSubScreen('airtime')} activeOpacity={0.8}>
+          <TouchableOpacity style={s.gridServiceCard} onPress={() => setActiveSubScreen('bills')} activeOpacity={0.8}>
             <View style={s.gridIconCircle}>
               <Icon name="receipt-long" size={22} color={Colors.primary} />
             </View>
@@ -411,7 +434,53 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
     );
   }
 
-  // 4. ELECTRICITY SCREEN
+  // 4. PAY BILLS SCREEN
+  if (activeSubScreen === 'bills') {
+    return (
+      <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
+        <TouchableOpacity style={s.backSubHeader} onPress={() => setActiveSubScreen('hub')}>
+          <Icon name="arrow-back" size={18} color={Colors.primary} />
+          <Text style={s.backSubText}>Pay & Services</Text>
+        </TouchableOpacity>
+
+        <Text style={s.h1}>Pay Bills & Utilities</Text>
+        <Text style={s.subText}>Pay municipal accounts, water, rates and utility bills.</Text>
+
+        <Text style={s.subSectionLabel}>SELECT BILLER / MUNICIPALITY</Text>
+        <View style={s.bundleStack}>
+          {billers.map(biller => {
+            const isSelected = selectedBiller === biller.name;
+            return (
+              <TouchableOpacity
+                key={biller.id}
+                style={[s.bundleRow, isSelected && s.bundleRowOn]}
+                onPress={() => setSelectedBiller(biller.name)}
+                activeOpacity={0.8}
+              >
+                <View style={[s.gridIconCircle, { marginBottom: 0, marginRight: 10 }]}>
+                  <Icon name={biller.icon} size={20} color={Colors.primary} />
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={s.bundleLabel}>{biller.name}</Text>
+                  <Text style={s.bundleSub}>Municipal Rates & Taxes</Text>
+                </View>
+                {isSelected ? <Icon name="check-circle" size={18} color={Colors.primary} /> : null}
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+
+        <Field label="ACCOUNT / METER NUMBER" value={billAccount} onChangeText={setBillAccount} keyboardType="numeric" />
+
+        <Field label="AMOUNT TO PAY (ZAR)" value={billAmount} onChangeText={setBillAmount} keyboardType="numeric" />
+        <Pills value={billAmount} setValue={setBillAmount} options={[100, 250, 500, 1000]} />
+
+        <Button text={`Pay R${billAmount} to ${selectedBiller}`} onPress={handlePayBills} />
+      </ScrollView>
+    );
+  }
+
+  // 5. ELECTRICITY SCREEN
   return (
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
       <TouchableOpacity style={s.backSubHeader} onPress={() => setActiveSubScreen('hub')}>
