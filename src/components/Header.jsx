@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Colors } from '../theme/colors';
 import { Icon } from './Icons';
 
-export default function Header({ screen, onBack, onOpenNotifications, unreadCount = 1, stepText }) {
+export default function Header({ screen, onBack, onOpenMenu, onOpenNotifications, unreadCount = 1, stepText }) {
   if (screen !== 'main' && screen !== 'welcome') {
     return (
       <View style={s.header}>
@@ -23,7 +23,7 @@ export default function Header({ screen, onBack, onOpenNotifications, unreadCoun
 
   return (
     <View style={s.header}>
-      <TouchableOpacity style={s.headerIconBtn} activeOpacity={0.7}>
+      <TouchableOpacity style={s.headerIconBtn} onPress={onOpenMenu} activeOpacity={0.7}>
         <Icon name="menu" size={22} color={Colors.primary} />
       </TouchableOpacity>
 
