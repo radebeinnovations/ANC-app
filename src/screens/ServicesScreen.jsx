@@ -1,15 +1,32 @@
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Button from '../components/Button';
+import Field from '../components/Field';
 import { Icon } from '../components/Icons';
 import Pills from '../components/Pills';
 import { Colors } from '../theme/colors';
 
 const rand = (n) => `R${Number(n || 0).toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
-export default function ServicesScreen({ finish, balance = 1500, onDeductBalance }) {
+export default function ServicesScreen({ finish, balance = 1500, onDeductBalance, onDepositFunds }) {
   const [activeSubScreen, setActiveSubScreen] = useState('hub'); // 'hub' | 'airtime' | 'data' | 'electricity'
-  
+
+  // Dynamic Favourites State
+  const [favourites, setFavourites] = useState([
+    { id: '1', title: 'MTN Airtime', icon: 'smartphone', color: Colors.primary, bg: '#F0F9F2', type: 'airtime' },
+    { id: '2', title: 'Home Electricity', icon: 'bolt', color: '#D4A000', bg: '#FFF9E6', type: 'electricity' },
+  ]);
+
+  // Add Favourite Modal State
+  const [showAddFavModal, setShowAddFavModal] = useState(false);
+  const [newFavTitle, setNewFavTitle] = useState('');
+  const [newFavType, setNewFavType] = useState('Airtime'); // 'Airtime' | 'Data' | 'Electricity' | 'Bills'
+  const [newFavNumber, setNewFavNumber] = useState('');
+
+  // Top Up Modal State
+  const [showDepositModal, setShowDepositModal] = useState(false);
+  const [depositAmount, setDepositAmount] = useState('500');
+
   // Airtime State
   const [airtimeMobile, setAirtimeMobile] = useState('+27 82 123 4567');
   const [selectedNetwork, setSelectedNetwork] = useState('MTN');
@@ -28,7 +45,51 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
   // Electricity State
   const [meterNumber, setMeterNumber] = useState('1234 5678 9012');
   const [electricityAmount, setElectricityAmount] = useState('250');
-  const [saveAsHome, setSaveAsHome] = useState(true);
+
+  const handleAddFavourite = () => {
+    if (!newFavTitle.trim()) return;
+
+    let icon = 'smartphone';
+    let color = Colors.primary;
+    let bg = '#F0F9F2';
+
+    if (newFavType === 'Data') {
+      icon = 'wifi';
+      color = '#0080FF';
+      bg = '#EBF5FF';
+    } else if (newFavType === 'Electricity') {
+      icon = 'bolt';
+      color = '#D4A000';
+      bg = '#FFF9E6';
+    } else if (newFavType === 'Bills') {
+      icon = 'receipt-long';
+      color = '#006933';
+      bg = '#F0F9F2';
+    }
+
+    const newFavItem = {
+      id: String(Date.now()),
+      title: newFavTitle,
+      icon,
+      color,
+      bg,
+      type: newFavType.toLowerCase(),
+    };
+
+    setFavourites([...favourites, newFavItem]);
+    setShowAddFavModal(false);
+    setNewFavTitle('');
+    setNewFavNumber('');
+  };
+
+  const handleDeposit = () => {
+    const num = parseFloat(depositAmount);
+    if (!isNaN(num) && num > 0 && onDepositFunds) {
+      onDepositFunds(num);
+      setShowDepositModal(false);
+      setDepositAmount('500');
+    }
+  };
 
   const handlePayAirtime = () => {
     const num = parseFloat(airtimeAmount) || 0;
@@ -48,76 +109,90 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
     finish(`Electricity purchase of ${rand(num)} complete.`);
   };
 
-  // 1. HUB SCREEN
+  // 1. HUB SCREEN (Matches Screenshot)
   if (activeSubScreen === 'hub') {
     return (
       <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
         <Text style={s.h1}>Pay & Services</Text>
         <Text style={s.subText}>Everyday services, all in one place.</Text>
 
-        {/* Green Balance Card */}
+        {/* Green Balance Card Banner */}
         <View style={s.hubBalanceCard}>
           <Text style={s.hubBalanceLabel}>AVAILABLE BALANCE</Text>
           <Text style={s.hubBalanceAmount}>{rand(balance)}</Text>
-          <TouchableOpacity style={s.addFundsBtn}>
-            <Icon name="add-circle" size={16} color={Colors.white} />
-            <Text style={s.addFundsBtnText}>Add Funds</Text>
+          <TouchableOpacity style={s.addFundsBtn} onPress={() => setShowDepositModal(true)} activeOpacity={0.8}>
+            <Text style={s.addFundsBtnText}>＋ Add Funds</Text>
           </TouchableOpacity>
         </View>
 
         {/* Favourites Section */}
         <Text style={s.sectionHeader}>Favourites</Text>
         <View style={s.favouritesRow}>
-          <TouchableOpacity style={s.favouriteCard} onPress={() => setActiveSubScreen('airtime')} activeOpacity={0.8}>
-            <View style={s.favIconCircle}>
-              <Icon name="smartphone" size={22} color={Colors.primary} />
-            </View>
-            <Text style={s.favText}>MTN Airtime</Text>
-          </TouchableOpacity>
+          {favourites.map(fav => (
+            <TouchableOpacity
+              key={fav.id}
+              style={s.favouriteCard}
+              onPress={() => setActiveSubScreen(fav.type === 'electricity' ? 'electricity' : 'airtime')}
+              activeOpacity={0.8}
+            >
+              <View style={[s.favIconSquare, { backgroundColor: fav.bg }]}>
+                <Icon name={fav.icon} size={22} color={fav.color} />
+              </View>
+              <Text style={s.favText} numberOfLines={2}>{fav.title}</Text>
+            </TouchableOpacity>
+          ))}
 
-          <TouchableOpacity style={s.favouriteCard} onPress={() => setActiveSubScreen('electricity')} activeOpacity={0.8}>
-            <View style={s.favIconCircle}>
-              <Icon name="bolt" size={22} color={Colors.goldText} />
+          {/* Add New Favourite Button */}
+          <TouchableOpacity style={s.addFavCardDashed} onPress={() => setShowAddFavModal(true)} activeOpacity={0.8}>
+            <View style={s.addFavPlusSquare}>
+              <Text style={s.addFavPlusText}>＋</Text>
             </View>
-            <Text style={s.favText}>Home Electricity</Text>
+            <Text style={s.addFavLabelText}>Add New</Text>
           </TouchableOpacity>
-
-          <View style={s.addFavCard}>
-            <Text style={s.addFavPlus}>＋</Text>
-            <Text style={s.addFavText}>Add New</Text>
-          </View>
         </View>
 
-        {/* All Services Grid */}
+        {/* All Services 6-Grid */}
         <Text style={s.sectionHeader}>All Services</Text>
         <View style={s.allServicesGrid}>
           <TouchableOpacity style={s.gridServiceCard} onPress={() => setActiveSubScreen('airtime')} activeOpacity={0.8}>
-            <Icon name="smartphone" size={24} color={Colors.primary} />
+            <View style={s.gridIconCircle}>
+              <Icon name="smartphone" size={22} color={Colors.primary} />
+            </View>
             <Text style={s.gridServiceText}>Airtime</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={s.gridServiceCard} onPress={() => setActiveSubScreen('data')} activeOpacity={0.8}>
-            <Icon name="wifi" size={24} color={Colors.primary} />
+            <View style={s.gridIconCircle}>
+              <Icon name="wifi" size={22} color={Colors.primary} />
+            </View>
             <Text style={s.gridServiceText}>Data</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={s.gridServiceCard} onPress={() => setActiveSubScreen('electricity')} activeOpacity={0.8}>
-            <Icon name="bolt" size={24} color={Colors.primary} />
+            <View style={s.gridIconCircle}>
+              <Icon name="bolt" size={22} color={Colors.primary} />
+            </View>
             <Text style={s.gridServiceText}>Electricity</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={s.gridServiceCard} onPress={() => setActiveSubScreen('airtime')} activeOpacity={0.8}>
-            <Icon name="receipt-long" size={24} color={Colors.primary} />
+            <View style={s.gridIconCircle}>
+              <Icon name="receipt-long" size={22} color={Colors.primary} />
+            </View>
             <Text style={s.gridServiceText}>Bills</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={s.gridServiceCard} onPress={() => finish('Donation screen')} activeOpacity={0.8}>
-            <Icon name="volunteer-activism" size={24} color={Colors.primary} />
+            <View style={s.gridIconCircle}>
+              <Icon name="volunteer-activism" size={22} color={Colors.primary} />
+            </View>
             <Text style={s.gridServiceText}>Donations</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={s.gridServiceCard} onPress={() => finish('Membership screen')} activeOpacity={0.8}>
-            <Icon name="card-membership" size={24} color={Colors.primary} />
+            <View style={s.gridIconCircle}>
+              <Icon name="card-membership" size={22} color={Colors.primary} />
+            </View>
             <Text style={[s.gridServiceText, { color: Colors.primary }]}>Membership</Text>
           </TouchableOpacity>
         </View>
@@ -147,6 +222,73 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
             <Text style={s.negativeAmount}>-R250.00</Text>
           </View>
         </View>
+
+        {/* ADD NEW FAVOURITE MODAL */}
+        <Modal visible={showAddFavModal} animationType="slide" transparent>
+          <View style={s.modalBackdrop}>
+            <View style={s.modalCard}>
+              <View style={s.modalHeader}>
+                <Text style={s.modalTitle}>Add New Favourite</Text>
+                <TouchableOpacity onPress={() => setShowAddFavModal(false)}>
+                  <Text style={{ fontSize: 18, fontWeight: '800', color: Colors.muted }}>✕</Text>
+                </TouchableOpacity>
+              </View>
+              <Text style={s.modalSub}>Save a quick shortcut to your Favourites section.</Text>
+
+              {/* Service Type Selection */}
+              <Text style={s.typeLabel}>SERVICE TYPE</Text>
+              <View style={s.typePillRow}>
+                {['Airtime', 'Data', 'Electricity', 'Bills'].map(type => (
+                  <TouchableOpacity
+                    key={type}
+                    style={[s.typePill, newFavType === type && s.typePillSelected]}
+                    onPress={() => setNewFavType(type)}
+                    activeOpacity={0.8}
+                  >
+                    <Text style={[s.typePillText, newFavType === type && s.typePillTextSelected]}>{type}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+
+              <Field
+                label="FAVOURITE TITLE / NAME"
+                value={newFavTitle}
+                onChangeText={setNewFavTitle}
+                placeholder="e.g. Vodacom Data or Office Electricity"
+              />
+
+              <Field
+                label="MOBILE / METER NUMBER (OPTIONAL)"
+                value={newFavNumber}
+                onChangeText={setNewFavNumber}
+                placeholder="e.g. +27 82 123 4567"
+                keyboardType="numeric"
+              />
+
+              <Button text="Save Favourite" onPress={handleAddFavourite} disabled={!newFavTitle.trim()} />
+            </View>
+          </View>
+        </Modal>
+
+        {/* DEPOSIT / TOP UP MODAL */}
+        <Modal visible={showDepositModal} animationType="slide" transparent>
+          <View style={s.modalBackdrop}>
+            <View style={s.modalCard}>
+              <View style={s.modalHeader}>
+                <Text style={s.modalTitle}>Add Funds to Wallet</Text>
+                <TouchableOpacity onPress={() => setShowDepositModal(false)}>
+                  <Text style={{ fontSize: 18, fontWeight: '800', color: Colors.muted }}>✕</Text>
+                </TouchableOpacity>
+              </View>
+              <Text style={s.modalSub}>Select or enter an amount to top up your available balance.</Text>
+
+              <Field label="AMOUNT (ZAR)" value={depositAmount} onChangeText={setDepositAmount} keyboardType="numeric" placeholder="Enter amount" />
+              <Pills value={depositAmount} setValue={setDepositAmount} options={[100, 250, 500, 1000]} />
+
+              <Button text={`＋ Deposit R${depositAmount}`} onPress={handleDeposit} />
+            </View>
+          </View>
+        </Modal>
       </ScrollView>
     );
   }
@@ -178,20 +320,6 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
             </TouchableOpacity>
           </View>
           <TextInput style={s.input} value={airtimeMobile} onChangeText={setAirtimeMobile} keyboardType="phone-pad" />
-        </View>
-
-        {/* Recent Recipients */}
-        <Text style={s.subSectionLabel}>RECENT</Text>
-        <View style={s.recentPillRow}>
-          <TouchableOpacity style={[s.recentPill, s.recentPillOn]} onPress={() => setAirtimeMobile('+27 82 123 4567')}>
-            <View style={s.pillBadgeGreen}><Text style={s.pillBadgeText}>M</Text></View>
-            <Text style={s.recentPillText}>My Number</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={s.recentPill} onPress={() => setAirtimeMobile('+27 82 999 8888')}>
-            <View style={s.pillBadgeGold}><Text style={s.pillBadgeText}>T</Text></View>
-            <Text style={s.recentPillText}>Thabo</Text>
-          </TouchableOpacity>
         </View>
 
         {/* SELECT NETWORK Cards */}
@@ -238,48 +366,13 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
           })}
         </View>
 
-        {/* Other Amount */}
-        <View style={s.fieldGroup}>
-          <Text style={s.fieldLabel}>OTHER AMOUNT</Text>
-          <TextInput
-            style={s.input}
-            value={airtimeAmount}
-            onChangeText={setAirtimeAmount}
-            placeholder="R 0.00"
-            keyboardType="numeric"
-          />
-        </View>
-
-        {/* Purchase Summary */}
-        <View style={s.summaryCard}>
-          <Text style={s.summaryHeaderTitle}>PURCHASE SUMMARY</Text>
-          <View style={s.summaryRow}>
-            <Text style={s.summaryLabel}>Airtime</Text>
-            <Text style={s.summaryValue}>{rand(airtimeAmount)}</Text>
-          </View>
-          <View style={s.summaryRow}>
-            <Text style={s.summaryLabel}>Fee</Text>
-            <Text style={s.summaryValue}>R0.00</Text>
-          </View>
-          <View style={s.separator} />
-          <View style={s.summaryRow}>
-            <Text style={s.totalLabel}>Total</Text>
-            <Text style={s.totalValue}>{rand(airtimeAmount)}</Text>
-          </View>
-          <View style={s.fundingCard}>
-            <Text style={s.fundingLabel}>Payment Method</Text>
-            <Text style={s.fundingTitle}>ANC Member Money (Balance: {rand(balance)})</Text>
-          </View>
-        </View>
-
-        <Button text={`Pay ${rand(airtimeAmount)} Airtime  →`} onPress={handlePayAirtime} />
+        <Button text={`Pay R${airtimeAmount}`} onPress={handlePayAirtime} />
       </ScrollView>
     );
   }
 
-  // 3. BUY DATA SCREEN
+  // 3. DATA SCREEN
   if (activeSubScreen === 'data') {
-    const selectedObj = dataBundles.find(b => b.label === selectedDataBundle) || dataBundles[1];
     return (
       <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
         <TouchableOpacity style={s.backSubHeader} onPress={() => setActiveSubScreen('hub')}>
@@ -287,74 +380,38 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
           <Text style={s.backSubText}>Pay & Services</Text>
         </TouchableOpacity>
 
-        <Text style={s.h1}>Buy Data</Text>
-        <Text style={s.subText}>Choose a data bundle.</Text>
+        <Text style={s.h1}>Buy Data Bundles</Text>
+        <Text style={s.subText}>Fast data packages directly to your line.</Text>
 
-        {/* Recipient Box */}
-        <Text style={s.subSectionLabel}>RECIPIENT</Text>
-        <View style={s.dataRecipientCard}>
-          <View style={s.mobileIconBox}><Icon name="smartphone" size={20} color={Colors.primary} /></View>
-          <View style={{ flex: 1, marginLeft: 10 }}>
-            <Text style={s.recipientPhoneText}>{dataRecipient}</Text>
-            <Text style={s.networkSub}>MTN Network</Text>
-          </View>
-          <TouchableOpacity onPress={() => setDataRecipient('+27 82 999 8888')}>
-            <Text style={s.changeText}>Change</Text>
-          </TouchableOpacity>
-        </View>
+        <Field label="RECIPIENT NUMBER" value={dataRecipient} onChangeText={setDataRecipient} keyboardType="phone-pad" />
 
-        {/* Data Bundles */}
-        <Text style={s.subSectionLabel}>DATA BUNDLES</Text>
+        <Text style={s.subSectionLabel}>SELECT BUNDLE</Text>
         <View style={s.bundleStack}>
-          {dataBundles.map(bundle => {
-            const isSelected = selectedDataBundle === bundle.label;
+          {dataBundles.map((b, idx) => {
+            const isSelected = selectedDataBundle === b.label;
             return (
               <TouchableOpacity
-                key={bundle.label}
-                style={[s.bundleCard, isSelected && s.bundleCardOn]}
-                onPress={() => setSelectedDataBundle(bundle.label)}
+                key={idx}
+                style={[s.bundleRow, isSelected && s.bundleRowOn]}
+                onPress={() => setSelectedDataBundle(b.label)}
                 activeOpacity={0.8}
               >
                 <View style={{ flex: 1 }}>
-                  <Text style={s.bundleTitle}>{bundle.label}</Text>
-                  <Text style={s.bundleSub}>{bundle.sub}</Text>
+                  <Text style={s.bundleLabel}>{b.label}</Text>
+                  <Text style={s.bundleSub}>{b.sub}</Text>
                 </View>
-                <Text style={s.bundlePrice}>R{bundle.price}</Text>
-                <View style={[s.radioCircle, isSelected && s.radioCircleOn]}>
-                  {isSelected ? <Icon name="check" size={12} color={Colors.white} /> : null}
-                </View>
+                <Text style={s.bundlePrice}>R{b.price}.00</Text>
               </TouchableOpacity>
             );
           })}
         </View>
 
-        {/* Order Summary */}
-        <View style={s.summaryCard}>
-          <View style={s.summaryRow}>
-            <Text style={s.summaryLabel}>Data Bundle ({selectedObj.label})</Text>
-            <Text style={s.summaryValue}>{rand(selectedObj.price)}</Text>
-          </View>
-          <View style={s.summaryRow}>
-            <Text style={s.summaryLabel}>Fee</Text>
-            <Text style={s.summaryValue}>R0.00</Text>
-          </View>
-          <View style={s.separator} />
-          <View style={s.summaryRow}>
-            <Text style={s.totalLabel}>Total</Text>
-            <Text style={s.totalValue}>{rand(selectedObj.price)}</Text>
-          </View>
-          <View style={s.fundingCard}>
-            <Text style={s.fundingLabel}>Payment Method</Text>
-            <Text style={s.fundingTitle}>ANC Member Money (Balance: {rand(balance)})</Text>
-          </View>
-        </View>
-
-        <Button text={`Review Purchase (${rand(selectedObj.price)})  →`} onPress={handlePayData} />
+        <Button text={`Purchase ${selectedDataBundle}`} onPress={handlePayData} />
       </ScrollView>
     );
   }
 
-  // 4. BUY ELECTRICITY SCREEN
+  // 4. ELECTRICITY SCREEN
   return (
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
       <TouchableOpacity style={s.backSubHeader} onPress={() => setActiveSubScreen('hub')}>
@@ -362,181 +419,183 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
         <Text style={s.backSubText}>Pay & Services</Text>
       </TouchableOpacity>
 
-      <Text style={s.h1}>Buy Electricity</Text>
-      <Text style={s.subText}>Buy electricity for your home or business.</Text>
+      <Text style={s.h1}>Prepaid Electricity</Text>
+      <Text style={s.subText}>Purchase electricity tokens instantly.</Text>
 
-      {/* Meter Number Field */}
-      <View style={s.fieldGroup}>
-        <Text style={s.fieldLabel}>METER NUMBER</Text>
-        <TextInput style={s.input} value={meterNumber} onChangeText={setMeterNumber} keyboardType="numeric" />
-      </View>
+      <Field label="METER NUMBER" value={meterNumber} onChangeText={setMeterNumber} keyboardType="numeric" />
 
-      {/* Saved Home Card */}
-      <View style={s.savedMeterCard}>
-        <View style={s.homeIconCircle}><Icon name="home" size={18} color={Colors.primary} /></View>
-        <View style={{ flex: 1, marginLeft: 10 }}>
-          <Text style={s.savedMeterTitle}>Home Electricity</Text>
-          <Text style={s.savedMeterSub}>Johannesburg Municipality</Text>
-        </View>
-        <TouchableOpacity style={s.checkboxRow} onPress={() => setSaveAsHome(!saveAsHome)}>
-          <Icon name={saveAsHome ? "check-box" : "check-box-outline-blank"} size={18} color={Colors.primary} />
-          <Text style={s.checkboxText}>Save as Home</Text>
-        </TouchableOpacity>
-      </View>
+      <Field label="AMOUNT (ZAR)" value={electricityAmount} onChangeText={setElectricityAmount} keyboardType="numeric" />
+      <Pills value={electricityAmount} setValue={setElectricityAmount} options={[50, 100, 250, 500]} />
 
-      {/* Select Amount */}
-      <Text style={s.subSectionLabel}>Select Amount</Text>
-      <View style={s.amountGrid}>
-        {['50', '100', '250', '500'].map(val => {
-          const isSelected = electricityAmount === val;
-          return (
-            <TouchableOpacity
-              key={val}
-              style={[s.amountGridBox, isSelected && s.amountGridBoxOn]}
-              onPress={() => setElectricityAmount(val)}
-              activeOpacity={0.8}
-            >
-              <Text style={[s.amountGridText, isSelected && s.amountGridTextOn]}>R{val}</Text>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-
-      <View style={s.fieldGroup}>
-        <Text style={s.fieldLabel}>CUSTOM AMOUNT (ZAR)</Text>
-        <TextInput style={s.input} value={electricityAmount} onChangeText={setElectricityAmount} keyboardType="numeric" />
-      </View>
-
-      {/* Order Summary */}
-      <View style={s.summaryCard}>
-        <View style={s.summaryRow}>
-          <Text style={s.summaryLabel}>Electricity</Text>
-          <Text style={s.summaryValue}>{rand(electricityAmount)}</Text>
-        </View>
-        <View style={s.summaryRow}>
-          <Text style={s.summaryLabel}>Network Fee</Text>
-          <Text style={s.summaryValue}>R0.00</Text>
-        </View>
-        <View style={s.separator} />
-        <View style={s.summaryRow}>
-          <Text style={s.totalLabel}>Total</Text>
-          <Text style={s.totalValue}>{rand(electricityAmount)}</Text>
-        </View>
-        <View style={s.fundingCard}>
-          <Text style={s.fundingLabel}>Payment Method</Text>
-          <Text style={s.fundingTitle}>ANC Member Money (Balance: {rand(balance)})</Text>
-        </View>
-      </View>
-
-      <Button text={`Pay ${rand(electricityAmount)} Electricity  →`} onPress={handlePayElectricity} />
+      <Button text={`Buy R${electricityAmount} Token`} onPress={handlePayElectricity} />
     </ScrollView>
   );
 }
 
 const s = StyleSheet.create({
-  content: { padding: 16, paddingBottom: 100, backgroundColor: Colors.background },
+  content: { padding: 16, paddingBottom: 90, backgroundColor: Colors.background },
   h1: { fontSize: 26, fontWeight: '900', color: Colors.ink },
   subText: { fontSize: 12, color: Colors.muted, marginTop: 2, marginBottom: 14, fontWeight: '600' },
 
-  backSubHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 10 },
-  backSubText: { fontSize: 12, color: Colors.primary, fontWeight: '800', marginLeft: 4 },
-
-  hubBalanceCard: { backgroundColor: Colors.primaryDark, borderRadius: 16, padding: 18, marginBottom: 20 },
-  hubBalanceLabel: { fontSize: 10, fontWeight: '900', color: Colors.gold, letterSpacing: 1.2 },
+  hubBalanceCard: {
+    backgroundColor: '#006933',
+    borderRadius: 16,
+    padding: 18,
+    marginBottom: 16,
+  },
+  hubBalanceLabel: { fontSize: 10, fontWeight: '900', color: '#FECC00', letterSpacing: 1 },
   hubBalanceAmount: { fontSize: 32, fontWeight: '900', color: Colors.white, marginVertical: 6 },
-  addFundsBtn: { flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.2)', paddingVertical: 6, paddingHorizontal: 12, borderRadius: 8, alignSelf: 'flex-start' },
-  addFundsBtnText: { color: Colors.white, fontSize: 11, fontWeight: '800', marginLeft: 6 },
+  addFundsBtn: {
+    alignSelf: 'flex-start',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    paddingVertical: 6,
+    paddingHorizontal: 14,
+    borderRadius: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  addFundsBtnText: { color: Colors.white, fontSize: 12, fontWeight: '800' },
 
-  sectionHeader: { fontSize: 16, fontWeight: '800', color: Colors.ink, marginTop: 16, marginBottom: 12 },
-  favouritesRow: { flexDirection: 'row', gap: 10, marginBottom: 10 },
-  favouriteCard: { flex: 1, backgroundColor: Colors.white, borderRadius: 14, padding: 12, alignItems: 'center', borderWidth: 1, borderColor: Colors.surfaceBorder },
-  favIconCircle: { width: 38, height: 38, borderRadius: 19, backgroundColor: Colors.surfaceContainerLow, alignItems: 'center', justifyContent: 'center', marginBottom: 6 },
-  favText: { fontSize: 11, fontWeight: '700', color: Colors.ink, textAlign: 'center' },
-  addFavCard: { flex: 1, borderStyle: 'dashed', borderWidth: 1.5, borderColor: Colors.surfaceBorder, borderRadius: 14, padding: 12, alignItems: 'center', justifyContent: 'center' },
-  addFavPlus: { fontSize: 18, color: Colors.muted },
-  addFavText: { fontSize: 11, fontWeight: '700', color: Colors.muted, marginTop: 2 },
+  sectionHeader: { fontSize: 15, fontWeight: '800', color: Colors.ink, marginTop: 14, marginBottom: 10 },
 
-  allServicesGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 10 },
-  gridServiceCard: { width: '31%', backgroundColor: Colors.white, borderRadius: 14, padding: 14, alignItems: 'center', borderWidth: 1, borderColor: Colors.surfaceBorder },
-  gridServiceText: { fontSize: 11, fontWeight: '700', color: Colors.ink, marginTop: 6, textAlign: 'center' },
+  favouritesRow: {
+    flexDirection: 'row',
+    gap: 10,
+    marginBottom: 16,
+  },
+  favouriteCard: {
+    flex: 1,
+    backgroundColor: Colors.white,
+    borderRadius: 14,
+    padding: 12,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: Colors.surfaceBorder,
+  },
+  favIconSquare: {
+    width: 40,
+    height: 40,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8,
+  },
+  favText: { fontSize: 11, fontWeight: '800', color: Colors.ink, textAlign: 'center' },
 
-  activityCard: { backgroundColor: Colors.white, borderRadius: 14, paddingHorizontal: 14, borderWidth: 1, borderColor: Colors.surfaceBorder },
-  activityRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: Colors.line },
-  activityIconCircle: { width: 34, height: 34, borderRadius: 17, backgroundColor: Colors.surfaceContainerLow, alignItems: 'center', justifyContent: 'center' },
-  activityTitle: { fontSize: 13, fontWeight: '700', color: Colors.ink },
-  activityTime: { fontSize: 11, color: Colors.muted, marginTop: 1 },
-  negativeAmount: { fontSize: 13, fontWeight: '800', color: Colors.ink },
+  addFavCardDashed: {
+    flex: 1,
+    backgroundColor: '#F9FAF9',
+    borderRadius: 14,
+    padding: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1.5,
+    borderColor: '#C0C7C1',
+    borderStyle: 'dashed',
+  },
+  addFavPlusSquare: {
+    width: 32,
+    height: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  addFavPlusText: { fontSize: 20, fontWeight: '900', color: Colors.muted },
+  addFavLabelText: { fontSize: 11, fontWeight: '800', color: Colors.muted, marginTop: 2 },
 
-  fieldGroup: { marginTop: 14, marginBottom: 10 },
-  fieldLabelRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  fieldLabel: { color: '#566158', fontSize: 10, fontWeight: '800', letterSpacing: 0.9 },
-  useMyNumberText: { color: Colors.primary, fontSize: 11, fontWeight: '800' },
-  input: { borderWidth: 1, borderColor: '#DCE4DD', borderRadius: 9, padding: 12, marginTop: 6, fontSize: 14, color: Colors.ink, backgroundColor: Colors.white },
+  allServicesGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+    marginBottom: 16,
+  },
+  gridServiceCard: {
+    width: '31%',
+    backgroundColor: Colors.white,
+    borderRadius: 14,
+    paddingVertical: 14,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: Colors.surfaceBorder,
+  },
+  gridIconCircle: {
+    width: 38,
+    height: 38,
+    borderRadius: 10,
+    backgroundColor: '#F0F9F2',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 6,
+  },
+  gridServiceText: { fontSize: 11, fontWeight: '800', color: Colors.ink },
 
-  subSectionLabel: { fontSize: 10, fontWeight: '900', color: Colors.muted, letterSpacing: 1.2, marginTop: 16, marginBottom: 8 },
-  recentPillRow: { flexDirection: 'row', gap: 8 },
-  recentPill: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.white, borderRadius: 20, paddingVertical: 6, paddingHorizontal: 12, borderWidth: 1, borderColor: Colors.surfaceBorder },
-  recentPillOn: { borderColor: Colors.primary, backgroundColor: '#F0F9F2' },
-  pillBadgeGreen: { width: 20, height: 20, borderRadius: 10, backgroundColor: Colors.primary, alignItems: 'center', justifyContent: 'center', marginRight: 6 },
-  pillBadgeGold: { width: 20, height: 20, borderRadius: 10, backgroundColor: Colors.gold, alignItems: 'center', justifyContent: 'center', marginRight: 6 },
-  pillBadgeText: { fontSize: 10, fontWeight: '900', color: Colors.white },
-  recentPillText: { fontSize: 12, fontWeight: '700', color: Colors.ink },
-
-  networkCardRow: { flexDirection: 'row', gap: 10, marginBottom: 10 },
-  networkBox: {
-    width: 80,
-    height: 84,
+  activityCard: {
     backgroundColor: Colors.white,
     borderRadius: 14,
     borderWidth: 1,
     borderColor: Colors.surfaceBorder,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
+    paddingHorizontal: 14,
   },
-  networkBoxOn: { borderColor: Colors.primary, backgroundColor: '#F0F9F2' },
-  networkCircle: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center', marginBottom: 6 },
-  networkCircleLetter: { fontSize: 16, fontWeight: '900' },
-  networkNameLabel: { fontSize: 11, fontWeight: '700', color: Colors.ink },
+  activityRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.line,
+  },
+  activityIconCircle: { width: 34, height: 34, borderRadius: 17, backgroundColor: Colors.surfaceContainerLow, alignItems: 'center', justifyContent: 'center' },
+  activityTitle: { fontSize: 13, fontWeight: '800', color: Colors.ink },
+  activityTime: { fontSize: 11, color: Colors.muted, marginTop: 1 },
+  negativeAmount: { fontSize: 13, fontWeight: '800', color: Colors.ink },
+
+  modalBackdrop: { flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.55)', justifyContent: 'flex-end' },
+  modalCard: { backgroundColor: Colors.white, borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20 },
+  modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  modalTitle: { fontSize: 18, fontWeight: '900', color: Colors.ink },
+  modalSub: { fontSize: 12, color: Colors.muted, marginTop: 4, marginBottom: 14 },
+
+  typeLabel: { fontSize: 10, fontWeight: '800', color: Colors.muted, letterSpacing: 0.8, marginBottom: 8 },
+  typePillRow: { flexDirection: 'row', gap: 8, marginBottom: 14 },
+  typePill: {
+    flex: 1,
+    backgroundColor: Colors.white,
+    borderWidth: 1,
+    borderColor: Colors.surfaceBorder,
+    borderRadius: 10,
+    paddingVertical: 8,
+    alignItems: 'center',
+  },
+  typePillSelected: { backgroundColor: Colors.primary, borderColor: Colors.primary },
+  typePillText: { fontSize: 12, fontWeight: '800', color: Colors.ink },
+  typePillTextSelected: { color: Colors.white },
+
+  backSubHeader: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 10 },
+  backSubText: { fontSize: 13, fontWeight: '800', color: Colors.primary },
+  fieldGroup: { marginBottom: 14 },
+  fieldLabelRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6 },
+  fieldLabel: { fontSize: 10, fontWeight: '800', color: Colors.muted, letterSpacing: 0.8 },
+  useMyNumberText: { fontSize: 11, fontWeight: '800', color: Colors.primary },
+  input: { backgroundColor: Colors.white, borderRadius: 10, paddingHorizontal: 12, paddingVertical: 10, borderWidth: 1, borderColor: Colors.surfaceBorder, fontSize: 13, color: Colors.ink },
+  subSectionLabel: { fontSize: 11, fontWeight: '800', color: Colors.muted, letterSpacing: 0.8, marginTop: 10, marginBottom: 8 },
+
+  networkCardRow: { flexDirection: 'row', gap: 8, marginBottom: 14 },
+  networkBox: { flex: 1, backgroundColor: Colors.white, borderRadius: 12, padding: 10, alignItems: 'center', borderWidth: 1, borderColor: Colors.surfaceBorder, position: 'relative' },
+  networkBoxOn: { borderColor: Colors.primary, backgroundColor: '#F9FCFA' },
+  networkCircle: { width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center', marginBottom: 4 },
+  networkCircleLetter: { fontSize: 14, fontWeight: '900' },
+  networkNameLabel: { fontSize: 10, fontWeight: '800', color: Colors.ink },
   networkCheckCircle: { position: 'absolute', top: 4, right: 4 },
 
-  amountGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 10 },
-  amountGridBox: { width: '31%', backgroundColor: Colors.white, borderRadius: 10, paddingVertical: 14, alignItems: 'center', borderWidth: 1, borderColor: Colors.surfaceBorder },
-  amountGridBoxOn: { backgroundColor: Colors.primary, borderColor: Colors.primaryDark },
-  amountGridText: { fontSize: 15, fontWeight: '800', color: Colors.ink },
+  amountGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 14 },
+  amountGridBox: { width: '31%', backgroundColor: Colors.white, borderRadius: 10, paddingVertical: 12, alignItems: 'center', borderWidth: 1, borderColor: Colors.surfaceBorder },
+  amountGridBoxOn: { borderColor: Colors.primary, backgroundColor: Colors.primary },
+  amountGridText: { fontSize: 14, fontWeight: '800', color: Colors.ink },
   amountGridTextOn: { color: Colors.white },
 
-  dataRecipientCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.white, borderRadius: 12, padding: 12, borderWidth: 1, borderColor: Colors.surfaceBorder },
-  mobileIconBox: { width: 34, height: 34, borderRadius: 17, backgroundColor: '#E3F3E7', alignItems: 'center', justifyContent: 'center' },
-  recipientPhoneText: { fontSize: 13, fontWeight: '800', color: Colors.ink },
-  networkSub: { fontSize: 11, color: Colors.muted },
-  changeText: { fontSize: 12, fontWeight: '800', color: Colors.primary },
-
-  bundleStack: { gap: 8, marginBottom: 16 },
-  bundleCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.white, borderRadius: 12, padding: 14, borderWidth: 1, borderColor: Colors.surfaceBorder },
-  bundleCardOn: { borderColor: Colors.primary, backgroundColor: '#F0F9F2' },
-  bundleTitle: { fontSize: 15, fontWeight: '800', color: Colors.ink },
-  bundleSub: { fontSize: 11, color: Colors.muted, marginTop: 2 },
-  bundlePrice: { fontSize: 16, fontWeight: '900', color: Colors.ink, marginRight: 10 },
-  radioCircle: { width: 20, height: 20, borderRadius: 10, borderWidth: 1.5, borderColor: Colors.surfaceBorder, alignItems: 'center', justifyContent: 'center' },
-  radioCircleOn: { backgroundColor: Colors.primary, borderColor: Colors.primary },
-
-  summaryCard: { backgroundColor: Colors.white, borderRadius: 12, padding: 14, borderWidth: 1, borderColor: Colors.surfaceBorder, marginTop: 14, marginBottom: 14 },
-  summaryHeaderTitle: { fontSize: 10, fontWeight: '900', color: Colors.muted, letterSpacing: 1.2, marginBottom: 8 },
-  summaryRow: { flexDirection: 'row', justifyContent: 'space-between', marginVertical: 4 },
-  summaryLabel: { fontSize: 12, color: Colors.muted },
-  summaryValue: { fontSize: 12, fontWeight: '700', color: Colors.ink },
-  separator: { height: 1, backgroundColor: Colors.line, marginVertical: 8 },
-  totalLabel: { fontSize: 15, fontWeight: '800', color: Colors.ink },
-  totalValue: { fontSize: 18, fontWeight: '900', color: Colors.primary },
-  fundingCard: { backgroundColor: Colors.surfaceContainerLow, borderRadius: 8, padding: 10, marginTop: 10 },
-  fundingLabel: { fontSize: 9, fontWeight: '900', color: Colors.muted, letterSpacing: 0.8 },
-  fundingTitle: { fontSize: 11, fontWeight: '700', color: Colors.ink, marginTop: 2 },
-
-  savedMeterCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.white, borderRadius: 12, padding: 12, borderWidth: 1, borderColor: Colors.surfaceBorder, marginTop: 10 },
-  homeIconCircle: { width: 34, height: 34, borderRadius: 17, backgroundColor: '#E3F3E7', alignItems: 'center', justifyContent: 'center' },
-  savedMeterTitle: { fontSize: 13, fontWeight: '800', color: Colors.ink },
-  savedMeterSub: { fontSize: 11, color: Colors.muted },
-  checkboxRow: { flexDirection: 'row', alignItems: 'center', gap: 4 },
-  checkboxText: { fontSize: 11, fontWeight: '700', color: Colors.primary },
+  bundleStack: { gap: 8, marginBottom: 14 },
+  bundleRow: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.white, borderRadius: 12, padding: 14, borderWidth: 1, borderColor: Colors.surfaceBorder },
+  bundleRowOn: { borderColor: Colors.primary, backgroundColor: '#F9FCFA' },
+  bundleLabel: { fontSize: 14, fontWeight: '800', color: Colors.ink },
+  bundleSub: { fontSize: 11, color: Colors.muted, marginTop: 1 },
+  bundlePrice: { fontSize: 14, fontWeight: '900', color: Colors.primary },
 });

@@ -76,7 +76,7 @@ export default function App() {
 
   const renderBody = () => {
     if (screen === 'send') return <SendMoneyScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} setStepText={setStepText} />;
-    if (screen === 'services') return <ServicesScreen finish={finish} cards={cards} onDeductBalance={handleDeductBalance} />;
+    if (screen === 'services') return <ServicesScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} onDepositFunds={handleDepositFunds} />;
     if (screen === 'donate') return <DonationScreen finish={finish} cards={cards} onDeductBalance={handleDeductBalance} />;
     if (screen === 'membership') return <MembershipScreen finish={finish} cards={cards} onDeductBalance={handleDeductBalance} />;
     if (screen === 'profile') return <ProfileScreen cards={cards} onOpenCards={() => open('cards')} />;
