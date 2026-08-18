@@ -4,6 +4,7 @@ import { SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } fro
 // Components
 import Header from './src/components/Header';
 import Nav from './src/components/Nav';
+import SideDrawer from './src/components/SideDrawer';
 
 // Screens
 import BranchScreen from './src/screens/BranchScreen';
@@ -27,6 +28,7 @@ export default function App() {
   const [tab, setTab] = useState('Home');
   const [screen, setScreen] = useState('main');
   const [notice, setNotice] = useState('');
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   // Interactive Demo Wallet Balance & Transactions State
   const [balance, setBalance] = useState(1500.00);
@@ -117,6 +119,7 @@ export default function App() {
               screen={screen}
               stepText={stepText}
               onBack={() => setScreen('main')}
+              onOpenMenu={() => setDrawerOpen(true)}
               onOpenNotifications={() => open('notifications')}
               unreadCount={1}
             />
@@ -128,6 +131,16 @@ export default function App() {
             ) : null}
             <View style={s.page}>{renderBody()}</View>
             <Nav active={tab} onChange={(value) => { setTab(value); setScreen('main'); }} />
+
+            <SideDrawer
+              visible={drawerOpen}
+              onClose={() => setDrawerOpen(false)}
+              onNavigate={(target) => open(target)}
+              onSignOut={() => {
+                setSignedIn(false);
+                setShowWelcome(true);
+              }}
+            />
           </SafeAreaView>
         )}
       </View>

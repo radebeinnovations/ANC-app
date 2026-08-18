@@ -19,10 +19,6 @@ export default function HomeScreen({ open }) {
           <Text style={s.greetingTitle}>Good morning, Lerumo Thabo</Text>
           <Text style={s.greetingSub}>ANC Member · Johannesburg Region</Text>
         </View>
-        <TouchableOpacity style={s.bellBtn} onPress={() => open('notifications')}>
-          <Icon name="notifications-none" size={22} color={Colors.ink} />
-          <View style={s.bellDot} />
-        </TouchableOpacity>
       </View>
 
       {/* Member Status Card */}
