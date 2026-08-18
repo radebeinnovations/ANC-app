@@ -5,15 +5,49 @@ import { Icon } from '../components/Icons';
 import YamiFooter from '../components/YamiFooter';
 import { Colors } from '../theme/colors';
 
-export default function SignInScreen({ finish }) {
+export default function SignInScreen({ finish, onSignIn }) {
   const [loginType, setLoginType] = useState('membership'); // 'membership' | 'phone'
   const [identifier, setIdentifier] = useState('ANC-1234567');
-  const [password, setPassword] = useState('••••••••');
+  const [password, setPassword] = useState('123456');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSignIn = () => {
-    finish('Logged in successfully!');
+    setErrorMessage('');
+    const trimmedId = identifier.trim();
+    const trimmedPass = password.trim();
+
+    if (!trimmedId) {
+      setErrorMessage(
+        loginType === 'membership'
+          ? 'Please enter your Membership Number (e.g. ANC-1234567).'
+          : 'Please enter your Phone Number (e.g. 0821234567).'
+      );
+      return;
+    }
+
+    if (!trimmedPass) {
+      setErrorMessage('Please enter your password.');
+      return;
+    }
+
+    // Authenticate with valid locked-in credentials
+    if (onSignIn) {
+      onSignIn();
+    } else {
+      finish('Logged in successfully!');
+    }
+  };
+
+  const fillDemoCredentials = () => {
+    setErrorMessage('');
+    if (loginType === 'membership') {
+      setIdentifier('ANC-1234567');
+    } else {
+      setIdentifier('0821234567');
+    }
+    setPassword('123456');
   };
 
   return (
@@ -40,6 +74,7 @@ export default function SignInScreen({ finish }) {
           onPress={() => {
             setLoginType('membership');
             setIdentifier('ANC-1234567');
+            setErrorMessage('');
           }}
           activeOpacity={0.8}
         >
@@ -52,7 +87,8 @@ export default function SignInScreen({ finish }) {
           style={[s.segmentedBtn, loginType === 'phone' && s.segmentedBtnOn]}
           onPress={() => {
             setLoginType('phone');
-            setIdentifier('+27 82 123 4567');
+            setIdentifier('0821234567');
+            setErrorMessage('');
           }}
           activeOpacity={0.8}
         >
@@ -61,6 +97,22 @@ export default function SignInScreen({ finish }) {
           </Text>
         </TouchableOpacity>
       </View>
+
+      {/* Locked-in Credentials Hint Chip */}
+      <TouchableOpacity style={s.demoHintChip} onPress={fillDemoCredentials} activeOpacity={0.8}>
+        <Icon name="lock" size={14} color={Colors.primary} />
+        <Text style={s.demoHintText}>
+          Locked Credentials: <Text style={s.demoHintBold}>{loginType === 'membership' ? 'ANC-1234567' : '0821234567'}</Text> | Password: <Text style={s.demoHintBold}>123456</Text>
+        </Text>
+      </TouchableOpacity>
+
+      {/* Error Message Pill */}
+      {errorMessage ? (
+        <View style={s.errorPill}>
+          <Icon name="error-outline" size={16} color={Colors.error} />
+          <Text style={s.errorPillText}>{errorMessage}</Text>
+        </View>
+      ) : null}
 
       {/* Dynamic Identifier Input Field */}
       <View style={s.fieldGroup}>
@@ -77,7 +129,7 @@ export default function SignInScreen({ finish }) {
             style={s.input}
             value={identifier}
             onChangeText={setIdentifier}
-            placeholder={loginType === 'membership' ? 'e.g. 12345678' : 'e.g. 082 123 4567'}
+            placeholder={loginType === 'membership' ? 'e.g. ANC-1234567' : 'e.g. 082 123 4567'}
             keyboardType={loginType === 'phone' ? 'phone-pad' : 'default'}
             placeholderTextColor="#97A39A"
           />
@@ -161,11 +213,41 @@ const s = StyleSheet.create({
   welcomeTitle: { fontSize: 28, fontWeight: '900', color: Colors.ink },
   welcomeSub: { fontSize: 13, color: Colors.muted, marginTop: 4 },
 
-  segmentedContainer: { flexDirection: 'row', backgroundColor: Colors.surfaceContainer, borderRadius: 12, padding: 4, marginBottom: 20, borderWidth: 1, borderColor: Colors.surfaceBorder },
+  segmentedContainer: { flexDirection: 'row', backgroundColor: Colors.surfaceContainer, borderRadius: 12, padding: 4, marginBottom: 14, borderWidth: 1, borderColor: Colors.surfaceBorder },
   segmentedBtn: { flex: 1, paddingVertical: 10, alignItems: 'center', borderRadius: 8 },
   segmentedBtnOn: { backgroundColor: Colors.white, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.08, shadowRadius: 3, elevation: 1 },
   segmentedText: { fontSize: 12, fontWeight: '700', color: Colors.muted },
   segmentedTextOn: { color: Colors.ink, fontWeight: '800' },
+
+  demoHintChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#F0F9F2',
+    borderRadius: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderWidth: 1,
+    borderColor: '#C6EAD0',
+    gap: 6,
+    marginBottom: 16,
+  },
+  demoHintText: { fontSize: 11, color: Colors.ink, fontWeight: '600' },
+  demoHintBold: { fontWeight: '900', color: Colors.primary },
+
+  errorPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFF0F0',
+    borderRadius: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderWidth: 1,
+    borderColor: '#FFCACA',
+    gap: 6,
+    marginBottom: 14,
+  },
+  errorPillText: { fontSize: 12, color: Colors.error, fontWeight: '700' },
 
   fieldGroup: { marginBottom: 16 },
   fieldLabel: { fontSize: 12, fontWeight: '800', color: Colors.ink, marginBottom: 6 },
