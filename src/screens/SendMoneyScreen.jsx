@@ -2,19 +2,17 @@ import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Button from '../components/Button';
 import { Icon } from '../components/Icons';
-import Pills from '../components/Pills';
 import YamiFooter from '../components/YamiFooter';
 import { Colors } from '../theme/colors';
 
 const rand = (n) => `R${Number(n || 0).toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
 export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalance, setStepText }) {
-  const [step, setStep] = useState(1); // Step 1 of 3: Select Recipient
+  const [step, setStep] = useState(1); // Step 1: Select Recipient -> Step 2: Enter Amount -> Step 3: Review Transfer
   const [search, setSearch] = useState('');
   const [selectedContactId, setSelectedContactId] = useState('1');
   const [amount, setAmount] = useState('500');
   const [note, setNote] = useState('Branch meeting contribution');
-  const [speed, setSpeed] = useState('instant'); // instant (R5.00 fee)
 
   const contacts = [
     {
@@ -31,7 +29,7 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
       phone: '+27 71 456 7890',
       initials: 'ND',
       isMember: false,
-      bg: '#D0D7D2',
+      bg: '#E0E0E0',
     },
   ];
 
@@ -58,11 +56,11 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
     finish(`Successfully sent ${rand(num)} to ${activeContact.name}.`);
   };
 
-  // STEP 1: SELECT RECIPIENT (Screen 1 in screenshot)
+  // STEP 1: SELECT RECIPIENT (Image 1 in screenshot)
   if (step === 1) {
     return (
       <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
-        {/* Step Indicator Header Bar */}
+        {/* Step Progress Line Bar */}
         <View style={s.stepProgressHeader}>
           <View style={s.progressTrack}>
             <View style={[s.progressSegment, s.segmentActive]} />
@@ -80,7 +78,7 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
           <Icon name="search" size={18} color={Colors.muted} />
           <TextInput
             style={s.searchInputText}
-            placeholder="Search by name, phone number or acc..."
+            placeholder="Search by name, phone number or acc"
             value={search}
             onChangeText={setSearch}
             placeholderTextColor="#8C988F"
@@ -98,7 +96,7 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
           </View>
         </TouchableOpacity>
 
-        {/* RECENT Contacts Section */}
+        {/* RECENT Section */}
         <Text style={s.recentSectionHeader}>RECENT</Text>
 
         <View style={s.contactsStack}>
@@ -113,7 +111,7 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
               >
                 <View style={s.avatarWrapper}>
                   <View style={[s.contactAvatarCircle, { backgroundColor: c.bg }]}>
-                    <Text style={s.contactAvatarText}>{c.initials}</Text>
+                    <Text style={[s.contactAvatarText, !c.isMember && { color: Colors.ink }]}>{c.initials}</Text>
                   </View>
                   {c.isMember && (
                     <View style={s.badgeCheckDot}>
@@ -137,7 +135,7 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
           })}
         </View>
 
-        {/* Bottom Action Button */}
+        {/* Bottom Continue Button */}
         <Button text="Continue" onPress={() => goToStep(2)} />
 
         <YamiFooter />
@@ -145,7 +143,7 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
     );
   }
 
-  // STEP 2: ENTER AMOUNT (Screen 3 in screenshot)
+  // STEP 2: ENTER AMOUNT (Image 2 in screenshot)
   if (step === 2) {
     return (
       <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
@@ -160,7 +158,7 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
           </View>
         </TouchableOpacity>
 
-        {/* Big Amount Display */}
+        {/* Big Amount Display Card */}
         <View style={s.amountDisplayCard}>
           <View style={s.amountInputRow}>
             <Text style={s.currencyPrefix}>R</Text>
@@ -175,8 +173,28 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
           <View style={s.greenUnderline} />
         </View>
 
-        {/* Quick Amount Pills */}
-        <Pills value={amount} setValue={setAmount} options={[50, 100, 200, 500, 1000]} />
+        {/* Quick Amount Pills (4 on top, 1 centered below) */}
+        <View style={s.pillsLayoutContainer}>
+          <View style={s.pillsTopRow}>
+            {['50', '100', '200', '500'].map(val => (
+              <TouchableOpacity
+                key={val}
+                style={[s.pillBtn, amount === val && s.pillBtnSelected]}
+                onPress={() => setAmount(val)}
+                activeOpacity={0.8}
+              >
+                <Text style={[s.pillText, amount === val && s.pillTextSelected]}>R{val}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+          <TouchableOpacity
+            style={[s.pillBtnCenter, amount === '1000' && s.pillBtnSelected]}
+            onPress={() => setAmount('1000')}
+            activeOpacity={0.8}
+          >
+            <Text style={[s.pillText, amount === '1000' && s.pillTextSelected]}>R1,000</Text>
+          </TouchableOpacity>
+        </View>
 
         {/* Transfer Fee & Arrival Card */}
         <View style={s.infoCard}>
@@ -208,12 +226,12 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
     );
   }
 
-  // STEP 3: REVIEW & CONFIRM (Screen 4 in screenshot)
+  // STEP 3: REVIEW & CONFIRM (Image 3 in screenshot)
   return (
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
       <Text style={s.step3Title}>Review Transfer</Text>
 
-      {/* Recipient Card */}
+      {/* Recipient Box */}
       <View style={s.reviewRecipientCard}>
         <View style={s.userIconSquare}>
           <Icon name="person" size={22} color={Colors.primary} />
@@ -246,29 +264,29 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
           <Text style={s.summaryLabel}>Arrival</Text>
           <Text style={s.arrivalVal}>Instant</Text>
         </View>
-      </View>
 
-      {/* Funding Source Card */}
-      <View style={s.fundingCard}>
-        <Text style={s.fundingCardTitle}>Funding Source</Text>
-        <View style={s.fundingRow}>
-          <View style={s.ancIconBox}>
-            <Text style={s.ancIconText}>C</Text>
-          </View>
-          <View style={{ flex: 1, marginLeft: 10 }}>
-            <Text style={s.fundingName}>ANC Member Money</Text>
-            <Text style={s.fundingSub}>Balance: {rand(balance)}</Text>
+        {/* Funding Source inside card */}
+        <View style={s.fundingCard}>
+          <Text style={s.fundingCardTitle}>Funding Source</Text>
+          <View style={s.fundingRow}>
+            <View style={s.ancIconBox}>
+              <Text style={s.ancIconText}>C</Text>
+            </View>
+            <View style={{ flex: 1, marginLeft: 10 }}>
+              <Text style={s.fundingName}>ANC Member Money</Text>
+              <Text style={s.fundingSub}>Balance: {rand(balance)}</Text>
+            </View>
           </View>
         </View>
-      </View>
 
-      {/* Note Display Card */}
-      {note ? (
-        <View style={s.noteDisplayCard}>
-          <Text style={s.noteDisplayLabel}>Note</Text>
-          <Text style={s.noteDisplayText}>“{note}”</Text>
-        </View>
-      ) : null}
+        {/* Note Display inside card */}
+        {note ? (
+          <View style={s.noteDisplayCard}>
+            <Text style={s.noteDisplayLabel}>Note</Text>
+            <Text style={s.noteDisplayText}>“{note}”</Text>
+          </View>
+        ) : null}
+      </View>
 
       {/* Security Footer Line */}
       <View style={s.securityRow}>
@@ -289,7 +307,7 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
 const s = StyleSheet.create({
   content: { padding: 16, paddingBottom: 90, backgroundColor: Colors.background },
 
-  stepProgressHeader: { marginBottom: 16 },
+  stepProgressHeader: { marginBottom: 14 },
   progressTrack: { flexDirection: 'row', gap: 6, marginBottom: 8 },
   progressSegment: { flex: 1, height: 3, backgroundColor: '#E0E0E0', borderRadius: 2 },
   segmentActive: { backgroundColor: Colors.primary },
@@ -415,10 +433,38 @@ const s = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  currencyPrefix: { fontSize: 32, fontWeight: '900', color: Colors.primary, marginRight: 6 },
+  currencyPrefix: { fontSize: 24, fontWeight: '800', color: '#566158', marginRight: 8 },
   amountInput: { fontSize: 44, fontWeight: '900', color: Colors.primary, minWidth: 160, textAlign: 'center' },
   availableSubText: { fontSize: 12, fontWeight: '700', color: Colors.muted, marginTop: 6 },
   greenUnderline: { width: 40, height: 3, backgroundColor: Colors.primary, borderRadius: 2, marginTop: 10 },
+
+  pillsLayoutContainer: { marginBottom: 16 },
+  pillsTopRow: { flexDirection: 'row', gap: 8, marginBottom: 8 },
+  pillBtn: {
+    flex: 1,
+    backgroundColor: Colors.white,
+    borderWidth: 1,
+    borderColor: Colors.surfaceBorder,
+    borderRadius: 10,
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+  pillBtnCenter: {
+    width: '48%',
+    alignSelf: 'center',
+    backgroundColor: Colors.white,
+    borderWidth: 1,
+    borderColor: Colors.surfaceBorder,
+    borderRadius: 10,
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+  pillBtnSelected: {
+    backgroundColor: Colors.primary,
+    borderColor: Colors.primary,
+  },
+  pillText: { fontSize: 13, fontWeight: '800', color: Colors.ink },
+  pillTextSelected: { color: Colors.white },
 
   infoCard: {
     backgroundColor: '#F7F8F7',
@@ -481,20 +527,22 @@ const s = StyleSheet.create({
   arrivalLine: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 12,
-    paddingTop: 12,
+    marginTop: 10,
+    paddingTop: 10,
     borderTopWidth: 1,
     borderTopColor: Colors.line,
+    marginBottom: 12,
   },
   arrivalVal: { fontSize: 13, fontWeight: '800', color: Colors.ink },
 
   fundingCard: {
     backgroundColor: '#F7F8F7',
-    borderRadius: 14,
-    padding: 14,
-    marginBottom: 14,
+    borderRadius: 12,
+    padding: 12,
+    marginTop: 10,
+    marginBottom: 10,
   },
-  fundingCardTitle: { fontSize: 11, fontWeight: '800', color: Colors.muted, letterSpacing: 0.8, marginBottom: 8 },
+  fundingCardTitle: { fontSize: 11, fontWeight: '800', color: Colors.muted, letterSpacing: 0.8, marginBottom: 6 },
   fundingRow: { flexDirection: 'row', alignItems: 'center' },
   ancIconBox: { width: 32, height: 32, borderRadius: 6, backgroundColor: Colors.primary, alignItems: 'center', justifyContent: 'center' },
   ancIconText: { fontSize: 14, fontWeight: '900', color: '#FECC00' },
@@ -502,12 +550,10 @@ const s = StyleSheet.create({
   fundingSub: { fontSize: 11, color: Colors.muted, marginTop: 1 },
 
   noteDisplayCard: {
-    backgroundColor: Colors.white,
+    backgroundColor: '#F7F8F7',
     borderRadius: 12,
-    padding: 14,
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-    marginBottom: 16,
+    padding: 12,
+    marginTop: 6,
   },
   noteDisplayLabel: { fontSize: 11, fontWeight: '800', color: Colors.muted, marginBottom: 4 },
   noteDisplayText: { fontSize: 13, fontWeight: '700', color: Colors.ink, fontStyle: 'italic' },

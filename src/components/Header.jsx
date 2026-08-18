@@ -12,7 +12,7 @@ export default function Header({ screen, onBack, onOpenMenu, onOpenNotifications
         </TouchableOpacity>
 
         <View style={s.headerCenter}>
-          <Text style={s.headerTitle}>{getScreenTitle(screen)}</Text>
+          <Text style={s.headerTitle}>{getScreenTitle(screen, stepText)}</Text>
           {stepText ? <Text style={s.stepSub}>{stepText}</Text> : null}
         </View>
 
@@ -37,8 +37,11 @@ export default function Header({ screen, onBack, onOpenMenu, onOpenNotifications
   );
 }
 
-function getScreenTitle(screen) {
-  if (screen === 'send') return 'Send Money';
+function getScreenTitle(screen, stepText) {
+  if (screen === 'send') {
+    if (stepText === 'STEP 3 OF 3') return 'ANC UNITY';
+    return 'Send Money';
+  }
   if (screen === 'services') return 'Pay Services';
   if (screen === 'donate') return 'Donate';
   if (screen === 'membership') return 'Membership';
