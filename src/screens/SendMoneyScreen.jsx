@@ -39,12 +39,14 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
   const fee = 5.00;
   const totalToSend = (parseFloat(amount) || 0) + fee;
 
+  React.useEffect(() => {
+    if (setStepText) setStepText(`STEP ${step} OF 3`);
+  }, [step]);
+
   const goToStep = (n) => {
     setStep(n);
     if (setStepText) {
-      if (n === 1) setStepText('STEP 1 OF 3');
-      if (n === 2) setStepText('STEP 2 OF 3');
-      if (n === 3) setStepText('STEP 3 OF 3');
+      setStepText(`STEP ${n} OF 3`);
     }
   };
 
