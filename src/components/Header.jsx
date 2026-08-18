@@ -64,7 +64,13 @@ const s = StyleSheet.create({
   headerCenter: { alignItems: 'center' },
   headerTitle: { fontSize: 16, fontWeight: '800', color: Colors.primary },
   stepSub: { fontSize: 10, color: Colors.muted, fontWeight: '700', letterSpacing: 0.8, marginTop: 1 },
-  headerIconBtn: { padding: 6, position: 'relative' },
+  headerIconBtn: {
+    width: 44,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+  },
   headerBackBtn: {
     width: 36,
     height: 36,

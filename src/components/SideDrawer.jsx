@@ -86,9 +86,15 @@ export default function SideDrawer({ visible, onClose, onNavigate, onSignOut }) 
 
 const s = StyleSheet.create({
   overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.65)',
     flexDirection: 'row',
+    zIndex: 9999,
+    elevation: 9999,
   },
   scrim: {
     flex: 1,
@@ -100,10 +106,10 @@ const s = StyleSheet.create({
     height: '100%',
     shadowColor: '#000',
     shadowOffset: { width: -4, height: 0 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.35,
     shadowRadius: 16,
     elevation: 20,
-    justify: 'space-between',
+    justifyContent: 'space-between',
   },
   drawerHeader: {
     backgroundColor: Colors.primary,
