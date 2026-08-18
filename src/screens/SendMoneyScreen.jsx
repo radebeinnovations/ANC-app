@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Button from '../components/Button';
+import Field from '../components/Field';
 import { Icon } from '../components/Icons';
 import YamiFooter from '../components/YamiFooter';
 import { Colors } from '../theme/colors';
@@ -14,7 +15,8 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
   const [amount, setAmount] = useState('500');
   const [note, setNote] = useState('Branch meeting contribution');
 
-  const contacts = [
+  // Dynamic Contacts State
+  const [contacts, setContacts] = useState([
     {
       id: '1',
       name: 'Thabo Mokoena',
@@ -31,7 +33,13 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
       isMember: false,
       bg: '#E0E0E0',
     },
-  ];
+  ]);
+
+  // Enter Details Manually Modal State
+  const [showManualModal, setShowManualModal] = useState(false);
+  const [manualName, setManualName] = useState('');
+  const [manualPhone, setManualPhone] = useState('');
+  const [manualIsMember, setManualIsMember] = useState(true);
 
   const activeContact = contacts.find(c => c.id === selectedContactId) || contacts[0];
   const fee = 5.00;
@@ -39,13 +47,41 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
 
   React.useEffect(() => {
     if (setStepText) setStepText(`STEP ${step} OF 3`);
-  }, [step]);
+  }, [step, setStepText]);
 
   const goToStep = (n) => {
     setStep(n);
     if (setStepText) {
       setStepText(`STEP ${n} OF 3`);
     }
+  };
+
+  const handleSaveManualContact = () => {
+    if (!manualName.trim()) return;
+
+    const initials = manualName
+      .trim()
+      .split(' ')
+      .map(w => w[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+
+    const newContact = {
+      id: String(Date.now()),
+      name: manualName.trim(),
+      phone: manualPhone.trim() || '+27 82 000 0000',
+      initials: initials || 'RN',
+      isMember: manualIsMember,
+      bg: manualIsMember ? '#006933' : '#3E4A3F',
+    };
+
+    setContacts([newContact, ...contacts]);
+    setSelectedContactId(newContact.id);
+    setShowManualModal(false);
+    setManualName('');
+    setManualPhone('');
+    goToStep(2); // Automatically proceed to Step 2: Enter Amount with new contact
   };
 
   const handleConfirmSend = () => {
@@ -56,18 +92,23 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
     finish(`Successfully sent ${rand(num)} to ${activeContact.name}.`);
   };
 
+  // Filter contacts by search query
+  const filteredContacts = contacts.filter(c =>
+    c.name.toLowerCase().includes(search.toLowerCase()) ||
+    c.phone.includes(search)
+  );
+
   // STEP 1: SELECT RECIPIENT (Image 1 in screenshot)
   if (step === 1) {
     return (
       <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
-        {/* Step Progress Line Bar */}
+        {/* Step Progress Line Bar (No duplicate STEP 1 OF 3 text) */}
         <View style={s.stepProgressHeader}>
           <View style={s.progressTrack}>
             <View style={[s.progressSegment, s.segmentActive]} />
             <View style={s.progressSegment} />
             <View style={s.progressSegment} />
           </View>
-          <Text style={s.stepSubTitle}>STEP 1 OF 3</Text>
         </View>
 
         {/* Title */}
@@ -85,8 +126,8 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
           />
         </View>
 
-        {/* Enter Details Manually Card */}
-        <TouchableOpacity style={s.manualCard} activeOpacity={0.8}>
+        {/* Enter Details Manually Card (Opens Modal) */}
+        <TouchableOpacity style={s.manualCard} onPress={() => setShowManualModal(true)} activeOpacity={0.8}>
           <View style={s.manualPlusIconBox}>
             <Text style={s.manualPlusText}>＋</Text>
           </View>
@@ -94,13 +135,14 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
             <Text style={s.manualCardTitle}>Enter details manually</Text>
             <Text style={s.manualCardSub}>Send to a new contact</Text>
           </View>
+          <Icon name="chevron-right" size={18} color="#9E9E9E" />
         </TouchableOpacity>
 
         {/* RECENT Section */}
         <Text style={s.recentSectionHeader}>RECENT</Text>
 
         <View style={s.contactsStack}>
-          {contacts.map(c => {
+          {filteredContacts.map(c => {
             const isSelected = selectedContactId === c.id;
             return (
               <TouchableOpacity
@@ -139,6 +181,44 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
         <Button text="Continue" onPress={() => goToStep(2)} />
 
         <YamiFooter />
+
+        {/* ENTER DETAILS MANUALLY MODAL */}
+        <Modal visible={showManualModal} animationType="slide" transparent>
+          <View style={s.modalBackdrop}>
+            <View style={s.modalCard}>
+              <View style={s.modalHeader}>
+                <Text style={s.modalTitle}>Enter Recipient Details</Text>
+                <TouchableOpacity onPress={() => setShowManualModal(false)}>
+                  <Text style={{ fontSize: 18, fontWeight: '800', color: Colors.muted }}>✕</Text>
+                </TouchableOpacity>
+              </View>
+              <Text style={s.modalSub}>Enter the name and phone number of the new recipient.</Text>
+
+              <Field
+                label="FULL NAME"
+                value={manualName}
+                onChangeText={setManualName}
+                placeholder="e.g. Sipho Mandela"
+              />
+
+              <Field
+                label="MOBILE / PHONE NUMBER OR ANC ID"
+                value={manualPhone}
+                onChangeText={setManualPhone}
+                placeholder="e.g. +27 83 123 4567 or ANC-987654"
+                keyboardType="phone-pad"
+              />
+
+              {/* ANC Member Toggle */}
+              <TouchableOpacity style={s.memberToggleRow} onPress={() => setManualIsMember(!manualIsMember)} activeOpacity={0.8}>
+                <Icon name={manualIsMember ? "check-box" : "check-box-outline-blank"} size={20} color={Colors.primary} />
+                <Text style={s.memberToggleText}>This recipient is a registered ANC Member</Text>
+              </TouchableOpacity>
+
+              <Button text="Save & Select Recipient" onPress={handleSaveManualContact} disabled={!manualName.trim()} />
+            </View>
+          </View>
+        </Modal>
       </ScrollView>
     );
   }
@@ -156,6 +236,7 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
             <Text style={s.recipientName}>{activeContact.name}</Text>
             <Text style={s.recipientPhone}>{activeContact.phone}</Text>
           </View>
+          <Text style={s.changeText}>Change</Text>
         </TouchableOpacity>
 
         {/* Big Amount Display Card */}
@@ -308,12 +389,11 @@ const s = StyleSheet.create({
   content: { padding: 16, paddingBottom: 90, backgroundColor: Colors.background },
 
   stepProgressHeader: { marginBottom: 14 },
-  progressTrack: { flexDirection: 'row', gap: 6, marginBottom: 8 },
+  progressTrack: { flexDirection: 'row', gap: 6 },
   progressSegment: { flex: 1, height: 3, backgroundColor: '#E0E0E0', borderRadius: 2 },
   segmentActive: { backgroundColor: Colors.primary },
-  stepSubTitle: { fontSize: 10, fontWeight: '800', color: Colors.muted, letterSpacing: 0.8 },
 
-  pageHeadline: { fontSize: 22, fontWeight: '900', color: Colors.ink, marginBottom: 14 },
+  pageHeadline: { fontSize: 22, fontWeight: '900', color: Colors.ink, marginBottom: 14, marginTop: 10 },
 
   searchContainer: {
     flexDirection: 'row',
@@ -417,6 +497,7 @@ const s = StyleSheet.create({
   sendingToLabel: { fontSize: 11, color: Colors.muted, fontWeight: '600' },
   recipientName: { fontSize: 15, fontWeight: '800', color: Colors.ink },
   recipientPhone: { fontSize: 12, color: Colors.muted, marginTop: 1 },
+  changeText: { fontSize: 12, fontWeight: '800', color: Colors.primary },
 
   amountDisplayCard: {
     backgroundColor: Colors.white,
@@ -570,4 +651,13 @@ const s = StyleSheet.create({
     marginTop: 10,
   },
   editBtnText: { color: Colors.primary, fontWeight: '800', fontSize: 14 },
+
+  modalBackdrop: { flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.55)', justifyContent: 'flex-end' },
+  modalCard: { backgroundColor: Colors.white, borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20 },
+  modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  modalTitle: { fontSize: 18, fontWeight: '900', color: Colors.ink },
+  modalSub: { fontSize: 12, color: Colors.muted, marginTop: 4, marginBottom: 14 },
+
+  memberToggleRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginVertical: 12 },
+  memberToggleText: { fontSize: 12, fontWeight: '700', color: Colors.ink },
 });
