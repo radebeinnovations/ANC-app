@@ -268,14 +268,15 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
           </View>
         </View>
 
-        {/* Perfectly Centered Amount Display (Clean 100% bounds) */}
-        <View style={s.amountCenterWrapper}>
-          <Text style={s.amountGreenR}>R</Text>
+        {/* Perfectly Centered Amount Display (Strict Web Width Bounds) */}
+        <View style={s.amountContainerWebFlex}>
+          <Text style={s.amountGreenRText}>R</Text>
           <TextInput
-            style={s.amountInputWebFixed}
+            style={s.amountTextInputWeb}
             value={amount}
             onChangeText={setAmount}
             keyboardType="decimal-pad"
+            maxLength={8}
           />
         </View>
 
@@ -477,18 +478,17 @@ const s = StyleSheet.create({
   availBalLabel: { fontSize: 11, color: '#4A5568', fontWeight: '700' },
   availBalVal: { fontSize: 18, fontWeight: '900', color: '#1A1C1C', marginTop: 1 },
 
-  amountCenterWrapper: {
+  amountContainerWebFlex: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
     marginVertical: 18,
-    paddingHorizontal: 16,
     width: '100%',
   },
-  amountGreenR: { fontSize: 36, fontWeight: '900', color: '#006933', marginRight: 6 },
-  amountInputWebFixed: {
-    fontSize: 44,
+  amountGreenRText: { fontSize: 34, fontWeight: '900', color: '#006933', marginRight: 8 },
+  amountTextInputWeb: {
+    fontSize: 42,
     fontWeight: '900',
     color: '#1A1C1C',
     borderWidth: 0,
@@ -497,6 +497,7 @@ const s = StyleSheet.create({
     textAlign: 'left',
     padding: 0,
     margin: 0,
+    width: 160,
   },
 
   quickPillsRow: { flexDirection: 'row', justifyContent: 'center', gap: 10, marginBottom: 24 },
