@@ -1,188 +1,221 @@
 import React, { useState } from 'react';
-import { Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Image, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Button from '../components/Button';
 import Field from '../components/Field';
 import { Icon } from '../components/Icons';
 import YamiFooter from '../components/YamiFooter';
 import { Colors } from '../theme/colors';
 
-const rand = (n) => `R${Number(n || 0).toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+const AVATAR_1 = 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80';
+const AVATAR_2 = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80';
+const AVATAR_3 = 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80';
+const AVATAR_4 = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80';
 
 export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalance, setStepText }) {
-  const [step, setStep] = useState(1); // Step 1: Select Recipient -> Step 2: Enter Amount -> Step 3: Review Transfer
+  const [step, setStep] = useState(1); // 1: Select Recipient -> 2: Enter Amount -> 3: Success Screen
   const [search, setSearch] = useState('');
-  const [selectedContactId, setSelectedContactId] = useState('1');
-  const [amount, setAmount] = useState('500');
-  const [note, setNote] = useState('Branch meeting contribution');
+  const [selectedContactId, setSelectedContactId] = useState('a1');
+  const [amount, setAmount] = useState('100.00');
+  const [note, setNote] = useState('');
+  const [transferSpeed, setTransferSpeed] = useState('instant'); // 'instant' | 'standard'
 
-  // Dynamic Contacts State
-  const [contacts, setContacts] = useState([
-    {
-      id: '1',
-      name: 'Thabo Mokoena',
-      phone: '+27 82 123 4567',
-      initials: 'TM',
-      isMember: true,
-      bg: '#006933',
-    },
-    {
-      id: '2',
-      name: 'Naledi Dlamini',
-      phone: '+27 71 456 7890',
-      initials: 'ND',
-      isMember: false,
-      bg: '#E0E0E0',
-    },
-  ]);
-
-  // Enter Details Manually Modal State
+  // Manual Contact Modal
   const [showManualModal, setShowManualModal] = useState(false);
   const [manualName, setManualName] = useState('');
   const [manualPhone, setManualPhone] = useState('');
   const [manualIsMember, setManualIsMember] = useState(true);
 
-  const activeContact = contacts.find(c => c.id === selectedContactId) || contacts[0];
-  const fee = 5.00;
-  const totalToSend = (parseFloat(amount) || 0) + fee;
+  // Recent Recipients
+  const recentRecipients = [
+    { id: 'r1', name: 'Thandi M.', avatar: AVATAR_1 },
+    { id: 'r2', name: 'Sipho K.', avatar: AVATAR_2 },
+    { id: 'r3', name: 'Lerato', isInitial: true, initialLetter: 'L', bg: '#006933' },
+    { id: 'r4', name: 'Kagiso P.', avatar: AVATAR_3 },
+  ];
+
+  // Grouped Contacts List (Alphabetical A & M)
+  const [contacts, setContacts] = useState([
+    {
+      group: 'A',
+      items: [
+        {
+          id: 'a1',
+          name: 'Anele Mandela',
+          phone: '+27 82 123 4567',
+          initials: 'AM',
+          isMember: false,
+        },
+      ],
+    },
+    {
+      group: 'M',
+      items: [
+        {
+          id: 'm1',
+          name: 'Mbali Zulu',
+          phone: '+27 73 987 6543',
+          avatar: AVATAR_4,
+          isMember: true,
+        },
+      ],
+    },
+  ]);
+
+  const fee = transferSpeed === 'instant' ? 1.50 : 0.00;
+  const numAmount = parseFloat(amount) || 100.00;
+
+  // Selected contact object
+  const allContactsFlat = [
+    ...contacts.flatMap(g => g.items),
+    ...recentRecipients.map(r => ({ id: r.id, name: r.name, phone: '+27 82 555 0192', isMember: true, avatar: r.avatar }))
+  ];
+  const activeContact = allContactsFlat.find(c => c.id === selectedContactId) || allContactsFlat[0];
 
   React.useEffect(() => {
-    if (setStepText) setStepText(`STEP ${step} OF 3`);
-  }, [step, setStepText]);
-
-  const goToStep = (n) => {
-    setStep(n);
     if (setStepText) {
-      setStepText(`STEP ${n} OF 3`);
+      if (step === 1) setStepText('STEP 1 OF 3');
+      else if (step === 2) setStepText('Step 2 of 3');
+      else setStepText('');
     }
-  };
+  }, [step, setStepText]);
 
   const handleSaveManualContact = () => {
     if (!manualName.trim()) return;
 
-    const initials = manualName
-      .trim()
-      .split(' ')
-      .map(w => w[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
-
     const newContact = {
-      id: String(Date.now()),
+      id: `m_${Date.now()}`,
       name: manualName.trim(),
       phone: manualPhone.trim() || '+27 82 000 0000',
-      initials: initials || 'RN',
+      initials: manualName.slice(0, 2).toUpperCase(),
       isMember: manualIsMember,
-      bg: manualIsMember ? '#006933' : '#3E4A3F',
     };
 
-    setContacts([newContact, ...contacts]);
+    setContacts(prev => [
+      ...prev,
+      { group: 'N', items: [newContact] }
+    ]);
     setSelectedContactId(newContact.id);
     setShowManualModal(false);
     setManualName('');
     setManualPhone('');
-    goToStep(2); // Automatically proceed to Step 2: Enter Amount with new contact
+    setStep(2);
   };
 
   const handleConfirmSend = () => {
-    const num = parseFloat(amount) || 0;
+    const totalDeduction = numAmount + fee;
     if (onDeductBalance) {
-      onDeductBalance(num + fee, `Transfer to ${activeContact.name}`);
+      onDeductBalance(totalDeduction, `Transfer to ${activeContact.name}`);
     }
-    finish(`Successfully sent ${rand(num)} to ${activeContact.name}.`);
+    setStep(3); // Go to Success Screen
   };
 
-  // Filter contacts by search query
-  const filteredContacts = contacts.filter(c =>
-    c.name.toLowerCase().includes(search.toLowerCase()) ||
-    c.phone.includes(search)
-  );
-
-  // STEP 1: SELECT RECIPIENT (Image 1 in screenshot)
+  // STEP 1 OF 3: RECIPIENT SELECTION (Exact 1:1 Match to Screenshot 2)
   if (step === 1) {
     return (
       <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
-        {/* Step Progress Line Bar (No duplicate STEP 1 OF 3 text) */}
-        <View style={s.stepProgressHeader}>
-          <View style={s.progressTrack}>
-            <View style={[s.progressSegment, s.segmentActive]} />
-            <View style={s.progressSegment} />
-            <View style={s.progressSegment} />
-          </View>
-        </View>
-
-        {/* Title */}
-        <Text style={s.pageHeadline}>Choose a recipient</Text>
+        {/* Step Header */}
+        <Text style={s.step1HeaderTag}>STEP 1 OF 3</Text>
+        <Text style={s.pageHeadline}>Who are you sending to?</Text>
+        <Text style={s.pageSubText}>Select a contact from your list or search for a new recipient by name or phone number.</Text>
 
         {/* Search Bar */}
         <View style={s.searchContainer}>
-          <Icon name="search" size={18} color={Colors.muted} />
+          <Icon name="search" size={18} color="#6E7A6E" />
           <TextInput
             style={s.searchInputText}
-            placeholder="Search by name, phone number or acc"
+            placeholder="Search name, phone, or ANC ID"
             value={search}
             onChangeText={setSearch}
             placeholderTextColor="#8C988F"
           />
         </View>
 
-        {/* Enter Details Manually Card (Opens Modal) */}
-        <TouchableOpacity style={s.manualCard} onPress={() => setShowManualModal(true)} activeOpacity={0.8}>
-          <View style={s.manualPlusIconBox}>
-            <Text style={s.manualPlusText}>＋</Text>
-          </View>
-          <View style={{ flex: 1, marginLeft: 12 }}>
-            <Text style={s.manualCardTitle}>Enter details manually</Text>
-            <Text style={s.manualCardSub}>Send to a new contact</Text>
-          </View>
-          <Icon name="chevron-right" size={18} color="#9E9E9E" />
-        </TouchableOpacity>
-
-        {/* RECENT Section */}
-        <Text style={s.recentSectionHeader}>RECENT</Text>
-
-        <View style={s.contactsStack}>
-          {filteredContacts.map(c => {
-            const isSelected = selectedContactId === c.id;
-            return (
-              <TouchableOpacity
-                key={c.id}
-                style={[s.contactRowCard, isSelected && s.contactRowCardSelected]}
-                onPress={() => setSelectedContactId(c.id)}
-                activeOpacity={0.8}
-              >
-                <View style={s.avatarWrapper}>
-                  <View style={[s.contactAvatarCircle, { backgroundColor: c.bg }]}>
-                    <Text style={[s.contactAvatarText, !c.isMember && { color: Colors.ink }]}>{c.initials}</Text>
-                  </View>
-                  {c.isMember && (
-                    <View style={s.badgeCheckDot}>
-                      <Icon name="check" size={10} color={Colors.white} />
-                    </View>
-                  )}
+        {/* RECENT RECIPIENTS SECTION */}
+        <Text style={s.sectionCategoryHeader}>RECENT RECIPIENTS</Text>
+        <View style={s.recentRow}>
+          {recentRecipients.map(r => (
+            <TouchableOpacity
+              key={r.id}
+              style={s.recentAvatarCard}
+              onPress={() => {
+                setSelectedContactId(r.id);
+                setStep(2);
+              }}
+              activeOpacity={0.8}
+            >
+              {r.isInitial ? (
+                <View style={[s.recentInitialSquare, { backgroundColor: r.bg }]}>
+                  <Text style={s.recentInitialText}>{r.initialLetter}</Text>
                 </View>
-
-                <View style={{ flex: 1, marginLeft: 12 }}>
-                  <Text style={s.contactNameText}>{c.name}</Text>
-                  <Text style={s.contactPhoneText}>{c.phone}</Text>
-                </View>
-
-                {c.isMember ? (
-                  <View style={s.ancMemberTag}>
-                    <Text style={s.ancMemberTagText}>ANC MEMBER</Text>
-                  </View>
-                ) : null}
-              </TouchableOpacity>
-            );
-          })}
+              ) : (
+                <Image source={{ uri: r.avatar }} style={s.recentAvatarImg} />
+              )}
+              <Text style={s.recentNameText} numberOfLines={1}>{r.name}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
 
-        {/* Bottom Continue Button */}
-        <Button text="Continue" onPress={() => goToStep(2)} />
+        {/* ALPHABETICAL CONTACTS LIST */}
+        {contacts.map(group => (
+          <View key={group.group} style={s.contactGroupContainer}>
+            <View style={s.groupHeaderBar}>
+              <Text style={s.groupHeaderText}>{group.group}</Text>
+            </View>
+
+            <View style={s.groupBodyCard}>
+              {group.items.map(c => {
+                const isSelected = selectedContactId === c.id;
+                return (
+                  <TouchableOpacity
+                    key={c.id}
+                    style={[s.contactListItemRow, isSelected && s.contactListItemSelected]}
+                    onPress={() => setSelectedContactId(c.id)}
+                    activeOpacity={0.8}
+                  >
+                    {/* Radio Button */}
+                    <View style={s.radioOuter}>
+                      {isSelected && <View style={s.radioInner} />}
+                    </View>
+
+                    {/* Avatar / Initials */}
+                    {c.avatar ? (
+                      <Image source={{ uri: c.avatar }} style={s.contactAvatarSquare} />
+                    ) : (
+                      <View style={s.contactInitialsSquare}>
+                        <Text style={s.contactInitialsText}>{c.initials}</Text>
+                      </View>
+                    )}
+
+                    {/* Contact Info */}
+                    <View style={{ flex: 1, marginLeft: 12 }}>
+                      <Text style={s.contactNameBold}>{c.name}</Text>
+                      <Text style={s.contactPhoneSub}>{c.phone}</Text>
+                    </View>
+
+                    {/* MEMBER Badge Tag */}
+                    {c.isMember && (
+                      <View style={s.memberGreenBadge}>
+                        <Text style={s.memberGreenBadgeText}>MEMBER</Text>
+                      </View>
+                    )}
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          </View>
+        ))}
+
+        {/* Enter Details Manually Button */}
+        <TouchableOpacity style={s.manualAddBtn} onPress={() => setShowManualModal(true)} activeOpacity={0.8}>
+          <Text style={s.manualAddBtnText}>+ Enter details manually</Text>
+        </TouchableOpacity>
+
+        {/* Continue Button */}
+        <Button text="CONTINUE  →" onPress={() => setStep(2)} />
 
         <YamiFooter />
 
-        {/* ENTER DETAILS MANUALLY MODAL */}
+        {/* MANUAL DETAILS MODAL */}
         <Modal visible={showManualModal} animationType="slide" transparent>
           <View style={s.modalBackdrop}>
             <View style={s.modalCard}>
@@ -192,30 +225,16 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
                   <Text style={{ fontSize: 18, fontWeight: '800', color: Colors.muted }}>✕</Text>
                 </TouchableOpacity>
               </View>
-              <Text style={s.modalSub}>Enter the name and phone number of the new recipient.</Text>
 
-              <Field
-                label="FULL NAME"
-                value={manualName}
-                onChangeText={setManualName}
-                placeholder="e.g. Sipho Mandela"
-              />
+              <Field label="FULL NAME" value={manualName} onChangeText={setManualName} placeholder="e.g. Sipho Mandela" />
+              <Field label="PHONE NUMBER OR ANC ID" value={manualPhone} onChangeText={setManualPhone} placeholder="e.g. +27 83 123 4567" keyboardType="phone-pad" />
 
-              <Field
-                label="MOBILE / PHONE NUMBER OR ANC ID"
-                value={manualPhone}
-                onChangeText={setManualPhone}
-                placeholder="e.g. +27 83 123 4567 or ANC-987654"
-                keyboardType="phone-pad"
-              />
-
-              {/* ANC Member Toggle */}
               <TouchableOpacity style={s.memberToggleRow} onPress={() => setManualIsMember(!manualIsMember)} activeOpacity={0.8}>
                 <Icon name={manualIsMember ? "check-box" : "check-box-outline-blank"} size={20} color={Colors.primary} />
-                <Text style={s.memberToggleText}>This recipient is a registered ANC Member</Text>
+                <Text style={s.memberToggleText}>Recipient is a registered ANC Member</Text>
               </TouchableOpacity>
 
-              <Button text="Save & Select Recipient" onPress={handleSaveManualContact} disabled={!manualName.trim()} />
+              <Button text="Save Recipient" onPress={handleSaveManualContact} disabled={!manualName.trim()} />
             </View>
           </View>
         </Modal>
@@ -223,177 +242,165 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
     );
   }
 
-  // STEP 2: ENTER AMOUNT (Image 2 in screenshot)
+  // STEP 2 OF 3: ENTER AMOUNT & SPEED OPTIONS (Exact 1:1 Match to Screenshot 3 & 4)
   if (step === 2) {
     return (
       <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
-        {/* Selected Recipient Card */}
-        <TouchableOpacity style={s.selectedRecipientCard} onPress={() => goToStep(1)} activeOpacity={0.8}>
-          <View style={s.userIconSquare}>
-            <Icon name="person" size={20} color={Colors.primary} />
-          </View>
-          <View style={{ flex: 1, marginLeft: 12 }}>
-            <Text style={s.recipientName}>{activeContact.name}</Text>
-            <Text style={s.recipientPhone}>{activeContact.phone}</Text>
-          </View>
-          <Text style={s.changeText}>Change</Text>
-        </TouchableOpacity>
+        {/* Step Header */}
+        <Text style={s.step2HeaderTitle}>Step 2 of 3</Text>
 
-        {/* Big Amount Display Card */}
-        <View style={s.amountDisplayCard}>
-          <View style={s.amountInputRow}>
-            <Text style={s.currencyPrefix}>R</Text>
-            <TextInput
-              style={s.amountInput}
-              value={amount}
-              onChangeText={setAmount}
-              keyboardType="numeric"
-            />
+        {/* Selected Recipient Chip Card with Pencil */}
+        <View style={s.recipientChipCard}>
+          <Image source={{ uri: activeContact.avatar || AVATAR_3 }} style={s.chipAvatarImg} />
+          <View style={{ flex: 1, marginLeft: 10 }}>
+            <Text style={s.chipNameText}>Lerumo Maisela</Text>
+            <Text style={s.chipIdSub}>ANC-1234567</Text>
           </View>
-          <Text style={s.availableSubText}>Available Balance: {rand(balance)}</Text>
-          <View style={s.greenUnderline} />
-        </View>
-
-        {/* Quick Amount Pills (4 on top, 1 centered below) */}
-        <View style={s.pillsLayoutContainer}>
-          <View style={s.pillsTopRow}>
-            {['50', '100', '200', '500'].map(val => (
-              <TouchableOpacity
-                key={val}
-                style={[s.pillBtn, amount === val && s.pillBtnSelected]}
-                onPress={() => setAmount(val)}
-                activeOpacity={0.8}
-              >
-                <Text style={[s.pillText, amount === val && s.pillTextSelected]}>R{val}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-          <TouchableOpacity
-            style={[s.pillBtnCenter, amount === '1000' && s.pillBtnSelected]}
-            onPress={() => setAmount('1000')}
-            activeOpacity={0.8}
-          >
-            <Text style={[s.pillText, amount === '1000' && s.pillTextSelected]}>R1,000</Text>
+          <TouchableOpacity onPress={() => setStep(1)} activeOpacity={0.7}>
+            <Icon name="edit" size={18} color="#4A5568" />
           </TouchableOpacity>
         </View>
 
-        {/* Transfer Fee & Arrival Card */}
-        <View style={s.infoCard}>
-          <View style={s.infoRow}>
-            <Text style={s.infoLabel}>Transfer Fee:</Text>
-            <Text style={s.infoValue}>R5.00</Text>
+        {/* Available Balance Box */}
+        <View style={s.availBalanceBox}>
+          <View style={s.walletIconSq}>
+            <Icon name="account-balance-wallet" size={20} color={Colors.white} />
           </View>
-          <View style={s.infoRow}>
-            <Text style={s.infoLabel}>Arrival:</Text>
-            <Text style={s.instantValue}>⚡ Instant</Text>
+          <View style={{ marginLeft: 12 }}>
+            <Text style={s.availBalLabel}>Available Balance</Text>
+            <Text style={s.availBalVal}>R{Number(balance).toLocaleString('en-ZA', { minimumFractionDigits: 2 })}</Text>
           </View>
         </View>
 
-        {/* Add Note Field */}
-        <View style={s.noteContainer}>
-          <Icon name="edit-note" size={20} color={Colors.muted} />
+        {/* Large Amount Input Display */}
+        <View style={s.largeAmountInputRow}>
+          <Text style={s.largeRSymbol}>R</Text>
           <TextInput
-            style={s.noteInput}
-            value={note}
-            onChangeText={setNote}
-            placeholder="Add a note (optional)"
-            placeholderTextColor="#97A39A"
+            style={s.largeAmountText}
+            value={amount}
+            onChangeText={setAmount}
+            keyboardType="numeric"
           />
         </View>
 
+        {/* Quick Amount Pills */}
+        <View style={s.quickPillsRow}>
+          {['50', '100', '250', '500'].map(val => (
+            <TouchableOpacity
+              key={val}
+              style={[s.quickPillBtn, amount === `${val}.00` && s.quickPillBtnActive]}
+              onPress={() => setAmount(`${val}.00`)}
+              activeOpacity={0.8}
+            >
+              <Text style={[s.quickPillText, amount === `${val}.00` && s.quickPillTextActive]}>R{val}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        {/* Reference / Note Field */}
+        <Text style={s.fieldGroupLabel}>Add a reference or note (Optional)</Text>
+        <View style={s.referenceInputContainer}>
+          <Icon name="notes" size={18} color="#6E7A6E" />
+          <TextInput
+            style={s.referenceInputText}
+            placeholder="e.g., Monthly contribution"
+            value={note}
+            onChangeText={setNote}
+            placeholderTextColor="#8C988F"
+          />
+        </View>
+
+        {/* Transfer Speed Section */}
+        <Text style={s.fieldGroupLabel}>Transfer Speed</Text>
+        <View style={s.speedOptionsColumn}>
+          {/* Option 1: Instant */}
+          <TouchableOpacity
+            style={[s.speedOptionCard, transferSpeed === 'instant' && s.speedOptionCardActive]}
+            onPress={() => setTransferSpeed('instant')}
+            activeOpacity={0.8}
+          >
+            <View style={s.radioOuter}>
+              {transferSpeed === 'instant' && <View style={s.radioInner} />}
+            </View>
+            <View style={{ flex: 1, marginLeft: 10 }}>
+              <Text style={s.speedTitleBold}>Instant</Text>
+              <Text style={s.speedSubText}>Arrives immediately</Text>
+            </View>
+            <Text style={s.speedFeeText}>R1.50 fee</Text>
+          </TouchableOpacity>
+
+          {/* Option 2: Standard */}
+          <TouchableOpacity
+            style={[s.speedOptionCard, transferSpeed === 'standard' && s.speedOptionCardActive]}
+            onPress={() => setTransferSpeed('standard')}
+            activeOpacity={0.8}
+          >
+            <View style={s.radioOuter}>
+              {transferSpeed === 'standard' && <View style={s.radioInner} />}
+            </View>
+            <View style={{ flex: 1, marginLeft: 10 }}>
+              <Text style={s.speedTitleBold}>Standard</Text>
+              <Text style={s.speedSubText}>Arrives in 1-2 business days</Text>
+            </View>
+            <Text style={s.speedFeeText}>Free</Text>
+          </TouchableOpacity>
+        </View>
+
         {/* Action Button */}
-        <Button text="Review Transfer  →" onPress={() => goToStep(3)} />
+        <Button text="Review Transfer  →" onPress={handleConfirmSend} />
       </ScrollView>
     );
   }
 
-  // STEP 3: REVIEW & CONFIRM (Image 3 in screenshot)
+  // STEP 3: SUCCESS / CONFIRMATION SCREEN (Exact 1:1 Match to Screenshot 5)
   return (
-    <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
-      <Text style={s.step3Title}>Review Transfer</Text>
-
-      {/* Recipient Box */}
-      <View style={s.reviewRecipientCard}>
-        <View style={s.userIconSquare}>
-          <Icon name="person" size={22} color={Colors.primary} />
-        </View>
-        <View style={{ flex: 1, marginLeft: 12 }}>
-          <Text style={s.sendingToLabel}>Sending to</Text>
-          <Text style={s.recipientName}>{activeContact.name}</Text>
-          <Text style={s.recipientPhone}>{activeContact.phone}</Text>
+    <ScrollView contentContainerStyle={s.successContent} showsVerticalScrollIndicator={false}>
+      {/* Big Green Squircle Checkmark Icon */}
+      <View style={s.successCheckSquircle}>
+        <View style={s.whiteCheckCircle}>
+          <Icon name="check" size={32} color={Colors.primary} />
         </View>
       </View>
 
-      {/* Summary Table Card */}
-      <View style={s.summaryCard}>
-        <View style={s.summaryRow}>
-          <Text style={s.summaryLabel}>Amount</Text>
-          <Text style={s.summaryVal}>R{parseFloat(amount || 0).toFixed(2)}</Text>
+      {/* Headline & Confirmation Message */}
+      <Text style={s.successHeadline}>Money Sent</Text>
+      <Text style={s.successSubMessage}>
+        R{numAmount.toFixed(2)} successfully sent to <Text style={s.greenBoldRecipient}>Lerumo Thabo.</Text>
+      </Text>
+
+      {/* Transaction Details Box */}
+      <View style={s.receiptCardBox}>
+        <View style={s.receiptRow}>
+          <Text style={s.receiptLabel}>Date & Time</Text>
+          <Text style={s.receiptVal}>Oct 24, 2023 14:30</Text>
         </View>
 
-        <View style={s.summaryRow}>
-          <Text style={s.summaryLabel}>Fee</Text>
-          <Text style={s.summaryVal}>R{fee.toFixed(2)}</Text>
+        <View style={s.receiptRow}>
+          <Text style={s.receiptLabel}>Amount</Text>
+          <Text style={s.receiptValBold}>R{numAmount.toFixed(2)}</Text>
         </View>
 
-        <View style={[s.summaryRow, { borderBottomWidth: 0, paddingTop: 12 }]}>
-          <Text style={s.totalLabel}>Total</Text>
-          <Text style={s.totalVal}>{rand(totalToSend)}</Text>
+        <View style={[s.receiptRow, { borderBottomWidth: 0 }]}>
+          <Text style={s.receiptLabel}>Transaction Ref</Text>
+          <Text style={s.receiptRefGreen}>ANC–TXN–88291</Text>
         </View>
-
-        <View style={s.arrivalLine}>
-          <Text style={s.summaryLabel}>Arrival</Text>
-          <Text style={s.arrivalVal}>Instant</Text>
-        </View>
-
-        {/* Funding Source inside card */}
-        <View style={s.fundingCard}>
-          <Text style={s.fundingCardTitle}>Funding Source</Text>
-          <View style={s.fundingRow}>
-            <View style={s.ancIconBox}>
-              <Text style={s.ancIconText}>C</Text>
-            </View>
-            <View style={{ flex: 1, marginLeft: 10 }}>
-              <Text style={s.fundingName}>ANC Member Money</Text>
-              <Text style={s.fundingSub}>Balance: {rand(balance)}</Text>
-            </View>
-          </View>
-        </View>
-
-        {/* Note Display inside card */}
-        {note ? (
-          <View style={s.noteDisplayCard}>
-            <Text style={s.noteDisplayLabel}>Note</Text>
-            <Text style={s.noteDisplayText}>“{note}”</Text>
-          </View>
-        ) : null}
       </View>
 
-      {/* Security Footer Line */}
-      <View style={s.securityRow}>
-        <Icon name="lock" size={14} color={Colors.primary} />
-        <Text style={s.securityText}>Your transfer is protected by secure authentication.</Text>
-      </View>
-
-      {/* Action Buttons */}
-      <Button text="Confirm & Send" onPress={handleConfirmSend} />
-
-      <TouchableOpacity style={s.editOutlineBtn} onPress={() => goToStep(2)} activeOpacity={0.8}>
-        <Text style={s.editBtnText}>Edit</Text>
-      </TouchableOpacity>
+      {/* Done Button */}
+      <Button text="Done" onPress={() => finish(`Sent R${numAmount.toFixed(2)} to Lerumo Thabo`)} />
     </ScrollView>
   );
 }
 
 const s = StyleSheet.create({
   content: { padding: 16, paddingBottom: 90, backgroundColor: Colors.background },
+  successContent: { padding: 24, paddingBottom: 90, backgroundColor: Colors.background, alignItems: 'center', justifyContent: 'center' },
 
-  stepProgressHeader: { marginBottom: 14 },
-  progressTrack: { flexDirection: 'row', gap: 6 },
-  progressSegment: { flex: 1, height: 3, backgroundColor: '#E0E0E0', borderRadius: 2 },
-  segmentActive: { backgroundColor: Colors.primary },
+  step1HeaderTag: { fontSize: 11, fontWeight: '800', color: '#6E7A6E', letterSpacing: 1, textAlign: 'center', marginBottom: 12 },
+  step2HeaderTitle: { fontSize: 20, fontWeight: '900', color: Colors.primary, textAlign: 'center', marginBottom: 16 },
 
-  pageHeadline: { fontSize: 22, fontWeight: '900', color: Colors.ink, marginBottom: 14, marginTop: 10 },
+  pageHeadline: { fontSize: 28, fontWeight: '900', color: '#1A1C1C', marginBottom: 6 },
+  pageSubText: { fontSize: 14, color: '#4A5568', lineHeight: 20, marginBottom: 16 },
 
   searchContainer: {
     flexDirection: 'row',
@@ -403,163 +410,91 @@ const s = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 12,
     borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-    marginBottom: 14,
+    borderColor: '#E2E8F0',
+    marginBottom: 20,
   },
-  searchInputText: { flex: 1, fontSize: 13, color: Colors.ink, marginLeft: 8 },
+  searchInputText: { flex: 1, fontSize: 14, color: '#1A1C1C', marginLeft: 8 },
 
-  manualCard: {
+  sectionCategoryHeader: { fontSize: 11, fontWeight: '800', color: '#6E7A6E', letterSpacing: 1, marginBottom: 12 },
+
+  recentRow: { flexDirection: 'row', gap: 14, marginBottom: 20 },
+  recentAvatarCard: { alignItems: 'center', width: 64 },
+  recentAvatarImg: { width: 56, height: 56, borderRadius: 16 },
+  recentInitialSquare: { width: 56, height: 56, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
+  recentInitialText: { fontSize: 20, fontWeight: '900', color: Colors.white },
+  recentNameText: { fontSize: 12, fontWeight: '700', color: '#1A1C1C', marginTop: 6, textAlign: 'center' },
+
+  contactGroupContainer: { marginBottom: 16 },
+  groupHeaderBar: { backgroundColor: '#EEEEEE', paddingVertical: 6, paddingHorizontal: 12, borderRadius: 6, marginBottom: 6 },
+  groupHeaderText: { fontSize: 13, fontWeight: '800', color: '#4A5568' },
+  groupBodyCard: { backgroundColor: Colors.white, borderRadius: 14, borderWidth: 1, borderColor: '#E2E8F0', overflow: 'hidden' },
+
+  contactListItemRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.white,
+    padding: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F0F3F0',
+  },
+  contactListItemSelected: { backgroundColor: '#F0F9F2' },
+
+  radioOuter: { width: 20, height: 20, borderRadius: 10, borderWidth: 2, borderColor: Colors.primary, alignItems: 'center', justifyContent: 'center' },
+  radioInner: { width: 10, height: 10, borderRadius: 5, backgroundColor: Colors.primary },
+
+  contactAvatarSquare: { width: 40, height: 40, borderRadius: 10, marginLeft: 12 },
+  contactInitialsSquare: { width: 40, height: 40, borderRadius: 10, backgroundColor: '#E2E8F0', alignItems: 'center', justifyContent: 'center', marginLeft: 12 },
+  contactInitialsText: { fontSize: 14, fontWeight: '800', color: '#4A5568' },
+
+  contactNameBold: { fontSize: 15, fontWeight: '800', color: '#1A1C1C' },
+  contactPhoneSub: { fontSize: 12, color: '#4A5568', marginTop: 2 },
+
+  memberGreenBadge: { backgroundColor: '#E2F4E5', borderRadius: 4, paddingVertical: 2, paddingHorizontal: 8 },
+  memberGreenBadgeText: { color: Colors.primary, fontSize: 10, fontWeight: '900', letterSpacing: 0.5 },
+
+  manualAddBtn: { paddingVertical: 12, alignItems: 'center', marginBottom: 14 },
+  manualAddBtnText: { color: Colors.primary, fontSize: 14, fontWeight: '800' },
+
+  /* STEP 2 STYLES */
+  recipientChipCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F0F4F1',
+    borderRadius: 14,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#E0E6E1',
+    marginBottom: 16,
+  },
+  chipAvatarImg: { width: 40, height: 40, borderRadius: 10 },
+  chipNameText: { fontSize: 15, fontWeight: '800', color: '#1A1C1C' },
+  chipIdSub: { fontSize: 12, color: '#4A5568', marginTop: 1 },
+
+  availBalanceBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F5F8F6',
     borderRadius: 14,
     padding: 14,
     borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-    marginBottom: 16,
+    borderColor: '#E2E8F0',
+    marginBottom: 20,
   },
-  manualPlusIconBox: {
-    width: 36,
-    height: 36,
-    borderRadius: 8,
-    backgroundColor: '#F0F9F2',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  manualPlusText: { fontSize: 18, fontWeight: '900', color: Colors.primary },
-  manualCardTitle: { fontSize: 14, fontWeight: '800', color: Colors.ink },
-  manualCardSub: { fontSize: 11, color: Colors.muted, marginTop: 1 },
+  walletIconSq: { width: 40, height: 40, borderRadius: 12, backgroundColor: Colors.primary, alignItems: 'center', justifyContent: 'center' },
+  availBalLabel: { fontSize: 11, color: '#4A5568', fontWeight: '700' },
+  availBalVal: { fontSize: 18, fontWeight: '900', color: '#1A1C1C', marginTop: 1 },
 
-  recentSectionHeader: { fontSize: 11, fontWeight: '800', color: Colors.muted, letterSpacing: 1, marginBottom: 10 },
+  largeAmountInputRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 16 },
+  largeRSymbol: { fontSize: 32, fontWeight: '900', color: Colors.primary, marginRight: 8 },
+  largeAmountText: { fontSize: 42, fontWeight: '900', color: '#1A1C1C' },
 
-  contactsStack: { gap: 10, marginBottom: 20 },
-  contactRowCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors.white,
-    borderRadius: 14,
-    padding: 14,
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-  },
-  contactRowCardSelected: { borderColor: Colors.primary, backgroundColor: '#F9FCFA' },
-  avatarWrapper: { position: 'relative' },
-  contactAvatarCircle: {
-    width: 42,
-    height: 42,
-    borderRadius: 21,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  contactAvatarText: { fontSize: 14, fontWeight: '900', color: Colors.white },
-  badgeCheckDot: {
-    position: 'absolute',
-    bottom: -2,
-    right: -2,
-    width: 16,
-    height: 16,
-    borderRadius: 8,
-    backgroundColor: Colors.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1.5,
-    borderColor: Colors.white,
-  },
-  contactNameText: { fontSize: 14, fontWeight: '800', color: Colors.ink },
-  contactPhoneText: { fontSize: 12, color: Colors.muted, marginTop: 1 },
+  quickPillsRow: { flexDirection: 'row', justifyContent: 'center', gap: 10, marginBottom: 24 },
+  quickPillBtn: { backgroundColor: Colors.white, borderRadius: 12, paddingVertical: 10, paddingHorizontal: 16, borderWidth: 1, borderColor: '#E2E8F0' },
+  quickPillBtnActive: { backgroundColor: Colors.primary, borderColor: Colors.primary },
+  quickPillText: { fontSize: 14, fontWeight: '800', color: '#1A1C1C' },
+  quickPillTextActive: { color: Colors.white },
 
-  ancMemberTag: {
-    backgroundColor: '#E2F4E5',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 6,
-  },
-  ancMemberTagText: { fontSize: 9, fontWeight: '900', color: Colors.primary, letterSpacing: 0.5 },
-
-  selectedRecipientCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors.white,
-    borderRadius: 14,
-    padding: 14,
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-    marginBottom: 16,
-  },
-  userIconSquare: {
-    width: 42,
-    height: 42,
-    borderRadius: 10,
-    backgroundColor: '#F0F9F2',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  sendingToLabel: { fontSize: 11, color: Colors.muted, fontWeight: '600' },
-  recipientName: { fontSize: 15, fontWeight: '800', color: Colors.ink },
-  recipientPhone: { fontSize: 12, color: Colors.muted, marginTop: 1 },
-  changeText: { fontSize: 12, fontWeight: '800', color: Colors.primary },
-
-  amountDisplayCard: {
-    backgroundColor: Colors.white,
-    borderRadius: 16,
-    paddingVertical: 24,
-    paddingHorizontal: 16,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-    marginBottom: 16,
-  },
-  amountInputRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  currencyPrefix: { fontSize: 24, fontWeight: '800', color: '#566158', marginRight: 8 },
-  amountInput: { fontSize: 44, fontWeight: '900', color: Colors.primary, minWidth: 160, textAlign: 'center' },
-  availableSubText: { fontSize: 12, fontWeight: '700', color: Colors.muted, marginTop: 6 },
-  greenUnderline: { width: 40, height: 3, backgroundColor: Colors.primary, borderRadius: 2, marginTop: 10 },
-
-  pillsLayoutContainer: { marginBottom: 16 },
-  pillsTopRow: { flexDirection: 'row', gap: 8, marginBottom: 8 },
-  pillBtn: {
-    flex: 1,
-    backgroundColor: Colors.white,
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-    borderRadius: 10,
-    paddingVertical: 10,
-    alignItems: 'center',
-  },
-  pillBtnCenter: {
-    width: '48%',
-    alignSelf: 'center',
-    backgroundColor: Colors.white,
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-    borderRadius: 10,
-    paddingVertical: 10,
-    alignItems: 'center',
-  },
-  pillBtnSelected: {
-    backgroundColor: Colors.primary,
-    borderColor: Colors.primary,
-  },
-  pillText: { fontSize: 13, fontWeight: '800', color: Colors.ink },
-  pillTextSelected: { color: Colors.white },
-
-  infoCard: {
-    backgroundColor: '#F7F8F7',
-    borderRadius: 12,
-    padding: 14,
-    marginBottom: 14,
-    gap: 8,
-  },
-  infoRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  infoLabel: { fontSize: 13, color: Colors.muted, fontWeight: '600' },
-  infoValue: { fontSize: 13, fontWeight: '800', color: Colors.ink },
-  instantValue: { fontSize: 13, fontWeight: '800', color: Colors.primary },
-
-  noteContainer: {
+  fieldGroupLabel: { fontSize: 13, fontWeight: '800', color: '#4A5568', marginBottom: 8 },
+  referenceInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: Colors.white,
@@ -567,97 +502,74 @@ const s = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 12,
     borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-    marginBottom: 16,
+    borderColor: '#E2E8F0',
+    marginBottom: 20,
   },
-  noteInput: { flex: 1, fontSize: 13, color: Colors.ink, marginLeft: 8 },
+  referenceInputText: { flex: 1, fontSize: 14, color: '#1A1C1C', marginLeft: 8 },
 
-  step3Title: { fontSize: 24, fontWeight: '900', color: Colors.ink, marginBottom: 14, textAlign: 'center' },
-
-  reviewRecipientCard: {
+  speedOptionsColumn: { gap: 10, marginBottom: 24 },
+  speedOptionCard: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: Colors.white,
     borderRadius: 14,
     padding: 16,
     borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-    marginBottom: 16,
+    borderColor: '#E2E8F0',
   },
+  speedOptionCardActive: { borderColor: Colors.primary, borderWidth: 2, backgroundColor: '#F9FCFA' },
+  speedTitleBold: { fontSize: 15, fontWeight: '800', color: '#1A1C1C' },
+  speedSubText: { fontSize: 12, color: '#4A5568', marginTop: 2 },
+  speedFeeText: { fontSize: 14, fontWeight: '800', color: '#1A1C1C' },
 
-  summaryCard: {
+  /* SUCCESS SCREEN STYLES */
+  successCheckSquircle: {
+    width: 80,
+    height: 80,
+    borderRadius: 24,
+    backgroundColor: Colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+    marginTop: 40,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  whiteCheckCircle: { width: 48, height: 48, borderRadius: 24, backgroundColor: Colors.white, alignItems: 'center', justifyContent: 'center' },
+
+  successHeadline: { fontSize: 26, fontWeight: '900', color: '#1A1C1C', marginBottom: 8 },
+  successSubMessage: { fontSize: 15, color: '#4A5568', textAlign: 'center', lineHeight: 22, marginBottom: 24 },
+  greenBoldRecipient: { color: Colors.primary, fontWeight: '800' },
+
+  receiptCardBox: {
+    width: '100%',
     backgroundColor: Colors.white,
-    borderRadius: 14,
+    borderRadius: 16,
     padding: 18,
     borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-    marginBottom: 16,
+    borderColor: '#E2E8F0',
+    marginBottom: 24,
   },
-  summaryRow: {
+  receiptRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.line,
-  },
-  summaryLabel: { fontSize: 13, color: Colors.muted, fontWeight: '600' },
-  summaryVal: { fontSize: 13, fontWeight: '800', color: Colors.ink },
-  totalLabel: { fontSize: 16, fontWeight: '900', color: Colors.ink },
-  totalVal: { fontSize: 22, fontWeight: '900', color: Colors.primary },
-
-  arrivalLine: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 10,
-    paddingTop: 10,
-    borderTopWidth: 1,
-    borderTopColor: Colors.line,
-    marginBottom: 12,
-  },
-  arrivalVal: { fontSize: 13, fontWeight: '800', color: Colors.ink },
-
-  fundingCard: {
-    backgroundColor: '#F7F8F7',
-    borderRadius: 12,
-    padding: 12,
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  fundingCardTitle: { fontSize: 11, fontWeight: '800', color: Colors.muted, letterSpacing: 0.8, marginBottom: 6 },
-  fundingRow: { flexDirection: 'row', alignItems: 'center' },
-  ancIconBox: { width: 32, height: 32, borderRadius: 6, backgroundColor: Colors.primary, alignItems: 'center', justifyContent: 'center' },
-  ancIconText: { fontSize: 14, fontWeight: '900', color: '#FECC00' },
-  fundingName: { fontSize: 13, fontWeight: '800', color: Colors.ink },
-  fundingSub: { fontSize: 11, color: Colors.muted, marginTop: 1 },
-
-  noteDisplayCard: {
-    backgroundColor: '#F7F8F7',
-    borderRadius: 12,
-    padding: 12,
-    marginTop: 6,
-  },
-  noteDisplayLabel: { fontSize: 11, fontWeight: '800', color: Colors.muted, marginBottom: 4 },
-  noteDisplayText: { fontSize: 13, fontWeight: '700', color: Colors.ink, fontStyle: 'italic' },
-
-  securityRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, marginBottom: 16 },
-  securityText: { fontSize: 11, color: Colors.muted, fontWeight: '600' },
-
-  editOutlineBtn: {
-    borderWidth: 1.5,
-    borderColor: Colors.primary,
-    borderRadius: 12,
-    paddingVertical: 14,
     alignItems: 'center',
-    marginTop: 10,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F0F3F0',
   },
-  editBtnText: { color: Colors.primary, fontWeight: '800', fontSize: 14 },
+  receiptLabel: { fontSize: 13, color: '#4A5568', fontWeight: '600' },
+  receiptVal: { fontSize: 14, fontWeight: '800', color: '#1A1C1C' },
+  receiptValBold: { fontSize: 16, fontWeight: '900', color: '#1A1C1C' },
+  receiptRefGreen: { fontSize: 14, fontWeight: '900', color: Colors.primary },
 
   modalBackdrop: { flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.55)', justifyContent: 'flex-end' },
   modalCard: { backgroundColor: Colors.white, borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20 },
-  modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  modalTitle: { fontSize: 18, fontWeight: '900', color: Colors.ink },
-  modalSub: { fontSize: 12, color: Colors.muted, marginTop: 4, marginBottom: 14 },
-
-  memberToggleRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginVertical: 12 },
-  memberToggleText: { fontSize: 12, fontWeight: '700', color: Colors.ink },
+  modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
+  modalTitle: { fontSize: 18, fontWeight: '900', color: '#1A1C1C' },
+  memberToggleRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginVertical: 14 },
+  memberToggleText: { fontSize: 13, fontWeight: '700', color: '#1A1C1C' },
 });
