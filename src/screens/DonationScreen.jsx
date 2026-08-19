@@ -518,9 +518,9 @@ const s = StyleSheet.create({
 
   successContent: { padding: 24, paddingBottom: 90, backgroundColor: Colors.background, alignItems: 'center', justifyContent: 'center' },
 
-  pageTitle: { fontSize: 28, fontWeight: '900', color: '#1A1C1C', marginBottom: 4, marginTop: 4 },
-  pageTitleDisplay: { fontSize: 36, fontWeight: '900', color: '#1A1C1C', marginBottom: 8, marginTop: 4, lineHeight: 42 },
-  pageSubText: { fontSize: 14, color: '#4A5568', lineHeight: 20, marginBottom: 20 },
+  pageTitle: { fontSize: 28, fontWeight: '800', color: '#1A1C1C', marginBottom: 4, marginTop: 4, fontFamily: 'Hanken Grotesk' },
+  pageTitleDisplay: { fontSize: 36, fontWeight: '800', color: '#1A1C1C', marginBottom: 8, marginTop: 4, lineHeight: 42, fontFamily: 'Hanken Grotesk' },
+  pageSubText: { fontSize: 14, color: '#4A5568', lineHeight: 20, marginBottom: 20, fontFamily: 'Inter' },
 
   /* FEATURED CAMPAIGN */
   featuredCard: {
@@ -540,22 +540,22 @@ const s = StyleSheet.create({
   featuredBody: { padding: 18 },
 
   starBadgeRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 6 },
-  starBadgeText: { fontSize: 11, fontWeight: '900', color: Colors.primary, letterSpacing: 1 },
-  featuredTitle: { fontSize: 22, fontWeight: '900', color: '#1A1C1C', marginBottom: 4 },
-  featuredSubText: { fontSize: 14, color: '#4A5568', lineHeight: 20, marginBottom: 14 },
+  starBadgeText: { fontSize: 11, fontWeight: '900', color: Colors.primary, letterSpacing: 1, fontFamily: 'Inter' },
+  featuredTitle: { fontSize: 22, fontWeight: '800', color: '#1A1C1C', marginBottom: 4, fontFamily: 'Hanken Grotesk' },
+  featuredSubText: { fontSize: 14, color: '#4A5568', lineHeight: 20, marginBottom: 14, fontFamily: 'Inter' },
 
   progressTextRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6 },
-  raisedBoldText: { fontSize: 13, fontWeight: '800', color: '#1A1C1C' },
-  goalSubText: { fontSize: 12, color: '#4A5568' },
+  raisedBoldText: { fontSize: 13, fontWeight: '800', color: '#1A1C1C', fontFamily: 'Inter' },
+  goalSubText: { fontSize: 12, color: '#4A5568', fontFamily: 'Inter' },
 
   progressBarBg: { height: 8, backgroundColor: '#E2E8F0', borderRadius: 4, overflow: 'hidden', marginBottom: 16 },
   progressBarFill: { height: '100%', backgroundColor: Colors.primary, borderRadius: 4 },
 
   donateNowGreenBtn: { backgroundColor: Colors.primary, borderRadius: 12, paddingVertical: 14, alignItems: 'center' },
-  donateNowBtnText: { color: Colors.white, fontSize: 15, fontWeight: '800' },
+  donateNowBtnText: { color: Colors.white, fontSize: 15, fontWeight: '800', fontFamily: 'Inter' },
 
   /* CAUSES 6 GRID */
-  sectionHeaderTitle: { fontSize: 18, fontWeight: '900', color: '#1A1C1C', marginBottom: 14, marginTop: 4 },
+  sectionHeaderTitle: { fontSize: 18, fontWeight: '800', color: '#1A1C1C', marginBottom: 14, marginTop: 4, fontFamily: 'Hanken Grotesk' },
   causeGridContainer: { flexDirection: 'row', flexWrap: 'wrap', gap: 12, marginBottom: 24 },
   causeCard: {
     width: '48%',
@@ -568,18 +568,18 @@ const s = StyleSheet.create({
     justifyContent: 'center',
   },
   causeIconCircle: { width: 48, height: 48, borderRadius: 24, backgroundColor: '#F0F3F0', alignItems: 'center', justifyContent: 'center', marginBottom: 10 },
-  causeCardTitle: { fontSize: 13, fontWeight: '800', color: '#1A1C1C', textAlign: 'center' },
+  causeCardTitle: { fontSize: 13, fontWeight: '800', color: '#1A1C1C', textAlign: 'center', fontFamily: 'Inter' },
 
   /* CONTRIBUTIONS LIST */
   contributionsCardBox: { backgroundColor: Colors.white, borderRadius: 16, borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 24, overflow: 'hidden' },
   contributionRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 14 },
   receiptIconCircle: { width: 38, height: 38, borderRadius: 19, backgroundColor: '#F0F3F0', alignItems: 'center', justifyContent: 'center' },
-  contribTitleBold: { fontSize: 14, fontWeight: '800', color: '#1A1C1C' },
-  contribDateSub: { fontSize: 12, color: '#4A5568', marginTop: 1 },
-  contribAmountVal: { fontSize: 15, fontWeight: '900', color: '#1A1C1C' },
+  contribTitleBold: { fontSize: 14, fontWeight: '800', color: '#1A1C1C', fontFamily: 'Inter' },
+  contribDateSub: { fontSize: 12, color: '#4A5568', marginTop: 1, fontFamily: 'Inter' },
+  contribAmountVal: { fontSize: 15, fontWeight: '900', color: '#1A1C1C', fontFamily: 'Inter' },
 
   transparencyRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, paddingVertical: 12, marginBottom: 20 },
-  transparencyText: { color: Colors.primary, fontSize: 14, fontWeight: '800' },
+  transparencyText: { color: Colors.primary, fontSize: 14, fontWeight: '800', fontFamily: 'Inter' },
 
   /* STEP 1: CAMPAIGN DETAILS STYLES (FULL-BLEED 1:1) */
   heroBannerFullBleed: {
@@ -597,8 +597,8 @@ const s = StyleSheet.create({
 
   heroContentContainer: { zIndex: 5 },
   goldBadgePill: { backgroundColor: '#E5B800', borderRadius: 16, paddingVertical: 5, paddingHorizontal: 12, alignSelf: 'flex-start', marginBottom: 10 },
-  goldBadgePillText: { fontSize: 11, fontWeight: '900', color: '#1A1C1C', letterSpacing: 1 },
-  heroTitleText: { fontSize: 34, fontWeight: '900', color: Colors.white, marginBottom: 16, lineHeight: 40 },
+  goldBadgePillText: { fontSize: 11, fontWeight: '900', color: '#1A1C1C', letterSpacing: 1, fontFamily: 'Inter' },
+  heroTitleText: { fontSize: 34, fontWeight: '800', color: Colors.white, marginBottom: 16, lineHeight: 40, fontFamily: 'Hanken Grotesk' },
 
   heroGlassBox: { backgroundColor: 'rgba(255, 255, 255, 0.15)', borderRadius: 16, padding: 16, borderWidth: 1, borderColor: 'rgba(255, 255, 255, 0.25)' },
   heroProgressRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },

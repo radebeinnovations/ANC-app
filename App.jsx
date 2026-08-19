@@ -47,12 +47,12 @@ export default function App() {
 
   React.useEffect(() => {
     if (typeof document !== 'undefined') {
-      const linkId = 'google-font-inter';
+      const linkId = 'google-fonts-anc';
       if (!document.getElementById(linkId)) {
         const link = document.createElement('link');
         link.id = linkId;
         link.rel = 'stylesheet';
-        link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap';
+        link.href = 'https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap';
         document.head.appendChild(link);
       }
 
@@ -61,7 +61,7 @@ export default function App() {
         const style = document.createElement('style');
         style.id = styleId;
         style.innerHTML = `
-          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
           body, html, #root {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
           }
