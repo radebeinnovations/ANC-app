@@ -8,8 +8,8 @@ import { Colors } from '../theme/colors';
 
 const rand = (n) => `R${Number(n || 0).toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
-export default function ServicesScreen({ finish, balance = 1500, onDeductBalance, onDepositFunds, setStepText }) {
-  const [activeSubScreen, setActiveSubScreen] = useState('hub'); // 'hub' | 'airtime' | 'data' | 'electricity' | 'bills'
+export default function ServicesScreen({ finish, balance = 1500, onDeductBalance, onDepositFunds, setStepText, initialSubScreen = 'hub' }) {
+  const [activeSubScreen, setActiveSubScreen] = useState(initialSubScreen || 'hub'); // 'hub' | 'airtime' | 'data' | 'electricity' | 'bills'
 
   // Clear stepText header subtitle on Services screen so it doesn't show "STEP 1 OF 3"
   React.useEffect(() => {

@@ -71,11 +71,20 @@ export default function App() {
     }
   }, []);
 
-  const open = (name) => {
+  const [initialSubScreen, setInitialSubScreen] = useState('hub');
+
+  const open = (name, subScreen = 'hub') => {
     setNotice('');
     if (name === 'send') setStepText('STEP 1 OF 3');
     else setStepText('');
-    setScreen(name);
+
+    if (['airtime', 'data', 'electricity', 'bills'].includes(name)) {
+      setInitialSubScreen(name);
+      setScreen('services');
+    } else {
+      setInitialSubScreen(subScreen);
+      setScreen(name);
+    }
   };
   const finish = (message) => { setScreen('main'); setNotice(message); };
 
@@ -107,7 +116,7 @@ export default function App() {
 
   const renderBody = () => {
     if (screen === 'send') return <SendMoneyScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} setStepText={setStepText} />;
-    if (screen === 'services') return <ServicesScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} onDepositFunds={handleDepositFunds} setStepText={setStepText} />;
+    if (screen === 'services') return <ServicesScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} onDepositFunds={handleDepositFunds} setStepText={setStepText} initialSubScreen={initialSubScreen} />;
     if (screen === 'donate') return <DonationScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} setStepText={setStepText} />;
     if (screen === 'membership') return <MembershipScreen finish={finish} cards={cards} onDeductBalance={handleDeductBalance} />;
     if (screen === 'profile') return <ProfileScreen cards={cards} onOpenCards={() => open('cards')} setStepText={setStepText} />;

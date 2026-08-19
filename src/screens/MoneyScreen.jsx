@@ -40,6 +40,10 @@ export default function MoneyScreen({ open, balance = 1500, onDepositFunds, rece
         <View style={s.balanceCardLeft}>
           <Text style={s.balanceLabel}>AVAILABLE BALANCE</Text>
           <Text style={s.balanceAmount}>R{Number(balance).toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Text>
+          
+          <TouchableOpacity style={s.addFundsPillBtn} onPress={() => setShowDepositModal(true)} activeOpacity={0.8}>
+            <Text style={s.addFundsPillText}>+ Add Funds</Text>
+          </TouchableOpacity>
         </View>
 
         {/* Bank Pillars Graphic */}
@@ -76,28 +80,28 @@ export default function MoneyScreen({ open, balance = 1500, onDepositFunds, rece
       {/* Pay Services Grid */}
       <Text style={s.sectionHeader}>Pay Services</Text>
       <View style={s.servicesGrid}>
-        <TouchableOpacity style={s.serviceCard} onPress={() => open('services')} activeOpacity={0.8}>
+        <TouchableOpacity style={s.serviceCard} onPress={() => open('airtime')} activeOpacity={0.8}>
           <View style={s.serviceIconSquare}>
             <Icon name="smartphone" size={20} color={Colors.primary} />
           </View>
           <Text style={s.serviceCardLabel}>Airtime</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={s.serviceCard} onPress={() => open('services')} activeOpacity={0.8}>
+        <TouchableOpacity style={s.serviceCard} onPress={() => open('data')} activeOpacity={0.8}>
           <View style={s.serviceIconSquare}>
             <Icon name="wifi" size={20} color={Colors.primary} />
           </View>
           <Text style={s.serviceCardLabel}>Data</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={s.serviceCard} onPress={() => open('services')} activeOpacity={0.8}>
+        <TouchableOpacity style={s.serviceCard} onPress={() => open('electricity')} activeOpacity={0.8}>
           <View style={s.serviceIconSquare}>
             <Icon name="bolt" size={20} color={Colors.primary} />
           </View>
           <Text style={s.serviceCardLabel}>Electricity</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={s.serviceCard} onPress={() => open('services')} activeOpacity={0.8}>
+        <TouchableOpacity style={s.serviceCard} onPress={() => open('bills')} activeOpacity={0.8}>
           <View style={s.serviceIconSquare}>
             <Icon name="receipt-long" size={20} color={Colors.primary} />
           </View>
@@ -209,6 +213,21 @@ const s = StyleSheet.create({
   },
   balanceLabel: { fontSize: 10, fontWeight: '800', color: Colors.muted, letterSpacing: 1 },
   balanceAmount: { fontSize: 32, fontWeight: '900', color: Colors.ink, marginTop: 4 },
+
+  addFundsPillBtn: {
+    backgroundColor: Colors.primary,
+    borderRadius: 20,
+    paddingVertical: 6,
+    paddingHorizontal: 14,
+    alignSelf: 'flex-start',
+    marginTop: 8,
+  },
+  addFundsPillText: {
+    color: Colors.white,
+    fontSize: 12,
+    fontWeight: '800',
+    fontFamily: 'Inter',
+  },
 
   bankGraphicContainer: {
     position: 'absolute',
