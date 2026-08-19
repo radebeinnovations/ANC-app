@@ -25,36 +25,20 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
   const [manualPhone, setManualPhone] = useState('');
   const [manualIsMember, setManualIsMember] = useState(true);
 
-  // Success Animated Tick Values
-  const scaleAnim = useRef(new Animated.Value(0)).current;
-  const pulseAnim = useRef(new Animated.Value(1)).current;
+  // Success Animated Tick Values (Web Safe)
+  const scaleAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
     if (step === 3) {
       scaleAnim.setValue(0);
       Animated.spring(scaleAnim, {
         toValue: 1,
-        friction: 5,
+        friction: 6,
         tension: 80,
-        useNativeDriver: true,
-      }).start(() => {
-        Animated.loop(
-          Animated.sequence([
-            Animated.timing(pulseAnim, {
-              toValue: 1.04,
-              duration: 1200,
-              useNativeDriver: true,
-            }),
-            Animated.timing(pulseAnim, {
-              toValue: 1,
-              duration: 1200,
-              useNativeDriver: true,
-            }),
-          ])
-        ).start();
-      });
+        useNativeDriver: false,
+      }).start();
     }
-  }, [step, scaleAnim, pulseAnim]);
+  }, [step, scaleAnim]);
 
   // Recent Recipients
   const recentRecipients = [
@@ -380,7 +364,7 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
     );
   }
 
-  // STEP 3: SUCCESS / CONFIRMATION SCREEN (Animated 1:1 Match)
+  // STEP 3: SUCCESS / CONFIRMATION SCREEN (Web Safe Animated)
   return (
     <ScrollView contentContainerStyle={s.successContent} showsVerticalScrollIndicator={false}>
       {/* Animated Light Green Outer Container Box with Green Squircle Checkmark */}
@@ -390,7 +374,7 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
           {
             transform: [
               {
-                scale: Animated.multiply(scaleAnim, pulseAnim),
+                scale: scaleAnim,
               },
             ],
           },
