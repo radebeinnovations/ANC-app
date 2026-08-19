@@ -115,6 +115,7 @@ const s = StyleSheet.create({
     fontSize: 18,
     fontWeight: '900',
     color: '#006933',
+    fontFamily: 'Inter',
   },
   headerTitleStep2: {
     fontSize: 18,
