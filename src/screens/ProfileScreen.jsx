@@ -1,25 +1,23 @@
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Button from '../components/Button';
 import { Icon } from '../components/Icons';
+import List from '../components/List';
 import YamiFooter from '../components/YamiFooter';
 import { Colors } from '../theme/colors';
 
-function SecurityStripePatternGraphic() {
-  const stripeArray = Array.from({ length: 45 });
+function SAFlagBadge() {
   return (
-    <View style={s.stripePatternBox}>
-      <View style={s.stripeWebOverlay} />
-      <View style={s.stripeContainer}>
-        {stripeArray.map((_, i) => (
-          <View key={i} style={s.singleStripeLine} />
-        ))}
-      </View>
+    <View style={s.saFlagWrapper}>
+      <Text style={{ fontSize: 18 }}>🇿🇦</Text>
     </View>
   );
 }
 
 export default function ProfileScreen({ cards = [], onOpenCards, setStepText }) {
-  const [showFrontCard, setShowFrontCard] = useState(false);
+  const [activeTab, setActiveTab] = useState('CARD'); // 'CARD' | 'DETAILS'
+  const [showQRModal, setShowQRModal] = useState(false);
+  const [showVerifyModal, setShowVerifyModal] = useState(false);
 
   // Explicitly clear stepText header subtitle on Member Card screen
   React.useEffect(() => {
@@ -28,99 +26,158 @@ export default function ProfileScreen({ cards = [], onOpenCards, setStepText }) 
 
   return (
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
-      {!showFrontCard ? (
-        /* EXACT STITCH MEMBER CARD (Gray Card with Diagonal Security Stripes) */
-        <TouchableOpacity
-          style={s.qrBackCardContainer}
-          onPress={() => setShowFrontCard(true)}
-          activeOpacity={0.9}
-        >
-          {/* Centered Diagonal Stripe Pattern Box */}
-          <View style={s.qrGraphicBox}>
-            <SecurityStripePatternGraphic />
+      {/* DIGITAL MEMBERSHIP CARD (Exact Stitch Design Match) */}
+      <View style={s.memberCardContainer}>
+        {/* Top Gold Accent Line */}
+        <View style={s.topGoldBar} />
+
+        {/* Card Header Row */}
+        <View style={s.cardHeaderRow}>
+          <View style={s.emblemSquare}>
+            <View style={s.emblemInnerCircle}>
+              <Text style={s.emblemText}>ANC</Text>
+            </View>
           </View>
 
-          {/* Card Bottom Row: Province & Region */}
-          <View style={s.qrCardBottomGrid}>
-            <View>
-              <Text style={s.qrGridLabel}>Province</Text>
-              <Text style={s.qrGridVal}>GAUTENG</Text>
-            </View>
-            <View>
-              <Text style={s.qrGridLabel}>Region</Text>
-              <Text style={s.qrGridVal}>JOHANNESBURG</Text>
-            </View>
+          <View style={{ flex: 1, marginLeft: 10 }}>
+            <Text style={s.cardHeading}>AFRICAN NATIONAL CONGRESS</Text>
+            <Text style={s.cardSubHeading}>DIGITAL MEMBERSHIP</Text>
           </View>
+
+          <SAFlagBadge />
+        </View>
+
+        {/* Member Name */}
+        <Text style={s.memberName}>LERUMO THABO</Text>
+
+        {/* Member Badge & ID Row */}
+        <View style={s.badgeIdRow}>
+          <View style={s.memberRoleBadge}>
+            <Text style={s.memberRoleText}>MEMBER</Text>
+          </View>
+          <Text style={s.memberIdNumber}>ANC–1234567</Text>
+        </View>
+
+        {/* Card Details Grid (Province & Photo Thumbnail) */}
+        <View style={s.cardDetailsGrid}>
+          <View>
+            <Text style={s.gridDetailLabel}>PROVINCE</Text>
+            <Text style={s.gridDetailVal}>GAUTENG</Text>
+          </View>
+
+          <View style={s.photoThumbnailBox}>
+            <Icon name="person" size={24} color={Colors.muted} />
+          </View>
+        </View>
+      </View>
+
+      {/* SEGMENTED TAB CONTROL (CARD | DETAILS - Exact Stitch Match) */}
+      <View style={s.segmentedContainer}>
+        <TouchableOpacity
+          style={[s.segmentedBtn, activeTab === 'CARD' && s.segmentedBtnActive]}
+          onPress={() => setActiveTab('CARD')}
+          activeOpacity={0.8}
+        >
+          <Text style={[s.segmentedText, activeTab === 'CARD' && s.segmentedTextActive]}>
+            CARD
+          </Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[s.segmentedBtn, activeTab === 'DETAILS' && s.segmentedBtnActive]}
+          onPress={() => setActiveTab('DETAILS')}
+          activeOpacity={0.8}
+        >
+          <Text style={[s.segmentedText, activeTab === 'DETAILS' && s.segmentedTextActive]}>
+            DETAILS
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* TAB 1: CARD (3 Quick Action Cards Row - Exact Stitch Match) */}
+      {activeTab === 'CARD' ? (
+        <View style={s.actionCardsRow}>
+          {/* Action Card 1: Share */}
+          <TouchableOpacity style={s.actionCard} onPress={() => setShowQRModal(true)} activeOpacity={0.8}>
+            <View style={s.actionIconBox}>
+              <Icon name="share" size={24} color={Colors.primary} />
+            </View>
+            <Text style={s.actionCardText}>Share</Text>
+          </TouchableOpacity>
+
+          {/* Action Card 2: QR Code */}
+          <TouchableOpacity style={s.actionCard} onPress={() => setShowQRModal(true)} activeOpacity={0.8}>
+            <View style={s.actionIconBox}>
+              <Icon name="qr-code-2" size={24} color={Colors.primary} />
+            </View>
+            <Text style={s.actionCardText}>QR Code</Text>
+          </TouchableOpacity>
+
+          {/* Action Card 3: Verify */}
+          <TouchableOpacity style={s.actionCard} onPress={() => setShowVerifyModal(true)} activeOpacity={0.8}>
+            <View style={s.actionIconBox}>
+              <Icon name="verified-user" size={24} color={Colors.primary} />
+            </View>
+            <Text style={s.actionCardText}>Verify</Text>
+          </TouchableOpacity>
+        </View>
       ) : (
-        /* FRONT GREEN DIGITAL CREDENTIAL CARD */
-        <TouchableOpacity
-          style={s.memberCardContainer}
-          onPress={() => setShowFrontCard(false)}
-          activeOpacity={0.9}
-        >
-          <View style={s.topGoldBar} />
-          <View style={s.cardHeaderRow}>
-            <View style={s.emblemCircle}>
-              <Text style={s.emblemCircleText}>ANC</Text>
-            </View>
-            <View>
-              <Text style={s.cardHeading}>AFRICAN NATIONAL CONGRESS</Text>
-              <Text style={s.cardSubHeading}>Digital Credential</Text>
-            </View>
-          </View>
-
-          <Text style={s.memberName}>LERUMO THABO</Text>
-
-          <View style={s.badgeRow}>
-            <View style={s.memberRoleBadge}>
-              <Text style={s.memberRoleText}>MEMBER</Text>
-            </View>
-            <View style={s.activeOutlineBadge}>
-              <View style={s.activeDot} />
-              <Text style={s.activeOutlineText}>ACTIVE</Text>
-            </View>
-          </View>
-
-          <Text style={s.memberIdNumber}>ANC-1234567</Text>
-
-          <View style={s.cardDetailsGrid}>
-            <View>
-              <Text style={s.gridDetailLabel}>PROVINCE</Text>
-              <Text style={s.gridDetailVal}>GAUTENG</Text>
-            </View>
-            <View>
-              <Text style={s.gridDetailLabel}>REGION</Text>
-              <Text style={s.gridDetailVal}>JOHANNESBURG</Text>
-            </View>
-          </View>
-        </TouchableOpacity>
+        /* TAB 2: DETAILS (Member Details List) */
+        <View style={s.detailsContainer}>
+          <Text style={s.detailsSectionHeader}>Member Account Details</Text>
+          <List badge="MOB" title="082 555 0105" sub="Verified Mobile Number" />
+          <List badge="EML" title="lerumo.thabo@anc-unity.org.za" sub="Verified Email Address" />
+          <List badge="LOC" title="Soweto, Gauteng" sub="Home Branch (Ward 62)" />
+          <List badge="CRD" title="Saved Payment Cards" sub={`${cards.length} linked cards`} onPress={onOpenCards} />
+          <List badge="SET" title="App Settings & Security" sub="Biometrics & PIN lock" />
+        </View>
       )}
 
-      {/* Instruction Subtitle below card */}
-      <Text style={s.qrInstructionText}>
-        Tap the card to view your verification QR code and regional details. Present this digital card at official events.
-      </Text>
-
-      {/* Primary Action Button: Save Offline Copy */}
-      <TouchableOpacity style={s.saveOfflineBtn} onPress={() => {}} activeOpacity={0.8}>
-        <Icon name="file-download" size={20} color={Colors.white} />
-        <Text style={s.saveOfflineText}>Save Offline Copy</Text>
-      </TouchableOpacity>
-
-      {/* Secondary Action Button: Share Details */}
-      <TouchableOpacity
-        style={s.shareDetailsBtn}
-        onPress={() => setShowFrontCard(!showFrontCard)}
-        activeOpacity={0.8}
-      >
-        <Icon name="share" size={18} color={Colors.primary} />
-        <Text style={s.shareDetailsText}>
-          {showFrontCard ? 'Share Card' : 'Share Details'}
-        </Text>
-      </TouchableOpacity>
-
       <YamiFooter />
+
+      {/* QR CODE MODAL */}
+      <Modal visible={showQRModal} animationType="slide" transparent>
+        <View style={s.modalBackdrop}>
+          <View style={s.modalCard}>
+            <View style={s.modalHeader}>
+              <Text style={s.modalTitle}>Verification QR Code</Text>
+              <TouchableOpacity onPress={() => setShowQRModal(false)}>
+                <Text style={{ fontSize: 18, fontWeight: '800', color: Colors.muted }}>✕</Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={s.modalSub}>Present this code at official ANC events for instant check-in.</Text>
+
+            <View style={s.modalQRBox}>
+              <Icon name="qr-code-2" size={140} color={Colors.primary} />
+            </View>
+
+            <Text style={s.modalMemberInfo}>Lerumo Thabo • ANC–1234567</Text>
+            <Button text="Close" onPress={() => setShowQRModal(false)} />
+          </View>
+        </View>
+      </Modal>
+
+      {/* VERIFY STATUS MODAL */}
+      <Modal visible={showVerifyModal} animationType="slide" transparent>
+        <View style={s.modalBackdrop}>
+          <View style={s.modalCard}>
+            <View style={s.modalHeader}>
+              <Text style={s.modalTitle}>Membership Status</Text>
+              <TouchableOpacity onPress={() => setShowVerifyModal(false)}>
+                <Text style={{ fontSize: 18, fontWeight: '800', color: Colors.muted }}>✕</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={s.verifyBadgeBox}>
+              <Icon name="verified-user" size={48} color={Colors.primary} />
+              <Text style={s.verifyStatusText}>ACTIVE MEMBER</Text>
+              <Text style={s.verifySubText}>Standing: Good • Paid up until Dec 2026</Text>
+            </View>
+
+            <Button text="Done" onPress={() => setShowVerifyModal(false)} />
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   );
 }
@@ -128,136 +185,154 @@ export default function ProfileScreen({ cards = [], onOpenCards, setStepText }) 
 const s = StyleSheet.create({
   content: { padding: 16, paddingBottom: 100, backgroundColor: Colors.background },
 
-  /* BACK STITCH SECURITY STRIPE CARD VIEW */
-  qrBackCardContainer: {
-    backgroundColor: '#EAEAEA',
-    borderRadius: 16,
-    padding: 24,
-    borderWidth: 1,
-    borderColor: '#D8DDD9',
-    alignItems: 'center',
-    marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    elevation: 3,
-  },
-  qrGraphicBox: {
-    backgroundColor: Colors.white,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: '#D6DDD8',
-    marginBottom: 24,
-    padding: 10,
-  },
-
-  stripePatternBox: {
-    width: 200,
-    height: 200,
-    backgroundColor: Colors.white,
-    borderRadius: 8,
-    overflow: 'hidden',
-    position: 'relative',
-    borderWidth: 1,
-    borderColor: '#E0E6E1',
-  },
-  stripeWebOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundImage: 'repeating-linear-gradient(-45deg, #232724, #232724 3.5px, #FFFFFF 3.5px, #FFFFFF 8.5px)',
-    zIndex: 2,
-  },
-  stripeContainer: {
-    width: 320,
-    height: 320,
-    position: 'absolute',
-    top: -60,
-    left: -60,
-    flexDirection: 'row',
-    gap: 5,
-    transform: [{ rotate: '-45deg' }],
-  },
-  singleStripeLine: {
-    width: 3.5,
-    height: '100%',
-    backgroundColor: '#232724',
-  },
-
-  qrCardBottomGrid: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingTop: 14,
-    borderTopWidth: 1,
-    borderTopColor: '#CCD3CE',
-  },
-  qrGridLabel: { fontSize: 11, color: Colors.muted, fontWeight: '600' },
-  qrGridVal: { fontSize: 15, fontWeight: '900', color: Colors.ink, marginTop: 2 },
-
-  /* FRONT GREEN CREDENTIAL CARD */
+  /* GREEN DIGITAL MEMBERSHIP CARD */
   memberCardContainer: {
-    backgroundColor: Colors.primary,
+    backgroundColor: '#006933',
     borderRadius: 16,
     padding: 20,
     overflow: 'hidden',
     position: 'relative',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.25,
+    shadowOpacity: 0.2,
     shadowRadius: 10,
     elevation: 6,
-    marginBottom: 20,
+    marginBottom: 16,
   },
   topGoldBar: { position: 'absolute', top: 0, left: 0, right: 0, height: 4, backgroundColor: Colors.gold },
-  cardHeaderRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 16 },
-  emblemCircle: { width: 40, height: 40, borderRadius: 20, backgroundColor: Colors.white, alignItems: 'center', justifyContent: 'center' },
-  emblemCircleText: { color: Colors.primary, fontWeight: '900', fontSize: 12 },
-  cardHeading: { fontSize: 14, fontWeight: '900', color: Colors.white, letterSpacing: 0.5 },
-  cardSubHeading: { fontSize: 10, color: Colors.gold, fontWeight: '700', letterSpacing: 1, textTransform: 'uppercase' },
 
-  memberName: { fontSize: 24, fontWeight: '900', color: Colors.white, letterSpacing: 1, marginTop: 4 },
-  badgeRow: { flexDirection: 'row', gap: 8, marginTop: 8 },
-  memberRoleBadge: { backgroundColor: Colors.gold, borderRadius: 4, paddingVertical: 3, paddingHorizontal: 8 },
-  memberRoleText: { color: Colors.ink, fontSize: 10, fontWeight: '900', letterSpacing: 0.8 },
-  activeOutlineBadge: { flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: 'rgba(255,255,255,0.4)', borderRadius: 4, paddingVertical: 3, paddingHorizontal: 8, gap: 5 },
-  activeDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: '#34D399' },
-  activeOutlineText: { color: Colors.white, fontSize: 10, fontWeight: '800', letterSpacing: 0.8 },
-
-  memberIdNumber: { fontSize: 14, color: Colors.white, opacity: 0.9, fontWeight: '700', letterSpacing: 2, marginTop: 12 },
-  cardDetailsGrid: { flexDirection: 'row', justifyContent: 'space-between', paddingTop: 14, marginTop: 14, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.2)' },
-  gridDetailLabel: { fontSize: 9, color: 'rgba(255,255,255,0.7)', fontWeight: '800', letterSpacing: 1 },
-  gridDetailVal: { fontSize: 13, fontWeight: '800', color: Colors.white, marginTop: 2 },
-
-  qrInstructionText: { fontSize: 13, color: Colors.muted, textAlign: 'center', marginBottom: 18, lineHeight: 18, paddingHorizontal: 12 },
-
-  saveOfflineBtn: {
-    backgroundColor: Colors.primary,
+  cardHeaderRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 16 },
+  emblemSquare: {
+    width: 44,
+    height: 44,
     borderRadius: 12,
-    paddingVertical: 14,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    marginBottom: 10,
-  },
-  saveOfflineText: { color: Colors.white, fontSize: 14, fontWeight: '800' },
-
-  shareDetailsBtn: {
     backgroundColor: Colors.white,
-    borderWidth: 1.5,
-    borderColor: Colors.primary,
-    borderRadius: 12,
-    paddingVertical: 14,
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 8,
   },
-  shareDetailsText: { color: Colors.primary, fontSize: 14, fontWeight: '800' },
+  emblemInnerCircle: {
+    width: 34,
+    height: 34,
+    borderRadius: 17,
+    backgroundColor: '#006933',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: Colors.gold,
+  },
+  emblemText: { color: Colors.gold, fontWeight: '900', fontSize: 10 },
+
+  cardHeading: { fontSize: 13, fontWeight: '900', color: Colors.white, letterSpacing: 0.5 },
+  cardSubHeading: { fontSize: 10, color: '#88D1A3', fontWeight: '800', letterSpacing: 0.8, marginTop: 2 },
+
+  saFlagWrapper: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    borderRadius: 6,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.3)',
+  },
+
+  memberName: { fontSize: 22, fontWeight: '900', color: Colors.white, letterSpacing: 0.8, marginTop: 6 },
+
+  badgeIdRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 8 },
+  memberRoleBadge: { backgroundColor: '#004D25', borderRadius: 6, paddingVertical: 4, paddingHorizontal: 10 },
+  memberRoleText: { color: Colors.white, fontSize: 11, fontWeight: '900', letterSpacing: 0.8 },
+  memberIdNumber: { fontSize: 15, color: Colors.white, fontWeight: '800', letterSpacing: 1 },
+
+  cardDetailsGrid: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    paddingTop: 14,
+    marginTop: 14,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255,255,255,0.2)',
+  },
+  gridDetailLabel: { fontSize: 9, color: '#88D1A3', fontWeight: '800', letterSpacing: 1 },
+  gridDetailVal: { fontSize: 15, fontWeight: '900', color: Colors.white, marginTop: 2 },
+
+  photoThumbnailBox: {
+    width: 48,
+    height: 48,
+    borderRadius: 8,
+    backgroundColor: 'rgba(255,255,255,0.9)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  /* SEGMENTED TAB CONTROL */
+  segmentedContainer: {
+    flexDirection: 'row',
+    backgroundColor: '#F0F4F1',
+    borderRadius: 14,
+    padding: 4,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: '#E0E6E1',
+  },
+  segmentedBtn: {
+    flex: 1,
+    paddingVertical: 12,
+    alignItems: 'center',
+    borderRadius: 10,
+  },
+  segmentedBtnActive: {
+    backgroundColor: Colors.white,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.08,
+    shadowRadius: 3,
+    elevation: 2,
+  },
+  segmentedText: { fontSize: 13, fontWeight: '800', color: '#6E7970', letterSpacing: 0.5 },
+  segmentedTextActive: { color: Colors.primary },
+
+  /* 3 ACTION CARDS ROW */
+  actionCardsRow: {
+    flexDirection: 'row',
+    gap: 10,
+    marginBottom: 20,
+  },
+  actionCard: {
+    flex: 1,
+    backgroundColor: Colors.white,
+    borderRadius: 14,
+    paddingVertical: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: Colors.surfaceBorder,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.04,
+    shadowRadius: 4,
+    elevation: 1,
+  },
+  actionIconBox: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#F0F9F2',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8,
+  },
+  actionCardText: { fontSize: 12, fontWeight: '800', color: Colors.ink },
+
+  detailsContainer: { marginBottom: 20 },
+  detailsSectionHeader: { fontSize: 15, fontWeight: '800', color: Colors.ink, marginBottom: 10 },
+
+  modalBackdrop: { flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.55)', justifyContent: 'flex-end' },
+  modalCard: { backgroundColor: Colors.white, borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20 },
+  modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  modalTitle: { fontSize: 18, fontWeight: '900', color: Colors.ink },
+  modalSub: { fontSize: 12, color: Colors.muted, marginTop: 4, marginBottom: 14 },
+  modalQRBox: { alignItems: 'center', justifyContent: 'center', paddingVertical: 20 },
+  modalMemberInfo: { fontSize: 14, fontWeight: '800', color: Colors.ink, textAlign: 'center', marginBottom: 20 },
+
+  verifyBadgeBox: { alignItems: 'center', paddingVertical: 20, gap: 10, marginBottom: 14 },
+  verifyStatusText: { fontSize: 18, fontWeight: '900', color: Colors.primary },
+  verifySubText: { fontSize: 12, color: Colors.muted, fontWeight: '600' },
 });

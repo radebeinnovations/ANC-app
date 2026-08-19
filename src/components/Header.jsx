@@ -21,19 +21,21 @@ export default function Header({ screen, tab, onBack, onOpenMenu, onOpenNotifica
     );
   }
 
-  // When viewing Member Card via bottom tab 'Member'
+  // When viewing Member Card via bottom tab 'Member' (Matches Stitch design)
   if (tab === 'Member') {
     return (
       <View style={s.header}>
-        <TouchableOpacity style={s.headerBackBtn} onPress={onBack} activeOpacity={0.7}>
-          <Icon name="arrow-back" size={20} color={Colors.primary} />
-        </TouchableOpacity>
-
-        <View style={s.headerCenter}>
-          <Text style={s.headerTitle}>Member Card</Text>
+        <View style={s.memberEmblemCircle}>
+          <Text style={s.memberEmblemText}>ANC</Text>
         </View>
 
-        <View style={{ width: 40 }} />
+        <View style={s.headerCenterLeft}>
+          <Text style={s.headerTitleMember}>African National Congress</Text>
+        </View>
+
+        <TouchableOpacity style={s.headerIconBtn} activeOpacity={0.7}>
+          <Icon name="search" size={20} color={Colors.primary} />
+        </TouchableOpacity>
       </View>
     );
   }
@@ -100,10 +102,34 @@ const s = StyleSheet.create({
   headerCenter: {
     alignItems: 'center',
   },
+  headerCenterLeft: {
+    flex: 1,
+    marginLeft: 10,
+  },
   headerTitle: {
     fontSize: 16,
     fontWeight: '900',
     color: Colors.primary,
+  },
+  headerTitleMember: {
+    fontSize: 17,
+    fontWeight: '900',
+    color: Colors.primary,
+  },
+  memberEmblemCircle: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: '#006933',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1.5,
+    borderColor: Colors.gold,
+  },
+  memberEmblemText: {
+    color: Colors.gold,
+    fontWeight: '900',
+    fontSize: 11,
   },
   stepSub: {
     fontSize: 9,
