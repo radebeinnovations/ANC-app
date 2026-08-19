@@ -10,18 +10,24 @@ const AVATAR_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDP7z
 export default function HomeScreen({ open }) {
   return (
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
-      {/* Header Greeting */}
+      {/* Header Profile Greeting Section */}
       <View style={s.headerRow}>
         <View style={s.avatarContainer}>
           <Image source={{ uri: AVATAR_IMG_URL }} style={s.avatarImage} />
         </View>
+
         <View style={{ flex: 1, marginLeft: 12 }}>
           <Text style={s.greetingTitle}>Good morning, Lerumo Thabo</Text>
           <Text style={s.greetingSub}>ANC Member · Johannesburg Region</Text>
         </View>
+
+        <TouchableOpacity style={s.bellBtn} onPress={() => open('notifications')} activeOpacity={0.7}>
+          <Icon name="notifications" size={22} color={Colors.ink} />
+          <View style={s.bellDot} />
+        </TouchableOpacity>
       </View>
 
-      {/* Member Status Card */}
+      {/* Section 1: Member Status Card */}
       <View style={s.statusCard}>
         <View style={s.cardHeaderRow}>
           <Text style={s.cardHeaderTitle}>MEMBER STATUS</Text>
@@ -43,7 +49,7 @@ export default function HomeScreen({ open }) {
           </View>
         </View>
 
-        <View style={{ marginTop: 10, marginBottom: 12 }}>
+        <View style={{ marginTop: 10, marginBottom: 14 }}>
           <Text style={s.gridLabel}>Validity</Text>
           <Text style={s.gridVal}>31 December 2026</Text>
         </View>
@@ -54,13 +60,15 @@ export default function HomeScreen({ open }) {
         </TouchableOpacity>
       </View>
 
-      {/* Section 1: Important */}
+      {/* Section 2: Important Banner */}
       <View style={s.sectionContainer}>
         <Text style={s.sectionTitle}>Important</Text>
 
         <View style={s.importantYellowCard}>
           <View style={s.importantHeaderRow}>
-            <Icon name="event-upcoming" size={22} color="#3E3000" />
+            <View style={s.importantIconSquare}>
+              <Icon name="event-upcoming" size={22} color="#574500" />
+            </View>
             <View style={{ flex: 1, marginLeft: 10 }}>
               <Text style={s.importantCardTitle}>2026 Local Government Elections</Text>
               <Text style={s.importantCardSub}>04 November 2026</Text>
@@ -73,7 +81,7 @@ export default function HomeScreen({ open }) {
         </View>
       </View>
 
-      {/* Section 2: My Community */}
+      {/* Section 3: My Community */}
       <View style={s.sectionContainer}>
         <Text style={s.sectionTitle}>My Community</Text>
 
@@ -96,46 +104,52 @@ export default function HomeScreen({ open }) {
         </View>
       </View>
 
-      {/* Section 3: Quick Services */}
+      {/* Section 4: Quick Services */}
       <View style={s.sectionContainer}>
         <Text style={s.sectionTitle}>Quick Services</Text>
 
         <View style={s.services3Grid}>
+          {/* Send Money */}
           <TouchableOpacity style={s.serviceSquareCard} onPress={() => open('send')} activeOpacity={0.8}>
-            <View style={[s.serviceCircle, { backgroundColor: '#E2F4E5' }]}>
-              <Icon name="send" size={20} color={Colors.primary} />
+            <View style={[s.serviceCircle, { backgroundColor: 'rgba(0, 105, 51, 0.1)' }]}>
+              <Icon name="send-money" size={20} color={Colors.primary} />
             </View>
             <Text style={s.serviceSquareLabel}>Send{'\n'}Money</Text>
           </TouchableOpacity>
 
+          {/* Receive Money */}
           <TouchableOpacity style={s.serviceSquareCard} onPress={() => open('send')} activeOpacity={0.8}>
-            <View style={[s.serviceCircle, { backgroundColor: '#E2F4E5' }]}>
-              <Icon name="file-download" size={20} color={Colors.primary} />
+            <View style={[s.serviceCircle, { backgroundColor: 'rgba(0, 105, 51, 0.1)' }]}>
+              <Icon name="request-quote" size={20} color={Colors.primary} />
             </View>
             <Text style={s.serviceSquareLabel}>Receive{'\n'}Money</Text>
           </TouchableOpacity>
 
+          {/* Buy Airtime */}
           <TouchableOpacity style={s.serviceSquareCard} onPress={() => open('services')} activeOpacity={0.8}>
-            <View style={s.serviceCircle}>
-              <Icon name="smartphone" size={20} color={Colors.ink} />
+            <View style={[s.serviceCircle, { backgroundColor: '#F0F3F0' }]}>
+              <Icon name="phone-iphone" size={20} color={Colors.ink} />
             </View>
             <Text style={s.serviceSquareLabel}>Buy{'\n'}Airtime</Text>
           </TouchableOpacity>
 
+          {/* Buy Data */}
           <TouchableOpacity style={s.serviceSquareCard} onPress={() => open('services')} activeOpacity={0.8}>
-            <View style={s.serviceCircle}>
+            <View style={[s.serviceCircle, { backgroundColor: '#F0F3F0' }]}>
               <Icon name="wifi" size={20} color={Colors.ink} />
             </View>
             <Text style={s.serviceSquareLabel}>Buy{'\n'}Data</Text>
           </TouchableOpacity>
 
+          {/* Buy Electricity */}
           <TouchableOpacity style={s.serviceSquareCard} onPress={() => open('services')} activeOpacity={0.8}>
-            <View style={s.serviceCircle}>
-              <Icon name="bolt" size={20} color={Colors.ink} />
+            <View style={[s.serviceCircle, { backgroundColor: '#F0F3F0' }]}>
+              <Icon name="electric-bolt" size={20} color={Colors.ink} />
             </View>
             <Text style={s.serviceSquareLabel}>Buy{'\n'}Electricity</Text>
           </TouchableOpacity>
 
+          {/* Donate Now */}
           <TouchableOpacity style={s.serviceSquareCard} onPress={() => open('donate')} activeOpacity={0.8}>
             <View style={[s.serviceCircle, { backgroundColor: '#FFF4CE' }]}>
               <Icon name="volunteer-activism" size={20} color="#6E5700" />
@@ -145,7 +159,7 @@ export default function HomeScreen({ open }) {
         </View>
       </View>
 
-      {/* Section 4: Latest from ANC */}
+      {/* Section 5: Latest from ANC */}
       <View style={s.sectionContainer}>
         <View style={s.sectionHeaderRow}>
           <Text style={s.sectionTitle}>Latest from ANC</Text>
@@ -170,7 +184,7 @@ export default function HomeScreen({ open }) {
 
             <TouchableOpacity style={s.readUpdateLink} onPress={() => open('updates')}>
               <Text style={s.readUpdateText}>Read Update</Text>
-              <Icon name="arrow-forward" size={16} color={Colors.primary} />
+              <Icon name="arrow-forward" size={18} color={Colors.primary} />
             </TouchableOpacity>
           </View>
         </View>
@@ -180,64 +194,67 @@ export default function HomeScreen({ open }) {
 }
 
 const s = StyleSheet.create({
-  content: { padding: 16, paddingBottom: 100, backgroundColor: Colors.background },
+  content: { padding: 16, paddingBottom: 100, backgroundColor: '#F9F9F9' },
 
-  headerRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 18 },
-  avatarContainer: { width: 44, height: 44, borderRadius: 22, overflow: 'hidden', borderWidth: 2, borderColor: Colors.surfaceBorder },
+  headerRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 18, justifyContent: 'space-between' },
+  avatarContainer: { width: 48, height: 48, borderRadius: 24, overflow: 'hidden', borderWidth: 2, borderColor: '#E8E8E8' },
   avatarImage: { width: '100%', height: '100%' },
-  greetingTitle: { fontSize: 18, fontWeight: '900', color: Colors.ink },
-  greetingSub: { fontSize: 12, color: Colors.muted, marginTop: 1 },
-  bellBtn: { padding: 6, position: 'relative' },
-  bellDot: { position: 'absolute', top: 6, right: 6, width: 8, height: 8, borderRadius: 4, backgroundColor: Colors.error, borderWidth: 1.5, borderColor: Colors.white },
+  greetingTitle: { fontSize: 18, fontWeight: '800', color: '#1A1C1C' },
+  greetingSub: { fontSize: 12, color: '#4A5568', marginTop: 2 },
+  bellBtn: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: '#F3F3F3', position: 'relative' },
+  bellDot: { position: 'absolute', top: 8, right: 8, width: 8, height: 8, borderRadius: 4, backgroundColor: Colors.error, borderWidth: 1.5, borderColor: '#F3F3F3' },
 
-  statusCard: { backgroundColor: Colors.white, borderRadius: 14, padding: 16, borderWidth: 1, borderColor: Colors.surfaceBorder, marginBottom: 20 },
+  statusCard: { backgroundColor: Colors.white, borderRadius: 14, padding: 16, borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.04, shadowRadius: 4, elevation: 1 },
   cardHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 },
-  cardHeaderTitle: { fontSize: 10, fontWeight: '900', color: Colors.muted, letterSpacing: 1.2 },
-  activeChip: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#E2F4E5', paddingVertical: 4, paddingHorizontal: 8, borderRadius: 12 },
-  activeDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: Colors.activeDot, marginRight: 5 },
-  activeText: { color: Colors.primary, fontSize: 10, fontWeight: '900', letterSpacing: 0.5 },
+  cardHeaderTitle: { fontSize: 11, fontWeight: '800', color: '#4A5568', letterSpacing: 1.2 },
+  activeChip: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#E2F4E5', paddingVertical: 4, paddingHorizontal: 10, borderRadius: 6, gap: 5 },
+  activeDot: { width: 7, height: 7, borderRadius: 4, backgroundColor: '#008542' },
+  activeText: { color: '#008542', fontSize: 11, fontWeight: '900', letterSpacing: 0.5 },
+
   detailsGrid: { flexDirection: 'row', justifyContent: 'space-between' },
   gridCol: { width: '48%' },
-  gridLabel: { fontSize: 11, color: Colors.muted },
-  gridVal: { fontSize: 14, fontWeight: '800', color: Colors.ink, marginTop: 2 },
-  viewCardGreyBtn: { backgroundColor: Colors.surfaceContainer, borderRadius: 10, paddingVertical: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6 },
-  viewCardGreyText: { color: Colors.ink, fontWeight: '800', fontSize: 13 },
+  gridLabel: { fontSize: 11, color: '#4A5568', fontWeight: '600' },
+  gridVal: { fontSize: 14, fontWeight: '800', color: '#1A1C1C', marginTop: 2 },
 
-  sectionContainer: { marginBottom: 20 },
-  sectionTitle: { fontSize: 18, fontWeight: '900', color: Colors.ink, marginBottom: 10 },
-  sectionHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  viewCardGreyBtn: { backgroundColor: '#F3F3F3', borderRadius: 10, paddingVertical: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 },
+  viewCardGreyText: { color: '#1A1C1C', fontWeight: '800', fontSize: 13 },
+
+  sectionContainer: { marginBottom: 22 },
+  sectionTitle: { fontSize: 20, fontWeight: '900', color: '#1A1C1C', marginBottom: 12 },
+  sectionHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
   viewAllLink: { fontSize: 13, fontWeight: '800', color: Colors.primary },
 
-  importantYellowCard: { backgroundColor: Colors.gold, borderRadius: 16, padding: 18 },
+  importantYellowCard: { backgroundColor: '#FECC00', borderRadius: 16, padding: 18, position: 'relative', overflow: 'hidden' },
   importantHeaderRow: { flexDirection: 'row', alignItems: 'flex-start' },
-  importantCardTitle: { fontSize: 16, fontWeight: '900', color: '#3E3000' },
-  importantCardSub: { fontSize: 12, color: '#3E3000', opacity: 0.8, marginTop: 2 },
-  viewDatesBtn: { backgroundColor: '#3E3000', borderRadius: 8, paddingVertical: 10, paddingHorizontal: 14, alignSelf: 'flex-start', marginTop: 14 },
-  viewDatesBtnText: { color: Colors.gold, fontWeight: '800', fontSize: 12 },
+  importantIconSquare: { width: 36, height: 36, borderRadius: 8, backgroundColor: 'rgba(0, 0, 0, 0.08)', alignItems: 'center', justifyContent: 'center' },
+  importantCardTitle: { fontSize: 17, fontWeight: '900', color: '#574500' },
+  importantCardSub: { fontSize: 12, color: '#574500', opacity: 0.85, marginTop: 2, fontWeight: '600' },
+  viewDatesBtn: { backgroundColor: '#574500', borderRadius: 8, paddingVertical: 10, paddingHorizontal: 16, alignSelf: 'flex-start', marginTop: 14 },
+  viewDatesBtnText: { color: '#FECC00', fontWeight: '800', fontSize: 12 },
 
-  communityCard: { backgroundColor: Colors.white, borderRadius: 16, overflow: 'hidden', borderWidth: 1, borderColor: Colors.surfaceBorder },
-  communityImage: { width: '100%', height: 180 },
+  communityCard: { backgroundColor: Colors.white, borderRadius: 16, overflow: 'hidden', borderWidth: 1, borderColor: '#E2E8F0', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.04, shadowRadius: 4, elevation: 1 },
+  communityImage: { width: '100%', height: 170 },
   communityBody: { padding: 16 },
   branchMeetingTag: { fontSize: 10, fontWeight: '900', color: Colors.primary, letterSpacing: 1, marginBottom: 4 },
-  meetingTitle: { fontSize: 17, fontWeight: '900', color: Colors.ink },
-  scheduleRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 6, marginBottom: 14 },
-  scheduleText: { fontSize: 12, color: Colors.muted },
+  meetingTitle: { fontSize: 18, fontWeight: '900', color: '#1A1C1C' },
+  scheduleRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 6, marginBottom: 16 },
+  scheduleText: { fontSize: 13, color: '#4A5568', fontWeight: '600' },
   viewEventBtn: { backgroundColor: Colors.primary, borderRadius: 10, paddingVertical: 12, alignItems: 'center' },
   viewEventBtnText: { color: Colors.white, fontWeight: '800', fontSize: 13 },
 
   services3Grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
-  serviceSquareCard: { width: '31%', backgroundColor: Colors.white, borderRadius: 14, paddingVertical: 16, alignItems: 'center', borderWidth: 1, borderColor: Colors.surfaceBorder },
-  serviceCircle: { width: 40, height: 40, borderRadius: 20, backgroundColor: Colors.surfaceContainerLow, alignItems: 'center', justifyContent: 'center', marginBottom: 8 },
-  serviceSquareLabel: { fontSize: 11, fontWeight: '700', color: Colors.ink, textAlign: 'center', lineHeight: 14 },
+  serviceSquareCard: { width: '31%', backgroundColor: Colors.white, borderRadius: 14, paddingVertical: 16, alignItems: 'center', borderWidth: 1, borderColor: '#E2E8F0' },
+  serviceCircle: { width: 42, height: 42, borderRadius: 21, alignItems: 'center', justifyContent: 'center', marginBottom: 8 },
+  serviceSquareLabel: { fontSize: 11, fontWeight: '800', color: '#1A1C1C', textAlign: 'center', lineHeight: 14 },
 
-  newsCard: { backgroundColor: Colors.white, borderRadius: 16, overflow: 'hidden', borderWidth: 1, borderColor: Colors.surfaceBorder },
+  newsCard: { backgroundColor: Colors.white, borderRadius: 16, overflow: 'hidden', borderWidth: 1, borderColor: '#E2E8F0', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.04, shadowRadius: 4, elevation: 1 },
   newsImage: { width: '100%', height: 180 },
   newsBody: { padding: 16 },
   newsMetaRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
-  newsMetaTag: { fontSize: 10, fontWeight: '900', color: Colors.muted, letterSpacing: 1 },
-  newsMetaDate: { fontSize: 11, color: Colors.muted },
-  newsHeadline: { fontSize: 17, fontWeight: '900', color: Colors.ink },
-  newsSnippet: { fontSize: 12, color: Colors.muted, marginTop: 4, lineHeight: 18 },
+  newsMetaTag: { fontSize: 10, fontWeight: '900', color: '#4A5568', letterSpacing: 1 },
+  newsMetaDate: { fontSize: 11, color: '#4A5568', fontWeight: '600' },
+  newsHeadline: { fontSize: 18, fontWeight: '900', color: '#1A1C1C' },
+  newsSnippet: { fontSize: 13, color: '#4A5568', marginTop: 4, lineHeight: 19 },
   readUpdateLink: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 14 },
   readUpdateText: { color: Colors.primary, fontWeight: '800', fontSize: 13 },
 });
