@@ -82,7 +82,7 @@ export default function App() {
   const renderBody = () => {
     if (screen === 'send') return <SendMoneyScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} setStepText={setStepText} />;
     if (screen === 'services') return <ServicesScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} onDepositFunds={handleDepositFunds} setStepText={setStepText} />;
-    if (screen === 'donate') return <DonationScreen finish={finish} cards={cards} onDeductBalance={handleDeductBalance} />;
+    if (screen === 'donate') return <DonationScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} setStepText={setStepText} />;
     if (screen === 'membership') return <MembershipScreen finish={finish} cards={cards} onDeductBalance={handleDeductBalance} />;
     if (screen === 'profile') return <ProfileScreen cards={cards} onOpenCards={() => open('cards')} setStepText={setStepText} />;
     if (screen === 'cards') return <CardManagerScreen cards={cards} onAddCard={handleAddCard} />;
@@ -90,7 +90,7 @@ export default function App() {
     if (screen === 'notifications') return <NotificationsScreen />;
 
     if (tab === 'Money') return <MoneyScreen open={open} cards={cards} balance={balance} onDepositFunds={handleDepositFunds} recentActivity={recentActivity} />;
-    if (tab === 'Participate') return <DonationScreen finish={finish} cards={cards} onDeductBalance={handleDeductBalance} />;
+    if (tab === 'Participate') return <DonationScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} setStepText={setStepText} />;
     if (tab === 'Updates') return <NotificationsScreen />;
     if (tab === 'Member') return <ProfileScreen cards={cards} onOpenCards={() => open('cards')} setStepText={setStepText} />;
 
