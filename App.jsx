@@ -15,6 +15,7 @@ import MembershipScreen from './src/screens/MembershipScreen';
 import MoneyScreen from './src/screens/MoneyScreen';
 import NotificationsScreen from './src/screens/NotificationsScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
+import ReceiveMoneyScreen from './src/screens/ReceiveMoneyScreen';
 import SendMoneyScreen from './src/screens/SendMoneyScreen';
 import ServicesScreen from './src/screens/ServicesScreen';
 import SignInScreen from './src/screens/SignInScreen';
@@ -116,6 +117,7 @@ export default function App() {
 
   const renderBody = () => {
     if (screen === 'send') return <SendMoneyScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} setStepText={setStepText} />;
+    if (screen === 'receive') return <ReceiveMoneyScreen finish={finish} setNotice={setNotice} />;
     if (screen === 'services') return <ServicesScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} onDepositFunds={handleDepositFunds} setStepText={setStepText} initialSubScreen={initialSubScreen} />;
     if (screen === 'donate') return <DonationScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} setStepText={setStepText} />;
     if (screen === 'membership') return <MembershipScreen finish={finish} cards={cards} onDeductBalance={handleDeductBalance} />;

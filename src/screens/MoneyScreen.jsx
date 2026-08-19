@@ -40,10 +40,6 @@ export default function MoneyScreen({ open, balance = 1500, onDepositFunds, rece
         <View style={s.balanceCardLeft}>
           <Text style={s.balanceLabel}>AVAILABLE BALANCE</Text>
           <Text style={s.balanceAmount}>R{Number(balance).toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Text>
-          
-          <TouchableOpacity style={s.addFundsPillBtn} onPress={() => setShowDepositModal(true)} activeOpacity={0.8}>
-            <Text style={s.addFundsPillText}>+ Add Funds</Text>
-          </TouchableOpacity>
         </View>
 
         {/* Bank Pillars Graphic */}
@@ -65,7 +61,7 @@ export default function MoneyScreen({ open, balance = 1500, onDepositFunds, rece
             <Text style={s.sendActionText}>Send</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={s.greyActionBtn} onPress={() => setShowDepositModal(true)} activeOpacity={0.8}>
+          <TouchableOpacity style={s.greyActionBtn} onPress={() => open('receive')} activeOpacity={0.8}>
             <Icon name="file-download" size={16} color={Colors.ink} />
             <Text style={s.greyActionText}>Receive</Text>
           </TouchableOpacity>

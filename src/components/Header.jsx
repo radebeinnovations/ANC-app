@@ -67,6 +67,7 @@ function getScreenTitle(screen, stepText) {
     return 'Send Money';
   }
   if (screen === 'services') return 'Pay Services';
+  if (screen === 'receive') return 'Receive Money';
   if (screen === 'donate') return 'ANC UNITY';
   if (screen === 'membership') return 'Membership';
   if (screen === 'profile') return 'Member Card';
