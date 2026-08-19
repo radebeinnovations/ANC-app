@@ -2,148 +2,120 @@ import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Button from '../components/Button';
 import { Icon } from '../components/Icons';
-import List from '../components/List';
 import YamiFooter from '../components/YamiFooter';
 import { Colors } from '../theme/colors';
 
 export default function ProfileScreen({ cards = [], onOpenCards, setStepText }) {
-  const [tab, setTab] = useState('CARD'); // 'CARD' | 'DETAILS'
-  const [isFlipped, setIsFlipped] = useState(false); // Toggle between Front Credential & QR Back Card
+  const [showFrontCard, setShowFrontCard] = useState(false); // Default false -> shows QR Card (Image 1 target)
 
-  // Clear stepText header subtitle on Member Card screen
+  // Explicitly clear stepText header subtitle on Member Card screen
   React.useEffect(() => {
     if (setStepText) setStepText('');
   }, [setStepText]);
 
   return (
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
-      {/* Segmented Tab Bar */}
-      <View style={s.segmentBar}>
+      {!showFrontCard ? (
+        /* EXACT STITCH MEMBER CARD (Gray QR Card - Image 1 Target) */
         <TouchableOpacity
-          style={[s.segmentBtn, tab === 'CARD' && s.segmentBtnOn]}
-          onPress={() => setTab('CARD')}
-          activeOpacity={0.8}
+          style={s.qrBackCardContainer}
+          onPress={() => setShowFrontCard(true)}
+          activeOpacity={0.9}
         >
-          <Text style={[s.segmentText, tab === 'CARD' && s.segmentTextOn]}>CARD</Text>
+          {/* Centered QR Code Box */}
+          <View style={s.qrGraphicBox}>
+            <View style={s.qrMatrixSquare}>
+              {/* Diagonal QR Barcode Lines Simulation */}
+              <View style={s.qrCornerSquareTL} />
+              <View style={s.qrCornerSquareTR} />
+              <View style={s.qrCornerSquareBL} />
+              <Text style={s.qrSimText}>
+                ░▒▓█ █▓▒░ ░▒▓█{'\n'}
+                █  █ ░▒▓█ █  █{'\n'}
+                ░▒▓█ █▓▒░ ░▒▓█{'\n'}
+                █▓▒░ ░▒▓█ █▓▒░{'\n'}
+                ░▒▓█ █▓▒░ ░▒▓█{'\n'}
+                █  █ ░▒▓█ █  █{'\n'}
+                ░▒▓█ █▓▒░ ░▒▓█
+              </Text>
+            </View>
+          </View>
+
+          {/* Card Bottom Row: Province & Region */}
+          <View style={s.qrCardBottomGrid}>
+            <View>
+              <Text style={s.qrGridLabel}>Province</Text>
+              <Text style={s.qrGridVal}>GAUTENG</Text>
+            </View>
+            <View>
+              <Text style={s.qrGridLabel}>Region</Text>
+              <Text style={s.qrGridVal}>JOHANNESBURG</Text>
+            </View>
+          </View>
         </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[s.segmentBtn, tab === 'DETAILS' && s.segmentBtnOn]}
-          onPress={() => setTab('DETAILS')}
-          activeOpacity={0.8}
-        >
-          <Text style={[s.segmentText, tab === 'DETAILS' && s.segmentTextOn]}>DETAILS</Text>
-        </TouchableOpacity>
-      </View>
-
-      {tab === 'CARD' ? (
-        <>
-          {/* Card View - Interactive Flip between Front & Back QR View */}
-          {!isFlipped ? (
-            /* FRONT CARD VIEW (Green Credential Card - Image 1) */
-            <TouchableOpacity
-              style={s.memberCardContainer}
-              onPress={() => setIsFlipped(true)}
-              activeOpacity={0.9}
-            >
-              <View style={s.topGoldBar} />
-              <View style={s.cardHeaderRow}>
-                <View style={s.emblemCircle}>
-                  <Text style={s.emblemCircleText}>ANC</Text>
-                </View>
-                <View>
-                  <Text style={s.cardHeading}>AFRICAN NATIONAL CONGRESS</Text>
-                  <Text style={s.cardSubHeading}>Digital Credential</Text>
-                </View>
-              </View>
-
-              <Text style={s.memberName}>LERUMO THABO</Text>
-
-              <View style={s.badgeRow}>
-                <View style={s.memberRoleBadge}>
-                  <Text style={s.memberRoleText}>MEMBER</Text>
-                </View>
-                <View style={s.activeOutlineBadge}>
-                  <View style={s.activeDot} />
-                  <Text style={s.activeOutlineText}>ACTIVE</Text>
-                </View>
-              </View>
-
-              <Text style={s.memberIdNumber}>ANC-1234567</Text>
-
-              <View style={s.cardDetailsGrid}>
-                <View>
-                  <Text style={s.gridDetailLabel}>PROVINCE</Text>
-                  <Text style={s.gridDetailVal}>GAUTENG</Text>
-                </View>
-                <View>
-                  <Text style={s.gridDetailLabel}>REGION</Text>
-                  <Text style={s.gridDetailVal}>JOHANNESBURG</Text>
-                </View>
-              </View>
-            </TouchableOpacity>
-          ) : (
-            /* BACK QR CARD VIEW (Gray QR Card - Image 2) */
-            <TouchableOpacity
-              style={s.qrBackCardContainer}
-              onPress={() => setIsFlipped(false)}
-              activeOpacity={0.9}
-            >
-              {/* QR Code Container Box */}
-              <View style={s.qrGraphicBox}>
-                <View style={s.qrPatternMatrix}>
-                  <View style={s.qrCornerSquareTopLeft} />
-                  <View style={s.qrCornerSquareTopRight} />
-                  <View style={s.qrCornerSquareBottomLeft} />
-                  <Text style={s.qrSimText}>
-                    ████  ██  ████{'\n'}
-                    █  █  ██  █  █{'\n'}
-                    ████  ██  ████{'\n'}
-                    ██  ████  ██  {'\n'}
-                    ████  ██  ████{'\n'}
-                    █  █  ██  █  █{'\n'}
-                    ████  ██  ████
-                  </Text>
-                </View>
-              </View>
-
-              <View style={s.qrCardBottomGrid}>
-                <View>
-                  <Text style={s.qrGridLabel}>Province</Text>
-                  <Text style={s.qrGridVal}>GAUTENG</Text>
-                </View>
-                <View>
-                  <Text style={s.qrGridLabel}>Region</Text>
-                  <Text style={s.qrGridVal}>JOHANNESBURG</Text>
-                </View>
-              </View>
-            </TouchableOpacity>
-          )}
-
-          {/* Subtitle Instruction */}
-          <Text style={s.qrInstructionText}>
-            Tap the card to view your verification QR code and regional details. Present this digital card at official events.
-          </Text>
-
-          {/* Action Buttons */}
-          <Button text="📥  Save Offline Copy" onPress={() => {}} />
-
-          <TouchableOpacity style={s.flipToggleBtn} onPress={() => setIsFlipped(!isFlipped)} activeOpacity={0.8}>
-            <Icon name="flip-camera-android" size={18} color={Colors.primary} />
-            <Text style={s.flipToggleText}>{isFlipped ? 'View Front Credential Card' : 'View QR Verification Card'}</Text>
-          </TouchableOpacity>
-        </>
       ) : (
-        /* DETAILS TAB VIEW */
-        <View style={{ marginTop: 12 }}>
-          <Text style={s.sectionTitle}>My Member Details</Text>
-          <List badge="MOB" title="082 555 0105" sub="Verified Mobile Number" />
-          <List badge="EML" title="lerumo.thabo@anc-unity.org.za" sub="Verified Email Address" />
-          <List badge="LOC" title="Soweto, Gauteng" sub="Home Address (Ward 62)" />
-          <List badge="CRD" title="Saved Payment Cards" sub={`${cards.length} linked cards`} onPress={onOpenCards} />
-          <List badge="SET" title="App Settings & Security" sub="Biometrics & PIN lock" />
-        </View>
+        /* FRONT GREEN DIGITAL CREDENTIAL CARD */
+        <TouchableOpacity
+          style={s.memberCardContainer}
+          onPress={() => setShowFrontCard(false)}
+          activeOpacity={0.9}
+        >
+          <View style={s.topGoldBar} />
+          <View style={s.cardHeaderRow}>
+            <View style={s.emblemCircle}>
+              <Text style={s.emblemCircleText}>ANC</Text>
+            </View>
+            <View>
+              <Text style={s.cardHeading}>AFRICAN NATIONAL CONGRESS</Text>
+              <Text style={s.cardSubHeading}>Digital Credential</Text>
+            </View>
+          </View>
+
+          <Text style={s.memberName}>LERUMO THABO</Text>
+
+          <View style={s.badgeRow}>
+            <View style={s.memberRoleBadge}>
+              <Text style={s.memberRoleText}>MEMBER</Text>
+            </View>
+            <View style={s.activeOutlineBadge}>
+              <View style={s.activeDot} />
+              <Text style={s.activeOutlineText}>ACTIVE</Text>
+            </View>
+          </View>
+
+          <Text style={s.memberIdNumber}>ANC-1234567</Text>
+
+          <View style={s.cardDetailsGrid}>
+            <View>
+              <Text style={s.gridDetailLabel}>PROVINCE</Text>
+              <Text style={s.gridDetailVal}>GAUTENG</Text>
+            </View>
+            <View>
+              <Text style={s.gridDetailLabel}>REGION</Text>
+              <Text style={s.gridDetailVal}>JOHANNESBURG</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
       )}
+
+      {/* Instruction Subtitle below card */}
+      <Text style={s.qrInstructionText}>
+        Tap the card to view your verification QR code and regional details. Present this digital card at official events.
+      </Text>
+
+      {/* Action Buttons */}
+      <Button text="📥  Save Offline Copy" onPress={() => {}} />
+
+      <TouchableOpacity
+        style={s.flipToggleBtn}
+        onPress={() => setShowFrontCard(!showFrontCard)}
+        activeOpacity={0.8}
+      >
+        <Icon name="flip-camera-android" size={18} color={Colors.primary} />
+        <Text style={s.flipToggleText}>
+          {showFrontCard ? 'View Verification QR Code' : 'View Digital Credential Card'}
+        </Text>
+      </TouchableOpacity>
 
       <YamiFooter />
     </ScrollView>
@@ -153,11 +125,50 @@ export default function ProfileScreen({ cards = [], onOpenCards, setStepText }) 
 const s = StyleSheet.create({
   content: { padding: 16, paddingBottom: 100, backgroundColor: Colors.background },
 
-  segmentBar: { flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: Colors.surfaceBorder, marginBottom: 16 },
-  segmentBtn: { flex: 1, paddingVertical: 12, alignItems: 'center' },
-  segmentBtnOn: { borderBottomWidth: 2, borderBottomColor: Colors.primary },
-  segmentText: { fontSize: 12, fontWeight: '800', color: Colors.muted },
-  segmentTextOn: { color: Colors.primary },
+  /* BACK QR CARD VIEW (Gray Card - Exact Image 1 Match) */
+  qrBackCardContainer: {
+    backgroundColor: '#E6ECE7',
+    borderRadius: 16,
+    padding: 24,
+    borderWidth: 1,
+    borderColor: '#D0D6D1',
+    alignItems: 'center',
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  qrGraphicBox: {
+    width: 210,
+    height: 210,
+    backgroundColor: Colors.white,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: Colors.surfaceBorder,
+    marginBottom: 24,
+    position: 'relative',
+    padding: 12,
+  },
+  qrMatrixSquare: { alignItems: 'center', justifyContent: 'center' },
+  qrSimText: { fontSize: 13, fontFamily: 'monospace', letterSpacing: 2, lineHeight: 18, color: Colors.ink, textAlign: 'center' },
+  qrCornerSquareTL: { position: 'absolute', top: 10, left: 10, width: 30, height: 30, borderWidth: 4, borderColor: Colors.ink },
+  qrCornerSquareTR: { position: 'absolute', top: 10, right: 10, width: 30, height: 30, borderWidth: 4, borderColor: Colors.ink },
+  qrCornerSquareBL: { position: 'absolute', bottom: 10, left: 10, width: 30, height: 30, borderWidth: 4, borderColor: Colors.ink },
+
+  qrCardBottomGrid: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingTop: 14,
+    borderTopWidth: 1,
+    borderTopColor: '#C4CCC5',
+  },
+  qrGridLabel: { fontSize: 11, color: Colors.muted, fontWeight: '600' },
+  qrGridVal: { fontSize: 15, fontWeight: '900', color: Colors.ink, marginTop: 2 },
 
   /* FRONT GREEN CREDENTIAL CARD */
   memberCardContainer: {
@@ -171,7 +182,7 @@ const s = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 10,
     elevation: 6,
-    marginBottom: 16,
+    marginBottom: 20,
   },
   topGoldBar: { position: 'absolute', top: 0, left: 0, right: 0, height: 4, backgroundColor: Colors.gold },
   cardHeaderRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 16 },
@@ -193,52 +204,7 @@ const s = StyleSheet.create({
   gridDetailLabel: { fontSize: 9, color: 'rgba(255,255,255,0.7)', fontWeight: '800', letterSpacing: 1 },
   gridDetailVal: { fontSize: 13, fontWeight: '800', color: Colors.white, marginTop: 2 },
 
-  /* BACK QR CARD VIEW (Gray Card - Image 2) */
-  qrBackCardContainer: {
-    backgroundColor: '#EAEAEA',
-    borderRadius: 16,
-    padding: 24,
-    borderWidth: 1,
-    borderColor: '#D8DDD9',
-    alignItems: 'center',
-    marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
-  },
-  qrGraphicBox: {
-    width: 200,
-    height: 200,
-    backgroundColor: Colors.white,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-    marginBottom: 20,
-    position: 'relative',
-    padding: 12,
-  },
-  qrPatternMatrix: { alignItems: 'center', justifyContent: 'center' },
-  qrSimText: { fontSize: 14, fontFamily: 'monospace', letterSpacing: 2, lineHeight: 18, color: Colors.ink },
-  qrCornerSquareTopLeft: { position: 'absolute', top: 12, left: 12, width: 28, height: 28, borderWidth: 4, borderColor: Colors.ink },
-  qrCornerSquareTopRight: { position: 'absolute', top: 12, right: 12, width: 28, height: 28, borderWidth: 4, borderColor: Colors.ink },
-  qrCornerSquareBottomLeft: { position: 'absolute', bottom: 12, left: 12, width: 28, height: 28, borderWidth: 4, borderColor: Colors.ink },
-
-  qrCardBottomGrid: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingTop: 12,
-    borderTopWidth: 1,
-    borderTopColor: '#D0D6D1',
-  },
-  qrGridLabel: { fontSize: 11, color: Colors.muted, fontWeight: '600' },
-  qrGridVal: { fontSize: 14, fontWeight: '900', color: Colors.ink, marginTop: 2 },
-
-  qrInstructionText: { fontSize: 12, color: Colors.muted, textAlign: 'center', marginBottom: 16, lineHeight: 18, paddingHorizontal: 10 },
+  qrInstructionText: { fontSize: 13, color: Colors.muted, textAlign: 'center', marginBottom: 16, lineHeight: 18, paddingHorizontal: 12 },
 
   flipToggleBtn: {
     flexDirection: 'row',
@@ -253,6 +219,4 @@ const s = StyleSheet.create({
     backgroundColor: Colors.white,
   },
   flipToggleText: { fontSize: 13, fontWeight: '800', color: Colors.primary },
-
-  sectionTitle: { fontSize: 16, fontWeight: '800', color: Colors.ink, marginBottom: 12 },
 });

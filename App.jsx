@@ -45,7 +45,12 @@ export default function App() {
 
   const [stepText, setStepText] = useState('STEP 1 OF 3');
 
-  const open = (name) => { setNotice(''); setStepText('STEP 1 OF 3'); setScreen(name); };
+  const open = (name) => {
+    setNotice('');
+    if (name === 'send') setStepText('STEP 1 OF 3');
+    else setStepText('');
+    setScreen(name);
+  };
   const finish = (message) => { setScreen('main'); setNotice(message); };
 
   const handleAddCard = (newCard) => {
@@ -87,7 +92,7 @@ export default function App() {
     if (tab === 'Money') return <MoneyScreen open={open} cards={cards} balance={balance} onDepositFunds={handleDepositFunds} recentActivity={recentActivity} />;
     if (tab === 'Participate') return <DonationScreen finish={finish} cards={cards} onDeductBalance={handleDeductBalance} />;
     if (tab === 'Updates') return <NotificationsScreen />;
-    if (tab === 'Member') return <ProfileScreen cards={cards} onOpenCards={() => open('cards')} />;
+    if (tab === 'Member') return <ProfileScreen cards={cards} onOpenCards={() => open('cards')} setStepText={setStepText} />;
 
     return <HomeScreen open={open} balance={balance} />;
   };
