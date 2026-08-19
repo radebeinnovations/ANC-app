@@ -6,7 +6,7 @@ import YamiFooter from '../components/YamiFooter';
 import { Colors } from '../theme/colors';
 
 const COMMUNITY_HERO_IMG = require('../assets/community_garden.jpg');
-const NATIONAL_FUND_IMG = require('../assets/community_garden.jpg');
+const NATIONAL_FUND_IMG = require('../assets/community_hero_banner.png');
 
 export default function DonationScreen({ finish, cards = [], balance = 1500, onDeductBalance, setStepText }) {
   const [step, setStep] = useState(0); // 0: Dashboard -> 1: Campaign Details -> 2: Make Donation Form -> 3: Review -> 4: Success
