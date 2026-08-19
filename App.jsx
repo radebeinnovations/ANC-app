@@ -122,8 +122,12 @@ export default function App() {
             <StatusBar barStyle="dark-content" backgroundColor={Colors.white} />
             <Header
               screen={screen}
+              tab={tab}
               stepText={stepText}
-              onBack={() => setScreen('main')}
+              onBack={() => {
+                if (tab === 'Member') setTab('Home');
+                setScreen('main');
+              }}
               onOpenMenu={() => setDrawerOpen(true)}
               onOpenNotifications={() => open('notifications')}
               unreadCount={1}
@@ -135,7 +139,7 @@ export default function App() {
               </TouchableOpacity>
             ) : null}
             <View style={s.page}>{renderBody()}</View>
-            <Nav active={tab} onChange={(value) => { setTab(value); setScreen('main'); }} />
+            <Nav active={tab} onChange={(value) => { setTab(value); setScreen('main'); setStepText(''); }} />
 
             <SideDrawer
               visible={drawerOpen}

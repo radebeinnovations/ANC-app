@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Colors } from '../theme/colors';
 import { Icon } from './Icons';
 
-export default function Header({ screen, onBack, onOpenMenu, onOpenNotifications, unreadCount = 1, stepText }) {
+export default function Header({ screen, tab, onBack, onOpenMenu, onOpenNotifications, unreadCount = 1, stepText }) {
   if (screen !== 'main' && screen !== 'welcome') {
     return (
       <View style={s.header}>
@@ -14,6 +14,23 @@ export default function Header({ screen, onBack, onOpenMenu, onOpenNotifications
         <View style={s.headerCenter}>
           <Text style={s.headerTitle}>{getScreenTitle(screen, stepText)}</Text>
           {stepText ? <Text style={s.stepSub}>{stepText}</Text> : null}
+        </View>
+
+        <View style={{ width: 40 }} />
+      </View>
+    );
+  }
+
+  // When viewing Member Card via bottom tab 'Member'
+  if (tab === 'Member') {
+    return (
+      <View style={s.header}>
+        <TouchableOpacity style={s.headerBackBtn} onPress={onBack} activeOpacity={0.7}>
+          <Icon name="arrow-back" size={20} color={Colors.primary} />
+        </TouchableOpacity>
+
+        <View style={s.headerCenter}>
+          <Text style={s.headerTitle}>Member Card</Text>
         </View>
 
         <View style={{ width: 40 }} />
@@ -58,18 +75,16 @@ const s = StyleSheet.create({
     backgroundColor: Colors.white,
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
     flexDirection: 'row',
+    paddingHorizontal: 16,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.surfaceBorder,
+    borderBottomColor: Colors.line,
   },
-  headerBrand: { fontSize: 18, color: Colors.primary, fontWeight: '900', letterSpacing: 1 },
-  headerCenter: { alignItems: 'center' },
-  headerTitle: { fontSize: 16, fontWeight: '800', color: Colors.primary },
-  stepSub: { fontSize: 10, color: Colors.muted, fontWeight: '700', letterSpacing: 0.8, marginTop: 1 },
   headerIconBtn: {
-    width: 44,
-    height: 44,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: Colors.surfaceContainerLow,
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
@@ -78,19 +93,38 @@ const s = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: Colors.surfaceContainerLow,
+    backgroundColor: '#F0F9F2',
     alignItems: 'center',
     justifyContent: 'center',
   },
+  headerCenter: {
+    alignItems: 'center',
+  },
+  headerTitle: {
+    fontSize: 16,
+    fontWeight: '900',
+    color: Colors.primary,
+  },
+  stepSub: {
+    fontSize: 9,
+    fontWeight: '800',
+    color: Colors.muted,
+    letterSpacing: 1,
+    marginTop: 1,
+  },
+  headerBrand: {
+    fontSize: 18,
+    fontWeight: '900',
+    color: Colors.primary,
+    letterSpacing: 0.8,
+  },
   badgeDot: {
     position: 'absolute',
-    top: 6,
-    right: 6,
-    backgroundColor: Colors.error,
+    top: 7,
+    right: 7,
+    width: 7,
+    height: 7,
     borderRadius: 4,
-    width: 8,
-    height: 8,
-    borderWidth: 1.5,
-    borderColor: Colors.white,
+    backgroundColor: Colors.error,
   },
 });

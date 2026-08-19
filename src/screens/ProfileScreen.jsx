@@ -5,8 +5,48 @@ import { Icon } from '../components/Icons';
 import YamiFooter from '../components/YamiFooter';
 import { Colors } from '../theme/colors';
 
+function QRCodeMatrixGraphic() {
+  const qrGridData = [
+    [1,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,1],
+    [1,0,0,0,0,0,1,0,1,0,1,0,0,0,0,0,1],
+    [1,0,1,1,1,0,1,0,0,1,1,0,1,1,1,0,1],
+    [1,0,1,1,1,0,1,0,1,1,1,0,1,1,1,0,1],
+    [1,0,1,1,1,0,1,0,0,0,1,0,1,1,1,0,1],
+    [1,0,0,0,0,0,1,0,1,1,0,0,0,0,0,0,1],
+    [1,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,1],
+    [0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0],
+    [1,0,1,1,0,1,1,1,0,1,1,1,0,1,0,1,1],
+    [0,1,0,0,1,0,0,1,1,0,0,1,1,0,1,0,0],
+    [1,0,1,1,1,0,1,0,1,1,1,0,1,1,0,1,1],
+    [0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0],
+    [1,1,1,1,1,1,1,0,1,1,0,1,1,0,1,1,1],
+    [1,0,0,0,0,0,1,0,0,0,1,0,1,1,0,0,1],
+    [1,0,1,1,1,0,1,1,1,1,0,1,0,0,1,0,1],
+    [1,0,0,0,0,0,1,0,1,0,1,1,1,0,0,1,1],
+    [1,1,1,1,1,1,1,0,0,1,0,1,0,1,1,0,1],
+  ];
+
+  return (
+    <View style={{ width: 170, height: 170, backgroundColor: Colors.white }}>
+      {qrGridData.map((row, rIdx) => (
+        <View key={rIdx} style={{ flexDirection: 'row', flex: 1 }}>
+          {row.map((cell, cIdx) => (
+            <View
+              key={cIdx}
+              style={{
+                flex: 1,
+                backgroundColor: cell === 1 ? '#1A1C1C' : '#FFFFFF',
+              }}
+            />
+          ))}
+        </View>
+      ))}
+    </View>
+  );
+}
+
 export default function ProfileScreen({ cards = [], onOpenCards, setStepText }) {
-  const [showFrontCard, setShowFrontCard] = useState(false); // Default false -> shows QR Card (Image 1 target)
+  const [showFrontCard, setShowFrontCard] = useState(false); // Default false -> shows QR Card (Stitch target)
 
   // Explicitly clear stepText header subtitle on Member Card screen
   React.useEffect(() => {
@@ -16,7 +56,7 @@ export default function ProfileScreen({ cards = [], onOpenCards, setStepText }) 
   return (
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
       {!showFrontCard ? (
-        /* EXACT STITCH MEMBER CARD (Gray QR Card - Image 1 Target) */
+        /* EXACT STITCH MEMBER CARD (Gray QR Card) */
         <TouchableOpacity
           style={s.qrBackCardContainer}
           onPress={() => setShowFrontCard(true)}
@@ -24,21 +64,7 @@ export default function ProfileScreen({ cards = [], onOpenCards, setStepText }) 
         >
           {/* Centered QR Code Box */}
           <View style={s.qrGraphicBox}>
-            <View style={s.qrMatrixSquare}>
-              {/* Diagonal QR Barcode Lines Simulation */}
-              <View style={s.qrCornerSquareTL} />
-              <View style={s.qrCornerSquareTR} />
-              <View style={s.qrCornerSquareBL} />
-              <Text style={s.qrSimText}>
-                ░▒▓█ █▓▒░ ░▒▓█{'\n'}
-                █  █ ░▒▓█ █  █{'\n'}
-                ░▒▓█ █▓▒░ ░▒▓█{'\n'}
-                █▓▒░ ░▒▓█ █▓▒░{'\n'}
-                ░▒▓█ █▓▒░ ░▒▓█{'\n'}
-                █  █ ░▒▓█ █  █{'\n'}
-                ░▒▓█ █▓▒░ ░▒▓█
-              </Text>
-            </View>
+            <QRCodeMatrixGraphic />
           </View>
 
           {/* Card Bottom Row: Province & Region */}
@@ -125,13 +151,13 @@ export default function ProfileScreen({ cards = [], onOpenCards, setStepText }) 
 const s = StyleSheet.create({
   content: { padding: 16, paddingBottom: 100, backgroundColor: Colors.background },
 
-  /* BACK QR CARD VIEW (Gray Card - Exact Image 1 Match) */
+  /* BACK QR CARD VIEW (Gray Card - Exact Stitch Match) */
   qrBackCardContainer: {
-    backgroundColor: '#E6ECE7',
+    backgroundColor: '#EAEAEA',
     borderRadius: 16,
     padding: 24,
     borderWidth: 1,
-    borderColor: '#D0D6D1',
+    borderColor: '#D8DDD9',
     alignItems: 'center',
     marginBottom: 20,
     shadowColor: '#000',
@@ -148,16 +174,10 @@ const s = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
+    borderColor: '#D6DDD8',
     marginBottom: 24,
-    position: 'relative',
     padding: 12,
   },
-  qrMatrixSquare: { alignItems: 'center', justifyContent: 'center' },
-  qrSimText: { fontSize: 13, fontFamily: 'monospace', letterSpacing: 2, lineHeight: 18, color: Colors.ink, textAlign: 'center' },
-  qrCornerSquareTL: { position: 'absolute', top: 10, left: 10, width: 30, height: 30, borderWidth: 4, borderColor: Colors.ink },
-  qrCornerSquareTR: { position: 'absolute', top: 10, right: 10, width: 30, height: 30, borderWidth: 4, borderColor: Colors.ink },
-  qrCornerSquareBL: { position: 'absolute', bottom: 10, left: 10, width: 30, height: 30, borderWidth: 4, borderColor: Colors.ink },
 
   qrCardBottomGrid: {
     width: '100%',
@@ -165,7 +185,7 @@ const s = StyleSheet.create({
     justifyContent: 'space-between',
     paddingTop: 14,
     borderTopWidth: 1,
-    borderTopColor: '#C4CCC5',
+    borderTopColor: '#CCD3CE',
   },
   qrGridLabel: { fontSize: 11, color: Colors.muted, fontWeight: '600' },
   qrGridVal: { fontSize: 15, fontWeight: '900', color: Colors.ink, marginTop: 2 },
