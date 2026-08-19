@@ -61,7 +61,7 @@ export default function DonationScreen({ finish, cards = [], balance = 1500, onD
     setStep(4);
   };
 
-  // STEP 0: DONATIONS DASHBOARD (Exact 1:1 Match to Screen 1)
+  // STEP 0: DONATIONS DASHBOARD
   if (step === 0) {
     return (
       <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
@@ -162,12 +162,12 @@ export default function DonationScreen({ finish, cards = [], balance = 1500, onD
     );
   }
 
-  // STEP 1: CAMPAIGN DETAILS VIEW (Exact 1:1 Match to Screen 2)
+  // STEP 1: CAMPAIGN DETAILS VIEW (Exact 1:1 Match to Screenshot 2)
   if (step === 1) {
     return (
-      <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
-        {/* Campaign Hero Banner */}
-        <View style={s.heroBannerCard}>
+      <ScrollView contentContainerStyle={s.contentFullBleed} showsVerticalScrollIndicator={false}>
+        {/* Full-Bleed Edge-to-Edge Campaign Hero Banner */}
+        <View style={s.heroBannerFullBleed}>
           <Image source={NATIONAL_FUND_IMG} style={s.heroBannerImg} />
           <View style={s.heroOverlayScrim} />
 
@@ -178,7 +178,7 @@ export default function DonationScreen({ finish, cards = [], balance = 1500, onD
 
             <Text style={s.heroTitleText}>{selectedCause}</Text>
 
-            {/* Blurred Progress Box */}
+            {/* Glassmorphism Progress Box */}
             <View style={s.heroGlassBox}>
               <View style={s.heroProgressRow}>
                 <View style={{ flexDirection: 'row', alignItems: 'baseline' }}>
@@ -194,60 +194,61 @@ export default function DonationScreen({ finish, cards = [], balance = 1500, onD
           </View>
         </View>
 
-        {/* About Campaign Card */}
-        <View style={s.aboutCard}>
-          <View style={s.aboutHeaderRow}>
-            <Icon name="info" size={20} color={Colors.primary} />
-            <Text style={s.aboutHeaderTitle}>About this campaign</Text>
-          </View>
-          <Text style={s.aboutParagraph}>
-            Supporting local development efforts across the nation. This campaign focuses on building sustainable infrastructure, providing essential resources, and fostering economic growth in communities that need it most. Your contribution directly empowers local leaders and citizens to create lasting change.
-          </Text>
-        </View>
-
-        {/* Campaign Impact Section */}
-        <Text style={s.sectionHeaderTitle}>Campaign Impact</Text>
-        <View style={s.impactGrid}>
-          {/* Metric 1 */}
-          <View style={s.impactCard}>
-            <View style={s.impactIconBg}>
-              <Icon name="groups" size={22} color={Colors.primary} />
+        {/* Padded Content Section */}
+        <View style={s.paddedBodySection}>
+          {/* About Campaign Card */}
+          <View style={s.aboutCard}>
+            <View style={s.aboutHeaderRow}>
+              <Icon name="info" size={20} color={Colors.primary} />
+              <Text style={s.aboutHeaderTitle}>About this campaign</Text>
             </View>
-            <View style={{ flex: 1 }}>
-              <Text style={s.impactValBold}>24</Text>
-              <Text style={s.impactDescText}>Communities supported across 5 provinces.</Text>
-            </View>
+            <Text style={s.aboutParagraph}>
+              Supporting local development efforts across the nation. This campaign focuses on building sustainable infrastructure, providing essential resources, and fostering economic growth in communities that need it most. Your contribution directly empowers local leaders and citizens to create lasting change.
+            </Text>
           </View>
 
-          {/* Metric 2 */}
-          <View style={s.impactCard}>
-            <View style={s.impactIconBg}>
-              <Icon name="build" size={20} color={Colors.primary} />
+          {/* Campaign Impact Section */}
+          <Text style={s.sectionHeaderTitle}>Campaign Impact</Text>
+          <View style={s.impactGrid}>
+            <View style={s.impactCard}>
+              <View style={s.impactIconBg}>
+                <Icon name="groups" size={22} color={Colors.primary} />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={s.impactValBold}>24</Text>
+                <Text style={s.impactDescText}>Communities supported across 5 provinces.</Text>
+              </View>
             </View>
-            <View style={{ flex: 1 }}>
-              <Text style={s.impactValBold}>12</Text>
-              <Text style={s.impactDescText}>Infrastructure projects currently underway.</Text>
+
+            <View style={s.impactCard}>
+              <View style={s.impactIconBg}>
+                <Icon name="build" size={20} color={Colors.primary} />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={s.impactValBold}>12</Text>
+                <Text style={s.impactDescText}>Infrastructure projects currently underway.</Text>
+              </View>
             </View>
           </View>
-        </View>
 
-        {/* Latest Update Box */}
-        <View style={s.updateBorderBox}>
-          <Text style={s.updateCategoryText}>LATEST UPDATE • 12 AUGUST 2026</Text>
-          <Text style={s.updateTitleBold}>Community programme update</Text>
-          <TouchableOpacity style={s.readUpdateLink} activeOpacity={0.7}>
-            <Text style={s.readUpdateLinkText}>Read update</Text>
-            <Icon name="arrow-forward" size={14} color={Colors.primary} />
-          </TouchableOpacity>
-        </View>
+          {/* Latest Update Box */}
+          <View style={s.updateBorderBox}>
+            <Text style={s.updateCategoryText}>LATEST UPDATE • 12 AUGUST 2026</Text>
+            <Text style={s.updateTitleBold}>Community programme update</Text>
+            <TouchableOpacity style={s.readUpdateLink} activeOpacity={0.7}>
+              <Text style={s.readUpdateLinkText}>Read update</Text>
+              <Icon name="arrow-forward" size={14} color={Colors.primary} />
+            </TouchableOpacity>
+          </View>
 
-        {/* Donate Now CTA Button */}
-        <Button text="Donate Now" onPress={() => setStep(2)} />
+          {/* Donate Now CTA Button */}
+          <Button text="Donate Now" onPress={() => setStep(2)} />
+        </View>
       </ScrollView>
     );
   }
 
-  // STEP 2: MAKE A DONATION FORM (Exact 1:1 Match to Screen 3)
+  // STEP 2: MAKE A DONATION FORM
   if (step === 2) {
     return (
       <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
@@ -377,7 +378,7 @@ export default function DonationScreen({ finish, cards = [], balance = 1500, onD
     );
   }
 
-  // STEP 3: REVIEW DONATION / CONFIRMATION (Exact 1:1 Match to Screen 4)
+  // STEP 3: REVIEW DONATION / CONFIRMATION
   if (step === 3) {
     return (
       <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
@@ -463,7 +464,7 @@ export default function DonationScreen({ finish, cards = [], balance = 1500, onD
     );
   }
 
-  // STEP 4: DONATION SUCCESSFUL RECEIPT (Exact 1:1 Match to Screen 5)
+  // STEP 4: DONATION SUCCESSFUL RECEIPT
   return (
     <ScrollView contentContainerStyle={s.successContent} showsVerticalScrollIndicator={false}>
       {/* Green Checkmark Badge Box */}
@@ -512,6 +513,9 @@ export default function DonationScreen({ finish, cards = [], balance = 1500, onD
 
 const s = StyleSheet.create({
   content: { padding: 16, paddingBottom: 90, backgroundColor: Colors.background },
+  contentFullBleed: { paddingBottom: 90, backgroundColor: Colors.background },
+  paddedBodySection: { padding: 16 },
+
   successContent: { padding: 24, paddingBottom: 90, backgroundColor: Colors.background, alignItems: 'center', justifyContent: 'center' },
 
   pageTitle: { fontSize: 28, fontWeight: '900', color: '#1A1C1C', marginBottom: 4, marginTop: 4 },
@@ -576,23 +580,32 @@ const s = StyleSheet.create({
   transparencyRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, paddingVertical: 12, marginBottom: 20 },
   transparencyText: { color: Colors.primary, fontSize: 14, fontWeight: '800' },
 
-  /* STEP 1: CAMPAIGN DETAILS STYLES */
-  heroBannerCard: { height: 320, borderRadius: 20, overflow: 'hidden', marginBottom: 20, justifyContent: 'flex-end', padding: 16, backgroundColor: '#1A1C1C' },
-  heroBannerImg: { ...StyleSheet.absoluteFillObject, width: '100%', height: '100%', resizeMode: 'cover', opacity: 0.8 },
-  heroOverlayScrim: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.45)' },
+  /* STEP 1: CAMPAIGN DETAILS STYLES (FULL-BLEED 1:1) */
+  heroBannerFullBleed: {
+    width: '100%',
+    height: 380,
+    overflow: 'hidden',
+    justifyContent: 'flex-end',
+    padding: 20,
+    backgroundColor: '#1A1C1C',
+    position: 'relative',
+    marginBottom: 20,
+  },
+  heroBannerImg: { ...StyleSheet.absoluteFillObject, width: '100%', height: '100%', resizeMode: 'cover' },
+  heroOverlayScrim: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.55)' },
 
   heroContentContainer: { zIndex: 5 },
-  goldBadgePill: { backgroundColor: '#E5B800', borderRadius: 12, paddingVertical: 4, paddingHorizontal: 10, alignSelf: 'flex-start', marginBottom: 8 },
-  goldBadgePillText: { fontSize: 10, fontWeight: '900', color: '#1A1C1C', letterSpacing: 1 },
-  heroTitleText: { fontSize: 32, fontWeight: '900', color: Colors.white, marginBottom: 14 },
+  goldBadgePill: { backgroundColor: '#E5B800', borderRadius: 16, paddingVertical: 5, paddingHorizontal: 12, alignSelf: 'flex-start', marginBottom: 10 },
+  goldBadgePillText: { fontSize: 11, fontWeight: '900', color: '#1A1C1C', letterSpacing: 1 },
+  heroTitleText: { fontSize: 34, fontWeight: '900', color: Colors.white, marginBottom: 16, lineHeight: 40 },
 
-  heroGlassBox: { backgroundColor: 'rgba(255, 255, 255, 0.2)', borderRadius: 14, padding: 12, borderWidth: 1, borderColor: 'rgba(255, 255, 255, 0.3)' },
-  heroProgressRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
-  heroRaisedText: { fontSize: 18, fontWeight: '900', color: Colors.white },
-  heroGoalText: { fontSize: 12, color: '#E2E8F0' },
-  heroPercentageText: { fontSize: 13, fontWeight: '900', color: '#8DF9A8' },
-  heroProgressBg: { height: 8, backgroundColor: 'rgba(255,255,255,0.3)', borderRadius: 4, overflow: 'hidden' },
-  heroProgressFill: { height: '100%', backgroundColor: '#8DF9A8', borderRadius: 4 },
+  heroGlassBox: { backgroundColor: 'rgba(255, 255, 255, 0.15)', borderRadius: 16, padding: 16, borderWidth: 1, borderColor: 'rgba(255, 255, 255, 0.25)' },
+  heroProgressRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
+  heroRaisedText: { fontSize: 20, fontWeight: '900', color: Colors.white },
+  heroGoalText: { fontSize: 13, color: '#E2E8F0' },
+  heroPercentageText: { fontSize: 14, fontWeight: '900', color: '#71DC8E' },
+  heroProgressBg: { height: 8, backgroundColor: 'rgba(255,255,255,0.25)', borderRadius: 4, overflow: 'hidden' },
+  heroProgressFill: { height: '100%', backgroundColor: '#71DC8E', borderRadius: 4 },
 
   aboutCard: { backgroundColor: Colors.white, borderRadius: 16, padding: 18, borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 20 },
   aboutHeaderRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 8 },
@@ -696,7 +709,7 @@ const s = StyleSheet.create({
   /* STEP 4: SUCCESS RECEIPT STYLES */
   successBadgeBox: { width: 72, height: 72, borderRadius: 20, backgroundColor: '#008542', alignItems: 'center', justifyContent: 'center', marginBottom: 20, marginTop: 30 },
   successTitle: { fontSize: 24, fontWeight: '900', color: '#006D35', marginBottom: 6 },
-  successSubText: { fontSize: 14, color: '#4A5568', textAlign: 'center', lineHeight: 20, marginBottom: 24 },
+  successSubText: { fontSize: 14, color: '#4A5568', textAlign: 'center', lineHeight: 22, marginBottom: 24 },
 
   receiptBoxCard: { width: '100%', backgroundColor: Colors.white, borderRadius: 16, padding: 20, borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 20 },
   receiptTotalLabel: { fontSize: 11, fontWeight: '900', color: '#6E7A6E', letterSpacing: 0.8, textAlign: 'center' },
