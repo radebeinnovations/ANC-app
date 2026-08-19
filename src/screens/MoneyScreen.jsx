@@ -66,7 +66,7 @@ export default function MoneyScreen({ open, balance = 1500, onDepositFunds, rece
             <Text style={s.greyActionText}>Receive</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={s.greyActionBtn} onPress={() => open('send')} activeOpacity={0.8}>
+          <TouchableOpacity style={s.greyActionBtn} onPress={() => open('transfer')} activeOpacity={0.8}>
             <Icon name="swap-horiz" size={18} color={Colors.ink} />
             <Text style={s.greyActionText}>Transfer</Text>
           </TouchableOpacity>
