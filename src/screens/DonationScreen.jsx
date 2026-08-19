@@ -5,8 +5,8 @@ import { Icon } from '../components/Icons';
 import YamiFooter from '../components/YamiFooter';
 import { Colors } from '../theme/colors';
 
-const COMMUNITY_HERO_IMG = 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800&auto=format&fit=crop&q=80';
-const NATIONAL_FUND_IMG = 'https://images.unsplash.com/photo-1593113598332-cd288d649433?w=800&auto=format&fit=crop&q=80';
+const COMMUNITY_HERO_IMG = require('../assets/community_garden.jpg');
+const NATIONAL_FUND_IMG = require('../assets/community_garden.jpg');
 
 export default function DonationScreen({ finish, cards = [], balance = 1500, onDeductBalance, setStepText }) {
   const [step, setStep] = useState(0); // 0: Dashboard -> 1: Campaign Details -> 2: Make Donation Form -> 3: Review -> 4: Success
@@ -71,7 +71,7 @@ export default function DonationScreen({ finish, cards = [], balance = 1500, onD
 
         {/* Featured Campaign Card */}
         <View style={s.featuredCard}>
-          <Image source={{ uri: COMMUNITY_HERO_IMG }} style={s.featuredImg} />
+          <Image source={COMMUNITY_HERO_IMG} style={s.featuredImg} />
           
           <View style={s.featuredBody}>
             <View style={s.starBadgeRow}>
@@ -168,7 +168,7 @@ export default function DonationScreen({ finish, cards = [], balance = 1500, onD
       <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
         {/* Campaign Hero Banner */}
         <View style={s.heroBannerCard}>
-          <Image source={{ uri: NATIONAL_FUND_IMG }} style={s.heroBannerImg} />
+          <Image source={NATIONAL_FUND_IMG} style={s.heroBannerImg} />
           <View style={s.heroOverlayScrim} />
 
           <View style={s.heroContentContainer}>
@@ -407,7 +407,7 @@ export default function DonationScreen({ finish, cards = [], balance = 1500, onD
         <View style={s.reviewCardBox}>
           {/* Campaign Row */}
           <View style={s.reviewRowItem}>
-            <Image source={{ uri: COMMUNITY_HERO_IMG }} style={s.reviewThumbImg} />
+            <Image source={COMMUNITY_HERO_IMG} style={s.reviewThumbImg} />
             <View style={{ flex: 1, marginLeft: 10 }}>
               <Text style={s.reviewLabelSub}>CAMPAIGN</Text>
               <Text style={s.reviewValTitle}>{selectedCause}</Text>
