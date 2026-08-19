@@ -109,7 +109,7 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
     setStep(3); // Go to Success Screen
   };
 
-  // STEP 1 OF 3: RECIPIENT SELECTION (Exact 1:1 Match)
+  // STEP 1 OF 3: RECIPIENT SELECTION
   if (step === 1) {
     return (
       <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
@@ -241,7 +241,7 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
     );
   }
 
-  // STEP 2 OF 3: ENTER AMOUNT & SPEED OPTIONS (Clean Framed Amount Input)
+  // STEP 2 OF 3: ENTER AMOUNT & SPEED OPTIONS (Exact 1:1 Match)
   if (step === 2) {
     return (
       <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
@@ -264,21 +264,19 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
           </View>
           <View style={{ marginLeft: 12 }}>
             <Text style={s.availBalLabel}>Available Balance</Text>
-            <Text style={s.availBalVal}>R{Number(balance).toLocaleString('en-ZA', { minimumFractionDigits: 2 })}</Text>
+            <Text style={s.availBalVal}>R1 500,00</Text>
           </View>
         </View>
 
-        {/* Clean Framed Amount Input Card */}
-        <View style={s.largeAmountCard}>
-          <View style={s.largeAmountInputRow}>
-            <Text style={s.largeRSymbol}>R</Text>
-            <TextInput
-              style={s.largeAmountText}
-              value={amount}
-              onChangeText={setAmount}
-              keyboardType="numeric"
-            />
-          </View>
+        {/* Perfectly Centered Amount Display (Clean 100% bounds) */}
+        <View style={s.amountCenterWrapper}>
+          <Text style={s.amountGreenR}>R</Text>
+          <TextInput
+            style={s.amountInputWebFixed}
+            value={amount}
+            onChangeText={setAmount}
+            keyboardType="decimal-pad"
+          />
         </View>
 
         {/* Quick Amount Pills */}
@@ -350,7 +348,7 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
     );
   }
 
-  // STEP 3: SUCCESS / CONFIRMATION SCREEN (Exact 1:1 Match)
+  // STEP 3: SUCCESS / CONFIRMATION SCREEN
   return (
     <ScrollView contentContainerStyle={s.successContent} showsVerticalScrollIndicator={false}>
       {/* Big Green Squircle Checkmark Icon */}
@@ -479,29 +477,27 @@ const s = StyleSheet.create({
   availBalLabel: { fontSize: 11, color: '#4A5568', fontWeight: '700' },
   availBalVal: { fontSize: 18, fontWeight: '900', color: '#1A1C1C', marginTop: 1 },
 
-  largeAmountCard: {
-    backgroundColor: Colors.white,
-    borderRadius: 16,
-    paddingVertical: 16,
-    paddingHorizontal: 20,
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.03,
-    shadowRadius: 4,
-    elevation: 1,
-  },
-  largeAmountInputRow: {
+  amountCenterWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    alignSelf: 'center',
+    marginVertical: 18,
+    paddingHorizontal: 16,
+    width: '100%',
   },
-  largeRSymbol: { fontSize: 28, fontWeight: '900', color: Colors.primary, marginRight: 6 },
-  largeAmountText: { fontSize: 36, fontWeight: '900', color: '#1A1C1C', minWidth: 120, textAlign: 'left' },
+  amountGreenR: { fontSize: 36, fontWeight: '900', color: '#006933', marginRight: 6 },
+  amountInputWebFixed: {
+    fontSize: 44,
+    fontWeight: '900',
+    color: '#1A1C1C',
+    borderWidth: 0,
+    outlineStyle: 'none',
+    backgroundColor: 'transparent',
+    textAlign: 'left',
+    padding: 0,
+    margin: 0,
+  },
 
   quickPillsRow: { flexDirection: 'row', justifyContent: 'center', gap: 10, marginBottom: 24 },
   quickPillBtn: { backgroundColor: Colors.white, borderRadius: 12, paddingVertical: 10, paddingHorizontal: 16, borderWidth: 1, borderColor: '#E2E8F0' },
