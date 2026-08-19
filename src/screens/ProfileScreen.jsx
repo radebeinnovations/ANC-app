@@ -14,6 +14,35 @@ function SAFlagBadge() {
   );
 }
 
+function DiamondMeshBackground() {
+  const rows = Array.from({ length: 12 });
+  const cols = Array.from({ length: 16 });
+
+  return (
+    <View style={s.diamondMeshWrapper}>
+      {/* Web Linear Gradient for exact pixel-perfect diamond pattern */}
+      <View style={s.webDiamondGradientOverlay} />
+
+      {/* Cross-platform Vector Diamond Grid */}
+      <View style={s.vectorDiamondGrid}>
+        {rows.map((_, rIdx) => (
+          <View key={rIdx} style={s.diamondRow}>
+            {cols.map((_, cIdx) => (
+              <View
+                key={cIdx}
+                style={[
+                  s.diamondCell,
+                  (rIdx + cIdx) % 2 === 0 ? s.diamondCellDark : s.diamondCellLight,
+                ]}
+              />
+            ))}
+          </View>
+        ))}
+      </View>
+    </View>
+  );
+}
+
 export default function ProfileScreen({ cards = [], onOpenCards, setStepText }) {
   const [activeTab, setActiveTab] = useState('CARD'); // 'CARD' | 'DETAILS'
   const [showQRModal, setShowQRModal] = useState(false);
@@ -26,8 +55,11 @@ export default function ProfileScreen({ cards = [], onOpenCards, setStepText }) 
 
   return (
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
-      {/* DIGITAL MEMBERSHIP CARD (Exact Stitch Design Match) */}
+      {/* DIGITAL MEMBERSHIP CARD (Exact Stitch Design Match with Diamond Mesh Background) */}
       <View style={s.memberCardContainer}>
+        {/* Diamond Mesh Pattern Overlay */}
+        <DiamondMeshBackground />
+
         {/* Top Gold Accent Line */}
         <View style={s.topGoldBar} />
 
@@ -187,7 +219,7 @@ const s = StyleSheet.create({
 
   /* GREEN DIGITAL MEMBERSHIP CARD */
   memberCardContainer: {
-    backgroundColor: '#006933',
+    backgroundColor: '#1E7E44',
     borderRadius: 16,
     padding: 20,
     overflow: 'hidden',
@@ -199,9 +231,47 @@ const s = StyleSheet.create({
     elevation: 6,
     marginBottom: 16,
   },
-  topGoldBar: { position: 'absolute', top: 0, left: 0, right: 0, height: 4, backgroundColor: Colors.gold },
+  topGoldBar: { position: 'absolute', top: 0, left: 0, right: 0, height: 4, backgroundColor: Colors.gold, zIndex: 10 },
 
-  cardHeaderRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 16 },
+  diamondMeshWrapper: {
+    ...StyleSheet.absoluteFillObject,
+    overflow: 'hidden',
+    zIndex: 1,
+  },
+  webDiamondGradientOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: '#1E7E44',
+    backgroundImage: `
+      repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.08) 0px, rgba(0, 0, 0, 0.08) 12px, transparent 12px, transparent 24px),
+      repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.08) 0px, rgba(0, 0, 0, 0.08) 12px, transparent 12px, transparent 24px)
+    `,
+    zIndex: 2,
+  },
+  vectorDiamondGrid: {
+    width: 450,
+    height: 350,
+    top: -50,
+    left: -50,
+    transform: [{ rotate: '45deg' }],
+    flexDirection: 'column',
+    position: 'absolute',
+  },
+  diamondRow: {
+    flexDirection: 'row',
+    flex: 1,
+  },
+  diamondCell: {
+    width: 28,
+    height: 28,
+  },
+  diamondCellDark: {
+    backgroundColor: 'rgba(0, 0, 0, 0.08)',
+  },
+  diamondCellLight: {
+    backgroundColor: 'transparent',
+  },
+
+  cardHeaderRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 16, zIndex: 5 },
   emblemSquare: {
     width: 44,
     height: 44,
@@ -223,7 +293,7 @@ const s = StyleSheet.create({
   emblemText: { color: Colors.gold, fontWeight: '900', fontSize: 10 },
 
   cardHeading: { fontSize: 13, fontWeight: '900', color: Colors.white, letterSpacing: 0.5 },
-  cardSubHeading: { fontSize: 10, color: '#88D1A3', fontWeight: '800', letterSpacing: 0.8, marginTop: 2 },
+  cardSubHeading: { fontSize: 10, color: '#6EE7B7', fontWeight: '800', letterSpacing: 0.8, marginTop: 2 },
 
   saFlagWrapper: {
     backgroundColor: 'rgba(255,255,255,0.2)',
@@ -234,10 +304,10 @@ const s = StyleSheet.create({
     borderColor: 'rgba(255,255,255,0.3)',
   },
 
-  memberName: { fontSize: 22, fontWeight: '900', color: Colors.white, letterSpacing: 0.8, marginTop: 6 },
+  memberName: { fontSize: 22, fontWeight: '900', color: Colors.white, letterSpacing: 0.8, marginTop: 6, zIndex: 5 },
 
-  badgeIdRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 8 },
-  memberRoleBadge: { backgroundColor: '#004D25', borderRadius: 6, paddingVertical: 4, paddingHorizontal: 10 },
+  badgeIdRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 8, zIndex: 5 },
+  memberRoleBadge: { backgroundColor: '#055928', borderRadius: 4, paddingVertical: 4, paddingHorizontal: 10 },
   memberRoleText: { color: Colors.white, fontSize: 11, fontWeight: '900', letterSpacing: 0.8 },
   memberIdNumber: { fontSize: 15, color: Colors.white, fontWeight: '800', letterSpacing: 1 },
 
@@ -249,8 +319,9 @@ const s = StyleSheet.create({
     marginTop: 14,
     borderTopWidth: 1,
     borderTopColor: 'rgba(255,255,255,0.2)',
+    zIndex: 5,
   },
-  gridDetailLabel: { fontSize: 9, color: '#88D1A3', fontWeight: '800', letterSpacing: 1 },
+  gridDetailLabel: { fontSize: 9, color: '#6EE7B7', fontWeight: '800', letterSpacing: 1 },
   gridDetailVal: { fontSize: 15, fontWeight: '900', color: Colors.white, marginTop: 2 },
 
   photoThumbnailBox: {
