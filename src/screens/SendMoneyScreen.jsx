@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Image, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Animated, Image, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Button from '../components/Button';
 import Field from '../components/Field';
 import { Icon } from '../components/Icons';
@@ -24,6 +24,37 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
   const [manualName, setManualName] = useState('');
   const [manualPhone, setManualPhone] = useState('');
   const [manualIsMember, setManualIsMember] = useState(true);
+
+  // Success Animated Tick Values
+  const scaleAnim = useRef(new Animated.Value(0)).current;
+  const pulseAnim = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    if (step === 3) {
+      scaleAnim.setValue(0);
+      Animated.spring(scaleAnim, {
+        toValue: 1,
+        friction: 5,
+        tension: 80,
+        useNativeDriver: true,
+      }).start(() => {
+        Animated.loop(
+          Animated.sequence([
+            Animated.timing(pulseAnim, {
+              toValue: 1.04,
+              duration: 1200,
+              useNativeDriver: true,
+            }),
+            Animated.timing(pulseAnim, {
+              toValue: 1,
+              duration: 1200,
+              useNativeDriver: true,
+            }),
+          ])
+        ).start();
+      });
+    }
+  }, [step, scaleAnim, pulseAnim]);
 
   // Recent Recipients
   const recentRecipients = [
@@ -71,7 +102,7 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
   ];
   const activeContact = allContactsFlat.find(c => c.id === selectedContactId) || allContactsFlat[0];
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (setStepText) {
       if (step === 1) setStepText('STEP 1 OF 3');
       else if (step === 2) setStepText('Step 2 of 3');
@@ -349,15 +380,28 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
     );
   }
 
-  // STEP 3: SUCCESS / CONFIRMATION SCREEN
+  // STEP 3: SUCCESS / CONFIRMATION SCREEN (Animated 1:1 Match)
   return (
     <ScrollView contentContainerStyle={s.successContent} showsVerticalScrollIndicator={false}>
-      {/* Big Green Squircle Checkmark Icon */}
-      <View style={s.successCheckSquircle}>
-        <View style={s.whiteCheckCircle}>
-          <Icon name="check" size={32} color={Colors.primary} />
+      {/* Animated Light Green Outer Container Box with Green Squircle Checkmark */}
+      <Animated.View
+        style={[
+          s.successOuterBox,
+          {
+            transform: [
+              {
+                scale: Animated.multiply(scaleAnim, pulseAnim),
+              },
+            ],
+          },
+        ]}
+      >
+        <View style={s.successCheckSquircle}>
+          <View style={s.whiteCheckCircle}>
+            <Icon name="check" size={28} color="#006933" />
+          </View>
         </View>
-      </View>
+      </Animated.View>
 
       {/* Headline & Confirmation Message */}
       <Text style={s.successHeadline}>Money Sent</Text>
@@ -536,22 +580,37 @@ const s = StyleSheet.create({
   speedFeeText: { fontSize: 14, fontWeight: '800', color: '#1A1C1C' },
 
   /* SUCCESS SCREEN STYLES */
+  successOuterBox: {
+    width: 160,
+    height: 160,
+    borderRadius: 28,
+    backgroundColor: '#E5F3E7',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 24,
+    marginTop: 20,
+  },
   successCheckSquircle: {
     width: 80,
     height: 80,
     borderRadius: 24,
-    backgroundColor: Colors.primary,
+    backgroundColor: '#006933',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 20,
-    marginTop: 40,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 8,
     elevation: 4,
   },
-  whiteCheckCircle: { width: 48, height: 48, borderRadius: 24, backgroundColor: Colors.white, alignItems: 'center', justifyContent: 'center' },
+  whiteCheckCircle: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 
   successHeadline: { fontSize: 26, fontWeight: '900', color: '#1A1C1C', marginBottom: 8 },
   successSubMessage: { fontSize: 15, color: '#4A5568', textAlign: 'center', lineHeight: 22, marginBottom: 24 },
