@@ -104,55 +104,55 @@ export default function HomeScreen({ open }) {
         </View>
       </View>
 
-      {/* Section 4: Quick Services */}
+      {/* Section 4: Quick Services (Exact Match to User Screenshot) */}
       <View style={s.sectionContainer}>
         <Text style={s.sectionTitle}>Quick Services</Text>
 
         <View style={s.services3Grid}>
           {/* Send Money */}
           <TouchableOpacity style={s.serviceSquareCard} onPress={() => open('send')} activeOpacity={0.8}>
-            <View style={[s.serviceCircle, { backgroundColor: 'rgba(0, 105, 51, 0.1)' }]}>
-              <Icon name="send-money" size={20} color={Colors.primary} />
+            <View style={[s.squircleIconBox, { backgroundColor: '#E2F4E5' }]}>
+              <Icon name="login" size={22} color={Colors.primary} />
             </View>
             <Text style={s.serviceSquareLabel}>Send{'\n'}Money</Text>
           </TouchableOpacity>
 
           {/* Receive Money */}
           <TouchableOpacity style={s.serviceSquareCard} onPress={() => open('send')} activeOpacity={0.8}>
-            <View style={[s.serviceCircle, { backgroundColor: 'rgba(0, 105, 51, 0.1)' }]}>
-              <Icon name="request-quote" size={20} color={Colors.primary} />
+            <View style={[s.squircleIconBox, { backgroundColor: '#E2F4E5' }]}>
+              <Icon name="request-quote" size={22} color={Colors.primary} />
             </View>
             <Text style={s.serviceSquareLabel}>Receive{'\n'}Money</Text>
           </TouchableOpacity>
 
           {/* Buy Airtime */}
           <TouchableOpacity style={s.serviceSquareCard} onPress={() => open('services')} activeOpacity={0.8}>
-            <View style={[s.serviceCircle, { backgroundColor: '#F0F3F0' }]}>
-              <Icon name="phone-iphone" size={20} color={Colors.ink} />
+            <View style={[s.squircleIconBox, { backgroundColor: '#EBEBEB' }]}>
+              <Icon name="smartphone" size={22} color="#1A1C1C" />
             </View>
             <Text style={s.serviceSquareLabel}>Buy{'\n'}Airtime</Text>
           </TouchableOpacity>
 
           {/* Buy Data */}
           <TouchableOpacity style={s.serviceSquareCard} onPress={() => open('services')} activeOpacity={0.8}>
-            <View style={[s.serviceCircle, { backgroundColor: '#F0F3F0' }]}>
-              <Icon name="wifi" size={20} color={Colors.ink} />
+            <View style={[s.squircleIconBox, { backgroundColor: '#EBEBEB' }]}>
+              <Icon name="wifi" size={22} color="#1A1C1C" />
             </View>
             <Text style={s.serviceSquareLabel}>Buy{'\n'}Data</Text>
           </TouchableOpacity>
 
           {/* Buy Electricity */}
           <TouchableOpacity style={s.serviceSquareCard} onPress={() => open('services')} activeOpacity={0.8}>
-            <View style={[s.serviceCircle, { backgroundColor: '#F0F3F0' }]}>
-              <Icon name="electric-bolt" size={20} color={Colors.ink} />
+            <View style={[s.squircleIconBox, { backgroundColor: '#EBEBEB' }]}>
+              <Icon name="bolt" size={22} color="#1A1C1C" />
             </View>
             <Text style={s.serviceSquareLabel}>Buy{'\n'}Electricity</Text>
           </TouchableOpacity>
 
           {/* Donate Now */}
           <TouchableOpacity style={s.serviceSquareCard} onPress={() => open('donate')} activeOpacity={0.8}>
-            <View style={[s.serviceCircle, { backgroundColor: '#FFF4CE' }]}>
-              <Icon name="volunteer-activism" size={20} color="#6E5700" />
+            <View style={[s.squircleIconBox, { backgroundColor: '#FFF4CE' }]}>
+              <Icon name="volunteer-activism" size={22} color="#735C00" />
             </View>
             <Text style={s.serviceSquareLabel}>Donate{'\n'}Now</Text>
           </TouchableOpacity>
@@ -204,7 +204,7 @@ const s = StyleSheet.create({
   bellBtn: { width: 40, height: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: '#F3F3F3', position: 'relative' },
   bellDot: { position: 'absolute', top: 8, right: 8, width: 8, height: 8, borderRadius: 4, backgroundColor: Colors.error, borderWidth: 1.5, borderColor: '#F3F3F3' },
 
-  statusCard: { backgroundColor: Colors.white, borderRadius: 14, padding: 16, borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.04, shadowRadius: 4, elevation: 1 },
+  statusCard: { backgroundColor: Colors.white, borderRadius: 16, padding: 18, borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.04, shadowRadius: 4, elevation: 1 },
   cardHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 },
   cardHeaderTitle: { fontSize: 11, fontWeight: '800', color: '#4A5568', letterSpacing: 1.2 },
   activeChip: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#E2F4E5', paddingVertical: 4, paddingHorizontal: 10, borderRadius: 6, gap: 5 },
@@ -242,10 +242,38 @@ const s = StyleSheet.create({
   viewEventBtn: { backgroundColor: Colors.primary, borderRadius: 10, paddingVertical: 12, alignItems: 'center' },
   viewEventBtnText: { color: Colors.white, fontWeight: '800', fontSize: 13 },
 
+  /* QUICK SERVICES 6-GRID (Exact 1:1 Match to User Screenshot) */
   services3Grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
-  serviceSquareCard: { width: '31%', backgroundColor: Colors.white, borderRadius: 14, paddingVertical: 16, alignItems: 'center', borderWidth: 1, borderColor: '#E2E8F0' },
-  serviceCircle: { width: 42, height: 42, borderRadius: 21, alignItems: 'center', justifyContent: 'center', marginBottom: 8 },
-  serviceSquareLabel: { fontSize: 11, fontWeight: '800', color: '#1A1C1C', textAlign: 'center', lineHeight: 14 },
+  serviceSquareCard: {
+    width: '31%',
+    backgroundColor: Colors.white,
+    borderRadius: 16,
+    paddingVertical: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.03,
+    shadowRadius: 4,
+    elevation: 1,
+  },
+  squircleIconBox: {
+    width: 48,
+    height: 48,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 10,
+  },
+  serviceSquareLabel: {
+    fontSize: 13,
+    fontWeight: '800',
+    color: '#1A1C1C',
+    textAlign: 'center',
+    lineHeight: 16,
+  },
 
   newsCard: { backgroundColor: Colors.white, borderRadius: 16, overflow: 'hidden', borderWidth: 1, borderColor: '#E2E8F0', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.04, shadowRadius: 4, elevation: 1 },
   newsImage: { width: '100%', height: 180 },
