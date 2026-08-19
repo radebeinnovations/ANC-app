@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Icon } from '../components/Icons';
+import { Icon, ReceiveMoneySvgIcon, SendMoneySvgIcon } from '../components/Icons';
 import { Colors } from '../theme/colors';
 
 const COMMUNITY_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAHtomXsNt6ZfeyvGZOeE5XMikoE5zxU6RquvkfvLhr4T0JYKXccFIuYI8r2T8-9ZZlaqqwWNNziIBcMoWa6jD-ILIRWc02WFG9hRmYaM5BbCiDBXKNUaGsyOhxcgb2bbd-Rzx6m0FPLxfh6dQLM5XA30dGG_LKc4u72FFmXlnnxQsZ_gmIR0jV8GlW5p6QYUO-h6qfrqHZGSfWJY6mootTuO2zTIRBZjmzjM-J9VHYQU1WxM4WEO0i';
@@ -112,7 +112,7 @@ export default function HomeScreen({ open }) {
           {/* Send Money */}
           <TouchableOpacity style={s.serviceSquareCard} onPress={() => open('send')} activeOpacity={0.8}>
             <View style={[s.squircleIconBox, { backgroundColor: '#E2F4E5' }]}>
-              <Icon name="login" size={22} color={Colors.primary} />
+              <SendMoneySvgIcon size={24} color="#006933" />
             </View>
             <Text style={s.serviceSquareLabel}>Send{'\n'}Money</Text>
           </TouchableOpacity>
@@ -120,7 +120,7 @@ export default function HomeScreen({ open }) {
           {/* Receive Money */}
           <TouchableOpacity style={s.serviceSquareCard} onPress={() => open('send')} activeOpacity={0.8}>
             <View style={[s.squircleIconBox, { backgroundColor: '#E2F4E5' }]}>
-              <Icon name="request-quote" size={22} color={Colors.primary} />
+              <ReceiveMoneySvgIcon size={24} color="#006933" />
             </View>
             <Text style={s.serviceSquareLabel}>Receive{'\n'}Money</Text>
           </TouchableOpacity>
