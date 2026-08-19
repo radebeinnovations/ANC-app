@@ -1,52 +1,25 @@
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Button from '../components/Button';
 import { Icon } from '../components/Icons';
 import YamiFooter from '../components/YamiFooter';
 import { Colors } from '../theme/colors';
 
-function QRCodeMatrixGraphic() {
-  const qrGridData = [
-    [1,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,1],
-    [1,0,0,0,0,0,1,0,1,0,1,0,0,0,0,0,1],
-    [1,0,1,1,1,0,1,0,0,1,1,0,1,1,1,0,1],
-    [1,0,1,1,1,0,1,0,1,1,1,0,1,1,1,0,1],
-    [1,0,1,1,1,0,1,0,0,0,1,0,1,1,1,0,1],
-    [1,0,0,0,0,0,1,0,1,1,0,0,0,0,0,0,1],
-    [1,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,1],
-    [0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0],
-    [1,0,1,1,0,1,1,1,0,1,1,1,0,1,0,1,1],
-    [0,1,0,0,1,0,0,1,1,0,0,1,1,0,1,0,0],
-    [1,0,1,1,1,0,1,0,1,1,1,0,1,1,0,1,1],
-    [0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0],
-    [1,1,1,1,1,1,1,0,1,1,0,1,1,0,1,1,1],
-    [1,0,0,0,0,0,1,0,0,0,1,0,1,1,0,0,1],
-    [1,0,1,1,1,0,1,1,1,1,0,1,0,0,1,0,1],
-    [1,0,0,0,0,0,1,0,1,0,1,1,1,0,0,1,1],
-    [1,1,1,1,1,1,1,0,0,1,0,1,0,1,1,0,1],
-  ];
-
+function SecurityStripePatternGraphic() {
+  const stripeArray = Array.from({ length: 45 });
   return (
-    <View style={{ width: 170, height: 170, backgroundColor: Colors.white }}>
-      {qrGridData.map((row, rIdx) => (
-        <View key={rIdx} style={{ flexDirection: 'row', flex: 1 }}>
-          {row.map((cell, cIdx) => (
-            <View
-              key={cIdx}
-              style={{
-                flex: 1,
-                backgroundColor: cell === 1 ? '#1A1C1C' : '#FFFFFF',
-              }}
-            />
-          ))}
-        </View>
-      ))}
+    <View style={s.stripePatternBox}>
+      <View style={s.stripeWebOverlay} />
+      <View style={s.stripeContainer}>
+        {stripeArray.map((_, i) => (
+          <View key={i} style={s.singleStripeLine} />
+        ))}
+      </View>
     </View>
   );
 }
 
 export default function ProfileScreen({ cards = [], onOpenCards, setStepText }) {
-  const [showFrontCard, setShowFrontCard] = useState(false); // Default false -> shows QR Card (Stitch target)
+  const [showFrontCard, setShowFrontCard] = useState(false);
 
   // Explicitly clear stepText header subtitle on Member Card screen
   React.useEffect(() => {
@@ -56,15 +29,15 @@ export default function ProfileScreen({ cards = [], onOpenCards, setStepText }) 
   return (
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
       {!showFrontCard ? (
-        /* EXACT STITCH MEMBER CARD (Gray QR Card) */
+        /* EXACT STITCH MEMBER CARD (Gray Card with Diagonal Security Stripes) */
         <TouchableOpacity
           style={s.qrBackCardContainer}
           onPress={() => setShowFrontCard(true)}
           activeOpacity={0.9}
         >
-          {/* Centered QR Code Box */}
+          {/* Centered Diagonal Stripe Pattern Box */}
           <View style={s.qrGraphicBox}>
-            <QRCodeMatrixGraphic />
+            <SecurityStripePatternGraphic />
           </View>
 
           {/* Card Bottom Row: Province & Region */}
@@ -129,17 +102,21 @@ export default function ProfileScreen({ cards = [], onOpenCards, setStepText }) 
         Tap the card to view your verification QR code and regional details. Present this digital card at official events.
       </Text>
 
-      {/* Action Buttons */}
-      <Button text="📥  Save Offline Copy" onPress={() => {}} />
+      {/* Primary Action Button: Save Offline Copy */}
+      <TouchableOpacity style={s.saveOfflineBtn} onPress={() => {}} activeOpacity={0.8}>
+        <Icon name="file-download" size={20} color={Colors.white} />
+        <Text style={s.saveOfflineText}>Save Offline Copy</Text>
+      </TouchableOpacity>
 
+      {/* Secondary Action Button: Share Details */}
       <TouchableOpacity
-        style={s.flipToggleBtn}
+        style={s.shareDetailsBtn}
         onPress={() => setShowFrontCard(!showFrontCard)}
         activeOpacity={0.8}
       >
-        <Icon name="flip-camera-android" size={18} color={Colors.primary} />
-        <Text style={s.flipToggleText}>
-          {showFrontCard ? 'View Verification QR Code' : 'View Digital Credential Card'}
+        <Icon name="share" size={18} color={Colors.primary} />
+        <Text style={s.shareDetailsText}>
+          {showFrontCard ? 'Share Card' : 'Share Details'}
         </Text>
       </TouchableOpacity>
 
@@ -151,7 +128,7 @@ export default function ProfileScreen({ cards = [], onOpenCards, setStepText }) 
 const s = StyleSheet.create({
   content: { padding: 16, paddingBottom: 100, backgroundColor: Colors.background },
 
-  /* BACK QR CARD VIEW (Gray Card - Exact Stitch Match) */
+  /* BACK STITCH SECURITY STRIPE CARD VIEW */
   qrBackCardContainer: {
     backgroundColor: '#EAEAEA',
     borderRadius: 16,
@@ -167,8 +144,6 @@ const s = StyleSheet.create({
     elevation: 3,
   },
   qrGraphicBox: {
-    width: 210,
-    height: 210,
     backgroundColor: Colors.white,
     borderRadius: 12,
     alignItems: 'center',
@@ -176,7 +151,42 @@ const s = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#D6DDD8',
     marginBottom: 24,
-    padding: 12,
+    padding: 10,
+  },
+
+  stripePatternBox: {
+    width: 200,
+    height: 200,
+    backgroundColor: Colors.white,
+    borderRadius: 8,
+    overflow: 'hidden',
+    position: 'relative',
+    borderWidth: 1,
+    borderColor: '#E0E6E1',
+  },
+  stripeWebOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundImage: 'repeating-linear-gradient(-45deg, #232724, #232724 3.5px, #FFFFFF 3.5px, #FFFFFF 8.5px)',
+    zIndex: 2,
+  },
+  stripeContainer: {
+    width: 320,
+    height: 320,
+    position: 'absolute',
+    top: -60,
+    left: -60,
+    flexDirection: 'row',
+    gap: 5,
+    transform: [{ rotate: '-45deg' }],
+  },
+  singleStripeLine: {
+    width: 3.5,
+    height: '100%',
+    backgroundColor: '#232724',
   },
 
   qrCardBottomGrid: {
@@ -224,19 +234,30 @@ const s = StyleSheet.create({
   gridDetailLabel: { fontSize: 9, color: 'rgba(255,255,255,0.7)', fontWeight: '800', letterSpacing: 1 },
   gridDetailVal: { fontSize: 13, fontWeight: '800', color: Colors.white, marginTop: 2 },
 
-  qrInstructionText: { fontSize: 13, color: Colors.muted, textAlign: 'center', marginBottom: 16, lineHeight: 18, paddingHorizontal: 12 },
+  qrInstructionText: { fontSize: 13, color: Colors.muted, textAlign: 'center', marginBottom: 18, lineHeight: 18, paddingHorizontal: 12 },
 
-  flipToggleBtn: {
+  saveOfflineBtn: {
+    backgroundColor: Colors.primary,
+    borderRadius: 12,
+    paddingVertical: 14,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
+    marginBottom: 10,
+  },
+  saveOfflineText: { color: Colors.white, fontSize: 14, fontWeight: '800' },
+
+  shareDetailsBtn: {
+    backgroundColor: Colors.white,
     borderWidth: 1.5,
     borderColor: Colors.primary,
     borderRadius: 12,
-    paddingVertical: 12,
-    marginTop: 10,
-    backgroundColor: Colors.white,
+    paddingVertical: 14,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
   },
-  flipToggleText: { fontSize: 13, fontWeight: '800', color: Colors.primary },
+  shareDetailsText: { color: Colors.primary, fontSize: 14, fontWeight: '800' },
 });
