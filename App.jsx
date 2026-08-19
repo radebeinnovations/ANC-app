@@ -139,7 +139,9 @@ export default function App() {
               </TouchableOpacity>
             ) : null}
             <View style={s.page}>{renderBody()}</View>
-            <Nav active={tab} onChange={(value) => { setTab(value); setScreen('main'); setStepText(''); }} />
+            {screen === 'main' ? (
+              <Nav active={tab} onChange={(value) => { setTab(value); setScreen('main'); setStepText(''); }} />
+            ) : null}
 
             <SideDrawer
               visible={drawerOpen}

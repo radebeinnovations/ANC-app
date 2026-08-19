@@ -67,7 +67,7 @@ function getScreenTitle(screen, stepText) {
     return 'Send Money';
   }
   if (screen === 'services') return 'Pay Services';
-  if (screen === 'donate') return 'Donate';
+  if (screen === 'donate') return 'ANC UNITY';
   if (screen === 'membership') return 'Membership';
   if (screen === 'profile') return 'Member Card';
   if (screen === 'cards') return 'My Cards';
@@ -99,7 +99,7 @@ const s = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: '#F0F9F2',
+    backgroundColor: 'transparent',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -112,9 +112,9 @@ const s = StyleSheet.create({
     marginLeft: 12,
   },
   headerTitle: {
-    fontSize: 16,
-    fontWeight: '800',
-    color: Colors.ink,
+    fontSize: 18,
+    fontWeight: '900',
+    color: '#006933',
   },
   headerTitleStep2: {
     fontSize: 18,

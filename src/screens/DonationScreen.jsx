@@ -248,24 +248,24 @@ export default function DonationScreen({ finish, cards = [], balance = 1500, onD
     );
   }
 
-  // STEP 2: MAKE A DONATION FORM
+  // STEP 2: MAKE A DONATION FORM (Exact 1:1 Match to Target Screenshots 2 & 3)
   if (step === 2) {
     return (
       <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
-        <Text style={s.pageTitle}>Make a Donation</Text>
+        <Text style={s.pageTitleDisplay}>Make a{'\n'}Donation</Text>
         <Text style={s.pageSubText}>Your contribution strengthens our communities and builds a better future for all.</Text>
 
         {/* Selected Campaign Card */}
         <View style={s.selectedCampaignCard}>
           <View style={s.campaignIconSquircle}>
-            <Icon name="volunteer-activism" size={22} color={Colors.white} />
+            <Icon name="volunteer-activism" size={26} color={Colors.white} />
           </View>
-          <View style={{ flex: 1, marginLeft: 12 }}>
+          <View style={{ flex: 1, marginLeft: 14 }}>
             <Text style={s.selectedCapLabel}>SELECTED CAMPAIGN</Text>
             <Text style={s.selectedCapTitle}>{selectedCause}</Text>
             <TouchableOpacity style={s.changeCapRow} onPress={() => setStep(0)} activeOpacity={0.7}>
               <Text style={s.changeCapText}>Change campaign</Text>
-              <Icon name="chevron-right" size={16} color={Colors.primary} />
+              <Icon name="chevron-right" size={16} color="#008542" />
             </TouchableOpacity>
           </View>
         </View>
@@ -322,7 +322,7 @@ export default function DonationScreen({ finish, cards = [], balance = 1500, onD
               setAmount('');
             }}
             keyboardType="numeric"
-            placeholderTextColor="#A0AEC0"
+            placeholderTextColor="#CBD5E0"
           />
         </View>
 
@@ -336,9 +336,9 @@ export default function DonationScreen({ finish, cards = [], balance = 1500, onD
 
         <View style={s.paymentMethodCard}>
           <View style={s.walletGreenSq}>
-            <Icon name="account-balance-wallet" size={20} color={Colors.white} />
+            <Icon name="account-balance-wallet" size={22} color={Colors.white} />
           </View>
-          <View style={{ flex: 1, marginLeft: 12 }}>
+          <View style={{ flex: 1, marginLeft: 14 }}>
             <Text style={s.paymentTitleBold}>ANC Member Money</Text>
             <Text style={s.paymentBalSub}>Balance: R{Number(balance).toLocaleString('en-ZA', { minimumFractionDigits: 2 })}</Text>
           </View>
@@ -361,7 +361,7 @@ export default function DonationScreen({ finish, cards = [], balance = 1500, onD
             <Text style={s.summaryValBold}>R{numAmount.toFixed(2)}</Text>
           </View>
 
-          <View style={[s.summaryRow, { paddingTop: 10, borderBottomWidth: 0 }]}>
+          <View style={[s.summaryRow, { paddingTop: 12, borderBottomWidth: 0 }]}>
             <Text style={s.summaryTotalLabel}>Total Due</Text>
             <Text style={s.summaryTotalVal}>R{numAmount.toFixed(2)}</Text>
           </View>
@@ -519,6 +519,7 @@ const s = StyleSheet.create({
   successContent: { padding: 24, paddingBottom: 90, backgroundColor: Colors.background, alignItems: 'center', justifyContent: 'center' },
 
   pageTitle: { fontSize: 28, fontWeight: '900', color: '#1A1C1C', marginBottom: 4, marginTop: 4 },
+  pageTitleDisplay: { fontSize: 36, fontWeight: '900', color: '#1A1C1C', marginBottom: 8, marginTop: 4, lineHeight: 42 },
   pageSubText: { fontSize: 14, color: '#4A5568', lineHeight: 20, marginBottom: 20 },
 
   /* FEATURED CAMPAIGN */
@@ -625,38 +626,38 @@ const s = StyleSheet.create({
   readUpdateLinkText: { fontSize: 13, fontWeight: '800', color: Colors.primary },
 
   /* STEP 2: MAKE A DONATION FORM STYLES */
-  selectedCampaignCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.white, borderRadius: 16, padding: 14, borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 20 },
-  campaignIconSquircle: { width: 44, height: 44, borderRadius: 12, backgroundColor: Colors.primary, alignItems: 'center', justifyContent: 'center' },
-  selectedCapLabel: { fontSize: 10, fontWeight: '900', color: '#6E7A6E', letterSpacing: 0.8 },
-  selectedCapTitle: { fontSize: 16, fontWeight: '900', color: '#1A1C1C', marginTop: 1 },
+  selectedCampaignCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.white, borderRadius: 16, padding: 18, borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 24 },
+  campaignIconSquircle: { width: 54, height: 54, borderRadius: 14, backgroundColor: '#008542', alignItems: 'center', justifyContent: 'center' },
+  selectedCapLabel: { fontSize: 11, fontWeight: '900', color: '#4A5568', letterSpacing: 0.8 },
+  selectedCapTitle: { fontSize: 20, fontWeight: '900', color: '#1A1C1C', marginTop: 2 },
   changeCapRow: { flexDirection: 'row', alignItems: 'center', gap: 2, marginTop: 4 },
-  changeCapText: { fontSize: 12, fontWeight: '800', color: Colors.primary },
+  changeCapText: { fontSize: 13, fontWeight: '800', color: '#008542' },
 
-  fieldLabel: { fontSize: 13, fontWeight: '800', color: '#4A5568', marginBottom: 8 },
+  fieldLabel: { fontSize: 14, fontWeight: '800', color: '#1A1C1C', marginBottom: 10, marginTop: 4 },
 
-  frequencyToggleBg: { flexDirection: 'row', backgroundColor: '#F0F3F0', borderRadius: 12, padding: 4, borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 20 },
-  freqSegmentBtn: { flex: 1, paddingVertical: 10, alignItems: 'center', borderRadius: 8 },
+  frequencyToggleBg: { flexDirection: 'row', backgroundColor: '#F0F3F0', borderRadius: 12, padding: 4, borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 24 },
+  freqSegmentBtn: { flex: 1, paddingVertical: 12, alignItems: 'center', borderRadius: 8 },
   freqSegmentActive: { backgroundColor: Colors.white, borderWidth: 1, borderColor: '#E2E8F0' },
   freqSegmentText: { fontSize: 14, fontWeight: '700', color: '#4A5568' },
-  freqSegmentTextActive: { color: Colors.primary, fontWeight: '900' },
+  freqSegmentTextActive: { color: '#008542', fontWeight: '900' },
 
-  amountGrid3Col: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 12 },
-  amountGridBtn: { width: '31%', backgroundColor: Colors.white, borderRadius: 12, paddingVertical: 14, alignItems: 'center', borderWidth: 1, borderColor: '#E2E8F0' },
-  amountGridBtnActive: { borderColor: Colors.primary, borderWidth: 2, backgroundColor: '#F0F9F2' },
-  amountGridText: { fontSize: 16, fontWeight: '800', color: '#1A1C1C' },
-  amountGridTextActive: { color: Colors.primary, fontWeight: '900' },
+  amountGrid3Col: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 14 },
+  amountGridBtn: { width: '31%', backgroundColor: Colors.white, borderRadius: 14, paddingVertical: 16, alignItems: 'center', borderWidth: 1, borderColor: '#E2E8F0' },
+  amountGridBtnActive: { borderColor: '#008542', borderWidth: 2, backgroundColor: '#F0F9F2' },
+  amountGridText: { fontSize: 18, fontWeight: '800', color: '#1A1C1C' },
+  amountGridTextActive: { color: '#008542', fontWeight: '900' },
 
-  customAmountInputContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.white, borderRadius: 12, paddingHorizontal: 14, paddingVertical: 12, borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 20 },
-  customRSymbol: { fontSize: 18, fontWeight: '900', color: '#4A5568', marginRight: 6 },
+  customAmountInputContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.white, borderRadius: 14, paddingHorizontal: 16, paddingVertical: 14, borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 24 },
+  customRSymbol: { fontSize: 20, fontWeight: '900', color: '#4A5568', marginRight: 8 },
   customAmountField: { flex: 1, fontSize: 16, fontWeight: '800', color: '#1A1C1C', borderWidth: 0, outlineStyle: 'none' },
 
-  paymentMethodHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
-  changePaymentLinkText: { fontSize: 12, fontWeight: '800', color: Colors.primary },
+  paymentMethodHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
+  changePaymentLinkText: { fontSize: 13, fontWeight: '800', color: '#008542' },
 
-  paymentMethodCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.white, borderRadius: 16, padding: 14, borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 20 },
-  walletGreenSq: { width: 44, height: 44, borderRadius: 12, backgroundColor: Colors.primary, alignItems: 'center', justifyContent: 'center' },
+  paymentMethodCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.white, borderRadius: 16, padding: 16, borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 24 },
+  walletGreenSq: { width: 46, height: 46, borderRadius: 12, backgroundColor: '#008542', alignItems: 'center', justifyContent: 'center' },
   paymentTitleBold: { fontSize: 15, fontWeight: '800', color: '#1A1C1C' },
-  paymentBalSub: { fontSize: 12, color: '#4A5568', marginTop: 1 },
+  paymentBalSub: { fontSize: 13, color: '#4A5568', marginTop: 2 },
 
   summaryCardBox: { backgroundColor: '#F5F8F6', borderRadius: 16, padding: 16, borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 24 },
   summaryHeaderTitle: { fontSize: 14, fontWeight: '800', color: '#1A1C1C', marginBottom: 12 },
