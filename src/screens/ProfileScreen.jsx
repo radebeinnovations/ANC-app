@@ -6,21 +6,35 @@ import List from '../components/List';
 import YamiFooter from '../components/YamiFooter';
 import { Colors } from '../theme/colors';
 
+function OfficialANCCrestEmblem() {
+  return (
+    <View style={s.ancLogoSquare}>
+      <View style={s.ancLogoOuterGold}>
+        <View style={s.ancLogoMidGreen}>
+          <View style={s.ancLogoInnerWhite}>
+            <Text style={s.ancEmblemBrandText}>A·N·C</Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+}
+
 function SAFlagBadge() {
   return (
-    <View style={s.saFlagWrapper}>
-      <Text style={{ fontSize: 18 }}>🇿🇦</Text>
+    <View style={s.saFlagBorderFrame}>
+      <Text style={{ fontSize: 16, lineHeight: 18 }}>🇿🇦</Text>
     </View>
   );
 }
 
 function DiamondMeshBackground() {
-  const rows = Array.from({ length: 12 });
-  const cols = Array.from({ length: 16 });
+  const rows = Array.from({ length: 24 });
+  const cols = Array.from({ length: 28 });
 
   return (
     <View style={s.diamondMeshWrapper}>
-      {/* Web Linear Gradient for exact pixel-perfect diamond pattern */}
+      {/* Web Linear Gradient for exact dense diamond grid match */}
       <View style={s.webDiamondGradientOverlay} />
 
       {/* Cross-platform Vector Diamond Grid */}
@@ -55,7 +69,7 @@ export default function ProfileScreen({ cards = [], onOpenCards, setStepText }) 
 
   return (
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
-      {/* DIGITAL MEMBERSHIP CARD (Exact Stitch Design Match with Diamond Mesh Background) */}
+      {/* DIGITAL MEMBERSHIP CARD (Exact 1:1 Match to Image 1 Stitch Design) */}
       <View style={s.memberCardContainer}>
         {/* Diamond Mesh Pattern Overlay */}
         <DiamondMeshBackground />
@@ -65,11 +79,7 @@ export default function ProfileScreen({ cards = [], onOpenCards, setStepText }) 
 
         {/* Card Header Row */}
         <View style={s.cardHeaderRow}>
-          <View style={s.emblemSquare}>
-            <View style={s.emblemInnerCircle}>
-              <Text style={s.emblemText}>ANC</Text>
-            </View>
-          </View>
+          <OfficialANCCrestEmblem />
 
           <View style={{ flex: 1, marginLeft: 10 }}>
             <Text style={s.cardHeading}>AFRICAN NATIONAL CONGRESS</Text>
@@ -103,7 +113,7 @@ export default function ProfileScreen({ cards = [], onOpenCards, setStepText }) 
         </View>
       </View>
 
-      {/* SEGMENTED TAB CONTROL (CARD | DETAILS - Exact Stitch Match) */}
+      {/* SEGMENTED TAB CONTROL (CARD | DETAILS) */}
       <View style={s.segmentedContainer}>
         <TouchableOpacity
           style={[s.segmentedBtn, activeTab === 'CARD' && s.segmentedBtnActive]}
@@ -126,7 +136,7 @@ export default function ProfileScreen({ cards = [], onOpenCards, setStepText }) 
         </TouchableOpacity>
       </View>
 
-      {/* TAB 1: CARD (3 Quick Action Cards Row - Exact Stitch Match) */}
+      {/* TAB 1: CARD (3 Quick Action Cards Row) */}
       {activeTab === 'CARD' ? (
         <View style={s.actionCardsRow}>
           {/* Action Card 1: Share */}
@@ -217,9 +227,9 @@ export default function ProfileScreen({ cards = [], onOpenCards, setStepText }) 
 const s = StyleSheet.create({
   content: { padding: 16, paddingBottom: 100, backgroundColor: Colors.background },
 
-  /* GREEN DIGITAL MEMBERSHIP CARD */
+  /* GREEN DIGITAL MEMBERSHIP CARD (Exact Image 1 Match) */
   memberCardContainer: {
-    backgroundColor: '#1E7E44',
+    backgroundColor: '#157339',
     borderRadius: 16,
     padding: 20,
     overflow: 'hidden',
@@ -240,10 +250,10 @@ const s = StyleSheet.create({
   },
   webDiamondGradientOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#1E7E44',
+    backgroundColor: '#157339',
     backgroundImage: `
-      repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.08) 0px, rgba(0, 0, 0, 0.08) 12px, transparent 12px, transparent 24px),
-      repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.08) 0px, rgba(0, 0, 0, 0.08) 12px, transparent 12px, transparent 24px)
+      repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.08) 0px, rgba(0, 0, 0, 0.08) 7.5px, transparent 7.5px, transparent 15px),
+      repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.08) 0px, rgba(0, 0, 0, 0.08) 7.5px, transparent 7.5px, transparent 15px)
     `,
     zIndex: 2,
   },
@@ -261,8 +271,8 @@ const s = StyleSheet.create({
     flex: 1,
   },
   diamondCell: {
-    width: 28,
-    height: 28,
+    width: 15,
+    height: 15,
   },
   diamondCellDark: {
     backgroundColor: 'rgba(0, 0, 0, 0.08)',
@@ -272,44 +282,66 @@ const s = StyleSheet.create({
   },
 
   cardHeaderRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 16, zIndex: 5 },
-  emblemSquare: {
-    width: 44,
-    height: 44,
+
+  /* ANC CREST EMBLEM LOGO (White rounded square with gold ring & logo) */
+  ancLogoSquare: {
+    width: 48,
+    height: 48,
+    borderRadius: 14,
+    backgroundColor: Colors.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+  },
+  ancLogoOuterGold: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: Colors.gold,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  ancLogoMidGreen: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#006933',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  ancLogoInnerWhite: {
+    width: 24,
+    height: 24,
     borderRadius: 12,
     backgroundColor: Colors.white,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  emblemInnerCircle: {
-    width: 34,
-    height: 34,
-    borderRadius: 17,
-    backgroundColor: '#006933',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: Colors.gold,
-  },
-  emblemText: { color: Colors.gold, fontWeight: '900', fontSize: 10 },
+  ancEmblemBrandText: { fontSize: 7, fontWeight: '900', color: '#006933', letterSpacing: 0.3 },
 
-  cardHeading: { fontSize: 13, fontWeight: '900', color: Colors.white, letterSpacing: 0.5 },
+  cardHeading: { fontSize: 13, fontWeight: '900', color: Colors.white, letterSpacing: 0.4 },
   cardSubHeading: { fontSize: 10, color: '#6EE7B7', fontWeight: '800', letterSpacing: 0.8, marginTop: 2 },
 
-  saFlagWrapper: {
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    borderRadius: 6,
-    paddingHorizontal: 6,
+  saFlagBorderFrame: {
+    backgroundColor: Colors.white,
+    borderRadius: 4,
+    paddingHorizontal: 4,
     paddingVertical: 2,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.3)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
   },
 
-  memberName: { fontSize: 22, fontWeight: '900', color: Colors.white, letterSpacing: 0.8, marginTop: 6, zIndex: 5 },
+  memberName: { fontSize: 20, fontWeight: '900', color: Colors.white, letterSpacing: 0.6, marginTop: 6, zIndex: 5 },
 
   badgeIdRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 8, zIndex: 5 },
-  memberRoleBadge: { backgroundColor: '#055928', borderRadius: 4, paddingVertical: 4, paddingHorizontal: 10 },
+  memberRoleBadge: { backgroundColor: '#045E2A', borderRadius: 4, paddingVertical: 4, paddingHorizontal: 10 },
   memberRoleText: { color: Colors.white, fontSize: 11, fontWeight: '900', letterSpacing: 0.8 },
-  memberIdNumber: { fontSize: 15, color: Colors.white, fontWeight: '800', letterSpacing: 1 },
+  memberIdNumber: { fontSize: 16, color: Colors.white, fontWeight: '700', letterSpacing: 1.2 },
 
   cardDetailsGrid: {
     flexDirection: 'row',
@@ -318,19 +350,20 @@ const s = StyleSheet.create({
     paddingTop: 14,
     marginTop: 14,
     borderTopWidth: 1,
-    borderTopColor: 'rgba(255,255,255,0.2)',
+    borderTopColor: 'rgba(255,255,255,0.25)',
     zIndex: 5,
   },
   gridDetailLabel: { fontSize: 9, color: '#6EE7B7', fontWeight: '800', letterSpacing: 1 },
-  gridDetailVal: { fontSize: 15, fontWeight: '900', color: Colors.white, marginTop: 2 },
+  gridDetailVal: { fontSize: 16, fontWeight: '900', color: Colors.white, marginTop: 2 },
 
   photoThumbnailBox: {
     width: 48,
     height: 48,
-    borderRadius: 8,
-    backgroundColor: 'rgba(255,255,255,0.9)',
+    borderRadius: 12,
+    backgroundColor: 'rgba(255,255,255,0.95)',
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: -8,
   },
 
   /* SEGMENTED TAB CONTROL */
