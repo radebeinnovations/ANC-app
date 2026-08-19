@@ -109,12 +109,11 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
     setStep(3); // Go to Success Screen
   };
 
-  // STEP 1 OF 3: RECIPIENT SELECTION (Exact 1:1 Match to Screenshot 2)
+  // STEP 1 OF 3: RECIPIENT SELECTION (Exact 1:1 Match)
   if (step === 1) {
     return (
       <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
-        {/* Step Header */}
-        <Text style={s.step1HeaderTag}>STEP 1 OF 3</Text>
+        {/* Step Title & Subtitle */}
         <Text style={s.pageHeadline}>Who are you sending to?</Text>
         <Text style={s.pageSubText}>Select a contact from your list or search for a new recipient by name or phone number.</Text>
 
@@ -242,13 +241,10 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
     );
   }
 
-  // STEP 2 OF 3: ENTER AMOUNT & SPEED OPTIONS (Exact 1:1 Match to Screenshot 3 & 4)
+  // STEP 2 OF 3: ENTER AMOUNT & SPEED OPTIONS (Clean Framed Amount Input)
   if (step === 2) {
     return (
       <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
-        {/* Step Header */}
-        <Text style={s.step2HeaderTitle}>Step 2 of 3</Text>
-
         {/* Selected Recipient Chip Card with Pencil */}
         <View style={s.recipientChipCard}>
           <Image source={{ uri: activeContact.avatar || AVATAR_3 }} style={s.chipAvatarImg} />
@@ -272,15 +268,17 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
           </View>
         </View>
 
-        {/* Large Amount Input Display */}
-        <View style={s.largeAmountInputRow}>
-          <Text style={s.largeRSymbol}>R</Text>
-          <TextInput
-            style={s.largeAmountText}
-            value={amount}
-            onChangeText={setAmount}
-            keyboardType="numeric"
-          />
+        {/* Clean Framed Amount Input Card */}
+        <View style={s.largeAmountCard}>
+          <View style={s.largeAmountInputRow}>
+            <Text style={s.largeRSymbol}>R</Text>
+            <TextInput
+              style={s.largeAmountText}
+              value={amount}
+              onChangeText={setAmount}
+              keyboardType="numeric"
+            />
+          </View>
         </View>
 
         {/* Quick Amount Pills */}
@@ -352,7 +350,7 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
     );
   }
 
-  // STEP 3: SUCCESS / CONFIRMATION SCREEN (Exact 1:1 Match to Screenshot 5)
+  // STEP 3: SUCCESS / CONFIRMATION SCREEN (Exact 1:1 Match)
   return (
     <ScrollView contentContainerStyle={s.successContent} showsVerticalScrollIndicator={false}>
       {/* Big Green Squircle Checkmark Icon */}
@@ -396,10 +394,7 @@ const s = StyleSheet.create({
   content: { padding: 16, paddingBottom: 90, backgroundColor: Colors.background },
   successContent: { padding: 24, paddingBottom: 90, backgroundColor: Colors.background, alignItems: 'center', justifyContent: 'center' },
 
-  step1HeaderTag: { fontSize: 11, fontWeight: '800', color: '#6E7A6E', letterSpacing: 1, textAlign: 'center', marginBottom: 12 },
-  step2HeaderTitle: { fontSize: 20, fontWeight: '900', color: Colors.primary, textAlign: 'center', marginBottom: 16 },
-
-  pageHeadline: { fontSize: 28, fontWeight: '900', color: '#1A1C1C', marginBottom: 6 },
+  pageHeadline: { fontSize: 26, fontWeight: '900', color: '#1A1C1C', marginBottom: 6, marginTop: 6 },
   pageSubText: { fontSize: 14, color: '#4A5568', lineHeight: 20, marginBottom: 16 },
 
   searchContainer: {
@@ -464,6 +459,7 @@ const s = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#E0E6E1',
     marginBottom: 16,
+    marginTop: 6,
   },
   chipAvatarImg: { width: 40, height: 40, borderRadius: 10 },
   chipNameText: { fontSize: 15, fontWeight: '800', color: '#1A1C1C' },
@@ -477,15 +473,35 @@ const s = StyleSheet.create({
     padding: 14,
     borderWidth: 1,
     borderColor: '#E2E8F0',
-    marginBottom: 20,
+    marginBottom: 16,
   },
   walletIconSq: { width: 40, height: 40, borderRadius: 12, backgroundColor: Colors.primary, alignItems: 'center', justifyContent: 'center' },
   availBalLabel: { fontSize: 11, color: '#4A5568', fontWeight: '700' },
   availBalVal: { fontSize: 18, fontWeight: '900', color: '#1A1C1C', marginTop: 1 },
 
-  largeAmountInputRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 16 },
-  largeRSymbol: { fontSize: 32, fontWeight: '900', color: Colors.primary, marginRight: 8 },
-  largeAmountText: { fontSize: 42, fontWeight: '900', color: '#1A1C1C' },
+  largeAmountCard: {
+    backgroundColor: Colors.white,
+    borderRadius: 16,
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.03,
+    shadowRadius: 4,
+    elevation: 1,
+  },
+  largeAmountInputRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  largeRSymbol: { fontSize: 28, fontWeight: '900', color: Colors.primary, marginRight: 6 },
+  largeAmountText: { fontSize: 36, fontWeight: '900', color: '#1A1C1C', minWidth: 120, textAlign: 'left' },
 
   quickPillsRow: { flexDirection: 'row', justifyContent: 'center', gap: 10, marginBottom: 24 },
   quickPillBtn: { backgroundColor: Colors.white, borderRadius: 12, paddingVertical: 10, paddingHorizontal: 16, borderWidth: 1, borderColor: '#E2E8F0' },
