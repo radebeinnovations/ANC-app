@@ -5,6 +5,8 @@ import { Icon } from './Icons';
 
 export default function Header({ screen, tab, onBack, onOpenMenu, onOpenNotifications, unreadCount = 1, stepText }) {
   if (screen !== 'main' && screen !== 'welcome') {
+    const isStep2 = screen === 'send' && stepText === 'Step 2 of 3';
+
     return (
       <View style={s.header}>
         <TouchableOpacity style={s.headerBackBtn} onPress={onBack} activeOpacity={0.7}>
@@ -12,8 +14,10 @@ export default function Header({ screen, tab, onBack, onOpenMenu, onOpenNotifica
         </TouchableOpacity>
 
         <View style={s.headerCenter}>
-          <Text style={s.headerTitle}>{getScreenTitle(screen, stepText)}</Text>
-          {stepText ? <Text style={s.stepSub}>{stepText}</Text> : null}
+          <Text style={[s.headerTitle, isStep2 && s.headerTitleStep2]}>
+            {isStep2 ? 'Step 2 of 3' : getScreenTitle(screen, stepText)}
+          </Text>
+          {!isStep2 && stepText ? <Text style={s.stepSub}>{stepText}</Text> : null}
         </View>
 
         <View style={{ width: 40 }} />
@@ -58,6 +62,7 @@ export default function Header({ screen, tab, onBack, onOpenMenu, onOpenNotifica
 
 function getScreenTitle(screen, stepText) {
   if (screen === 'send') {
+    if (stepText === 'Step 2 of 3') return 'Step 2 of 3';
     if (stepText === 'STEP 3 OF 3') return 'ANC UNITY';
     return 'Send Money';
   }
@@ -89,7 +94,6 @@ const s = StyleSheet.create({
     backgroundColor: Colors.surfaceContainerLow,
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'relative',
   },
   headerBackBtn: {
     width: 36,
@@ -101,25 +105,54 @@ const s = StyleSheet.create({
   },
   headerCenter: {
     alignItems: 'center',
+    justifyContent: 'center',
   },
   headerCenterLeft: {
     flex: 1,
-    marginLeft: 10,
+    marginLeft: 12,
   },
   headerTitle: {
     fontSize: 16,
+    fontWeight: '800',
+    color: Colors.ink,
+  },
+  headerTitleStep2: {
+    fontSize: 18,
     fontWeight: '900',
-    color: Colors.primary,
+    color: '#006933',
   },
   headerTitleMember: {
+    fontSize: 15,
+    fontWeight: '900',
+    color: '#006933',
+    letterSpacing: 0.3,
+  },
+  stepSub: {
+    fontSize: 10,
+    fontWeight: '800',
+    color: Colors.muted,
+    marginTop: 1,
+    letterSpacing: 0.5,
+  },
+  headerBrand: {
     fontSize: 17,
     fontWeight: '900',
     color: Colors.primary,
+    letterSpacing: 0.5,
+  },
+  badgeDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: Colors.error,
+    position: 'absolute',
+    top: 8,
+    right: 8,
   },
   memberEmblemCircle: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
+    width: 34,
+    height: 34,
+    borderRadius: 17,
     backgroundColor: '#006933',
     alignItems: 'center',
     justifyContent: 'center',
@@ -129,28 +162,6 @@ const s = StyleSheet.create({
   memberEmblemText: {
     color: Colors.gold,
     fontWeight: '900',
-    fontSize: 11,
-  },
-  stepSub: {
     fontSize: 9,
-    fontWeight: '800',
-    color: Colors.muted,
-    letterSpacing: 1,
-    marginTop: 1,
-  },
-  headerBrand: {
-    fontSize: 18,
-    fontWeight: '900',
-    color: Colors.primary,
-    letterSpacing: 0.8,
-  },
-  badgeDot: {
-    position: 'absolute',
-    top: 7,
-    right: 7,
-    width: 7,
-    height: 7,
-    borderRadius: 4,
-    backgroundColor: Colors.error,
   },
 });

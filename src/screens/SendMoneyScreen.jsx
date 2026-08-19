@@ -264,7 +264,7 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
           </View>
           <View style={{ marginLeft: 12 }}>
             <Text style={s.availBalLabel}>Available Balance</Text>
-            <Text style={s.availBalVal}>R1 500,00</Text>
+            <Text style={s.availBalVal}>R1,500.00</Text>
           </View>
         </View>
 
