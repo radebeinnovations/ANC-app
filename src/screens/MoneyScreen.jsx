@@ -124,7 +124,7 @@ export default function MoneyScreen({ open, balance = 1500, onDepositFunds, rece
           <Icon name="chevron-right" size={18} color="#9E9E9E" />
         </TouchableOpacity>
 
-        <TouchableOpacity style={s.contributeRow} onPress={() => open('branch')} activeOpacity={0.7}>
+        <TouchableOpacity style={s.contributeRow} onPress={() => open('community')} activeOpacity={0.7}>
           <View style={[s.contributeSquare, { backgroundColor: '#3E4A3F' }]}>
             <Icon name="groups" size={18} color={Colors.white} />
           </View>

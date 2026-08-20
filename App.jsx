@@ -74,6 +74,7 @@ export default function App() {
   }, []);
 
   const [initialSubScreen, setInitialSubScreen] = useState('hub');
+  const [initialDonationStep, setInitialDonationStep] = useState(0);
 
   const open = (name, subScreen = 'hub') => {
     setNotice('');
@@ -83,6 +84,12 @@ export default function App() {
     if (['airtime', 'data', 'electricity', 'bills'].includes(name)) {
       setInitialSubScreen(name);
       setScreen('services');
+    } else if (name === 'community') {
+      setInitialDonationStep(1);
+      setScreen('donate');
+    } else if (name === 'donate') {
+      setInitialDonationStep(0);
+      setScreen('donate');
     } else {
       setInitialSubScreen(subScreen);
       setScreen(name);
@@ -121,7 +128,7 @@ export default function App() {
     if (screen === 'receive') return <ReceiveMoneyScreen finish={finish} setNotice={setNotice} />;
     if (screen === 'transfer') return <TransferMoneyScreen finish={finish} balance={balance} onDeductBalance={handleDeductBalance} setStepText={setStepText} setNotice={setNotice} />;
     if (screen === 'services') return <ServicesScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} onDepositFunds={handleDepositFunds} setStepText={setStepText} initialSubScreen={initialSubScreen} />;
-    if (screen === 'donate') return <DonationScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} setStepText={setStepText} />;
+    if (screen === 'donate') return <DonationScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} setStepText={setStepText} initialStep={initialDonationStep} />;
     if (screen === 'membership') return <MembershipScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} />;
     if (screen === 'profile') return <ProfileScreen cards={cards} onOpenCards={() => open('cards')} setStepText={setStepText} />;
     if (screen === 'cards') return <CardManagerScreen cards={cards} onAddCard={handleAddCard} />;
