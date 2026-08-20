@@ -88,7 +88,7 @@ export default function App() {
       setInitialDonationStep(1);
       setScreen('donate');
     } else if (name === 'donate') {
-      setInitialDonationStep(0);
+      setInitialDonationStep(2);
       setScreen('donate');
     } else {
       setInitialSubScreen(subScreen);
