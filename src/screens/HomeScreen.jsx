@@ -4,21 +4,22 @@ import { Icon, ReceiveMoneySvgIcon, SendMoneySvgIcon } from '../components/Icons
 import { Colors } from '../theme/colors';
 
 const COMMUNITY_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAHtomXsNt6ZfeyvGZOeE5XMikoE5zxU6RquvkfvLhr4T0JYKXccFIuYI8r2T8-9ZZlaqqwWNNziIBcMoWa6jD-ILIRWc02WFG9hRmYaM5BbCiDBXKNUaGsyOhxcgb2bbd-Rzx6m0FPLxfh6dQLM5XA30dGG_LKc4u72FFmXlnnxQsZ_gmIR0jV8GlW5p6QYUO-h6qfrqHZGSfWJY6mootTuO2zTIRBZjmzjM-J9VHYQU1WxM4WEO0i';
-const NEWS_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAHR1a7BGP_bULWHfBqmlTZgAdHLDUGaQ9n42EuYpuscyM7zEqqysnBEFBchrBndc5olw-z7m9zHt8J2f1KlBsIEJcbViTOgrDKxoOMDSxwyhbm6Celjx0pd0-OYh-6kDsXNsIIzcF7FU30QbvhS_w9U5M0GZjAah-V1bZR0ig9UAONPSann0NLQ6JAl8wcx2iBNtAuzSB1IZwBp7qqfHtgzBTb68fJZD2IlcmApjWzMBVXT3-_Ba0X';
+const NEWS_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDHgtndFSg1VNHObIGcZIVyJ5csQDFMufbynzecuPzTzzip8_SF-7bE1hkBqrIDk2z9WdB1hn7AkKoRKDOPoriFESQprpaPvPA6Ho8WSsUUujbo0AHfZDXL7hrjhX2QtMPeRC1k8BjZvaMiIJfrxsBDvqyp6IXPPHOShgQ7OAxnrFAIm-k2Bi-gVqHYdMwDGMJuAdeIw59P2iO6C99NyhzmCY0_uxbJOPsLZtsOaecMLdGGehVIy_3GQW0_gNbsLDWnGA';
 const AVATAR_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDrqYetCBmAlp-mUDn8l5OIU6o0F7dliMQ9YlMujyt2i_rw30eTSl5oX57V5RvG6Uv3novo6hQqHuqXuxjPxnmQ64VJZhNknXZ4DhoAIDRlB_MEzW3GQdjyQXMzACivKaJvy5hjkaEoKyU3UZdq-hV15u4icDUiVm2q9ySZXpXL4mnHx7ueBa9KQERLutb2BCwMThrQ9XvvjjdL2bm8Hr_FTeNs1NvAV7TP1lenmhyAfTUTexR7q-_2';
 
 export default function HomeScreen({ open }) {
-  const [activeSegment, setActiveSegment] = useState('Important Dates');
+  const [activeSegment, setActiveSegment] = useState('Latest Updates');
 
   const segments = ['Important Dates', 'My Community', 'Quick Services', 'Latest Updates'];
 
   return (
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
-      {/* Header Profile Greeting Section (Matches Screenshots 2 & 3) */}
+      {/* Header Profile Greeting Section */}
       <View style={s.headerRow}>
         <View style={{ flex: 1 }}>
           <Text style={s.greetingTitle}>Good morning, Lerumo</Text>
-          <Text style={s.greetingSub}>ANC MEMBER · Johannesburg Region · Branch Name</Text>
+          <Text style={s.greetingSub}>ANC MEMBER · Johannesburg Region</Text>
+          <Text style={s.greetingBranch}>Branch Name</Text>
         </View>
 
         <TouchableOpacity style={s.avatarContainer} onPress={() => open('profile')} activeOpacity={0.8}>
@@ -26,7 +27,7 @@ export default function HomeScreen({ open }) {
         </TouchableOpacity>
       </View>
 
-      {/* Member Status Card (1:1 with Screenshots 2 & 3) */}
+      {/* Member Status Card (1:1 with Target Screenshot) */}
       <View style={s.statusCard}>
         <View style={s.cardHeaderRow}>
           <View style={s.activeChipPill}>
@@ -74,7 +75,41 @@ export default function HomeScreen({ open }) {
 
       {/* DYNAMIC CONTENT BASED ON ACTIVE SEGMENT */}
 
-      {/* SEGMENT 1: IMPORTANT DATES (DEFAULT MATCHING SCREENSHOTS 2 & 3) */}
+      {/* SEGMENT: LATEST UPDATES (EXACT MATCH TO TARGET SCREENSHOT) */}
+      {activeSegment === 'Latest Updates' && (
+        <View style={s.segmentSection}>
+          <View style={s.sectionHeaderRow}>
+            <Text style={s.sectionHeaderTitle}>LATEST FROM THE ANC</Text>
+          </View>
+
+          <TouchableOpacity
+            style={s.newsCardOverlay}
+            onPress={() => open('updates')}
+            activeOpacity={0.85}
+          >
+            <Image source={{ uri: NEWS_IMG_URL }} style={s.newsBgImage} resizeMode="cover" />
+            <View style={s.newsGradientScrim} />
+
+            <View style={s.newsCardContent}>
+              <View style={s.newsTopMetaRow}>
+                <View style={s.goldStatementBadge}>
+                  <Text style={s.goldStatementText}>ANC STATEMENT</Text>
+                </View>
+                <Text style={s.newsDateText}>12 August 2026</Text>
+              </View>
+
+              <Text style={s.newsHeadlineOverlay}>Building Stronger Local Government</Text>
+
+              <View style={s.readFullBtnRow}>
+                <Text style={s.readFullBtnText}>Read Full Statement</Text>
+                <Icon name="arrow-forward" size={16} color={Colors.white} />
+              </View>
+            </View>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {/* SEGMENT: IMPORTANT DATES */}
       {activeSegment === 'Important Dates' && (
         <View style={s.segmentSection}>
           <View style={s.sectionHeaderRow}>
@@ -100,7 +135,7 @@ export default function HomeScreen({ open }) {
         </View>
       )}
 
-      {/* SEGMENT 2: MY COMMUNITY */}
+      {/* SEGMENT: MY COMMUNITY */}
       {activeSegment === 'My Community' && (
         <View style={s.segmentSection}>
           <View style={s.sectionHeaderRow}>
@@ -127,7 +162,7 @@ export default function HomeScreen({ open }) {
         </View>
       )}
 
-      {/* SEGMENT 3: QUICK SERVICES */}
+      {/* SEGMENT: QUICK SERVICES */}
       {activeSegment === 'Quick Services' && (
         <View style={s.segmentSection}>
           <View style={s.sectionHeaderRow}>
@@ -182,36 +217,6 @@ export default function HomeScreen({ open }) {
           </View>
         </View>
       )}
-
-      {/* SEGMENT 4: LATEST UPDATES */}
-      {activeSegment === 'Latest Updates' && (
-        <View style={s.segmentSection}>
-          <View style={s.sectionHeaderRow}>
-            <Text style={s.sectionHeaderTitle}>LATEST UPDATES</Text>
-            <TouchableOpacity onPress={() => open('updates')}>
-              <Text style={s.viewAllLink}>View all</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={s.newsCard}>
-            <Image source={{ uri: NEWS_IMG_URL }} style={s.newsImage} resizeMode="cover" />
-            <View style={s.newsBody}>
-              <View style={s.newsMetaRow}>
-                <Text style={s.newsMetaTag}>ANC STATEMENT</Text>
-                <Text style={s.newsMetaDate}>12 August 2026</Text>
-              </View>
-              <Text style={s.newsHeadline}>Building Stronger Local Government</Text>
-              <Text style={s.newsSnippet}>
-                Our commitment to service delivery and community empowerment remains steadfast as we approach the upcoming municipal elections.
-              </Text>
-              <TouchableOpacity style={s.readUpdateLink} onPress={() => open('updates')}>
-                <Text style={s.readUpdateText}>Read Update</Text>
-                <Icon name="arrow-forward" size={18} color={Colors.primary} />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      )}
     </ScrollView>
   );
 }
@@ -220,9 +225,10 @@ const s = StyleSheet.create({
   content: { padding: 16, paddingBottom: 100, backgroundColor: '#F9F9F9' },
 
   /* GREETING HEADER */
-  headerRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 20, justifyContent: 'space-between' },
+  headerRow: { flexDirection: 'row', alignItems: 'flex-start', marginBottom: 20, justifyContent: 'space-between' },
   greetingTitle: { fontSize: 26, fontWeight: '700', color: '#1A1C1C', fontFamily: 'Hanken Grotesk', marginBottom: 2 },
   greetingSub: { fontSize: 13, color: '#4A5568', fontFamily: 'Inter' },
+  greetingBranch: { fontSize: 13, color: '#4A5568', fontFamily: 'Inter' },
   avatarContainer: { width: 44, height: 44, borderRadius: 22, overflow: 'hidden', borderWidth: 2, borderColor: '#E8E8E8' },
   avatarImage: { width: '100%', height: '100%', resizeMode: 'cover' },
 
@@ -291,6 +297,70 @@ const s = StyleSheet.create({
   sectionHeaderTitle: { fontSize: 12, fontWeight: '800', color: '#4A5568', letterSpacing: 1.2, textTransform: 'uppercase', fontFamily: 'Inter' },
   viewAllLink: { fontSize: 12, fontWeight: '800', color: Colors.primary, fontFamily: 'Inter' },
 
+  /* EDITORIAL NEWS CARD OVERLAY (1:1 WITH TARGET SCREENSHOT) */
+  newsCardOverlay: {
+    width: '100%',
+    height: 240,
+    borderRadius: 16,
+    overflow: 'hidden',
+    position: 'relative',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+  },
+  newsBgImage: { width: '100%', height: '100%', position: 'absolute' },
+  newsGradientScrim: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+  },
+  newsCardContent: {
+    flex: 1,
+    justify: 'flex-end',
+    padding: 20,
+  },
+  newsTopMetaRow: {
+    flexDirection: 'row',
+    justify: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  goldStatementBadge: {
+    backgroundColor: '#E5B800',
+    borderRadius: 4,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+  },
+  goldStatementText: {
+    fontSize: 11,
+    fontWeight: '800',
+    color: '#241a00',
+    letterSpacing: 0.5,
+    fontFamily: 'Inter',
+  },
+  newsDateText: {
+    fontSize: 12,
+    color: 'rgba(255, 255, 255, 0.85)',
+    fontFamily: 'Inter',
+  },
+  newsHeadlineOverlay: {
+    fontSize: 20,
+    fontWeight: '800',
+    color: Colors.white,
+    fontFamily: 'Hanken Grotesk',
+    marginBottom: 12,
+    lineHeight: 26,
+  },
+  readFullBtnRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  readFullBtnText: {
+    color: Colors.white,
+    fontSize: 14,
+    fontWeight: '700',
+    fontFamily: 'Inter',
+  },
+
   /* DATES CARD */
   dateCardBox: {
     backgroundColor: Colors.white,
@@ -345,16 +415,4 @@ const s = StyleSheet.create({
   },
   squircleIconBox: { width: 44, height: 44, borderRadius: 12, alignItems: 'center', justifyContent: 'center', marginBottom: 8 },
   serviceSquareLabel: { fontSize: 12, fontWeight: '800', color: '#1A1C1C', textAlign: 'center', lineHeight: 15, fontFamily: 'Inter' },
-
-  /* NEWS CARD */
-  newsCard: { backgroundColor: Colors.white, borderRadius: 16, overflow: 'hidden', borderWidth: 1, borderColor: '#E2E8F0' },
-  newsImage: { width: '100%', height: 160 },
-  newsBody: { padding: 16 },
-  newsMetaRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6 },
-  newsMetaTag: { fontSize: 10, fontWeight: '900', color: Colors.primary, letterSpacing: 1, fontFamily: 'Inter' },
-  newsMetaDate: { fontSize: 12, color: Colors.muted, fontFamily: 'Inter' },
-  newsHeadline: { fontSize: 18, fontWeight: '800', color: '#1A1C1C', marginBottom: 6, fontFamily: 'Hanken Grotesk' },
-  newsSnippet: { fontSize: 13, color: '#4A5568', lineHeight: 18, marginBottom: 12, fontFamily: 'Inter' },
-  readUpdateLink: { flexDirection: 'row', alignItems: 'center', gap: 6 },
-  readUpdateText: { color: Colors.primary, fontSize: 13, fontWeight: '800', fontFamily: 'Inter' },
 });
