@@ -122,7 +122,7 @@ export default function App() {
     if (screen === 'transfer') return <TransferMoneyScreen finish={finish} balance={balance} onDeductBalance={handleDeductBalance} setStepText={setStepText} setNotice={setNotice} />;
     if (screen === 'services') return <ServicesScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} onDepositFunds={handleDepositFunds} setStepText={setStepText} initialSubScreen={initialSubScreen} />;
     if (screen === 'donate') return <DonationScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} setStepText={setStepText} />;
-    if (screen === 'membership') return <MembershipScreen finish={finish} cards={cards} onDeductBalance={handleDeductBalance} />;
+    if (screen === 'membership') return <MembershipScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} />;
     if (screen === 'profile') return <ProfileScreen cards={cards} onOpenCards={() => open('cards')} setStepText={setStepText} />;
     if (screen === 'cards') return <CardManagerScreen cards={cards} onAddCard={handleAddCard} />;
     if (screen === 'branch') return <BranchScreen />;
