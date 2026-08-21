@@ -166,7 +166,7 @@ export default function HomeScreen({ open }) {
           </TouchableOpacity>
         </View>
 
-        <View style={s.newsCard}>
+        <TouchableOpacity style={s.newsCard} onPress={() => open('statement_detail')} activeOpacity={0.85}>
           <Image source={{ uri: NEWS_IMG_URL }} style={s.newsImage} resizeMode="cover" />
 
           <View style={s.newsBody}>
@@ -180,12 +180,12 @@ export default function HomeScreen({ open }) {
               Our commitment to service delivery and community empowerment remains steadfast as we approach the upcoming municipal elections.
             </Text>
 
-            <TouchableOpacity style={s.readUpdateLink} onPress={() => open('updates')} activeOpacity={0.7}>
+            <TouchableOpacity style={s.readUpdateLink} onPress={() => open('statement_detail')} activeOpacity={0.7}>
               <Text style={s.readUpdateText}>Read Update</Text>
               <Icon name="arrow-forward" size={18} color="#006933" />
             </TouchableOpacity>
           </View>
-        </View>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );

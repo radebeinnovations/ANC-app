@@ -18,6 +18,7 @@ import ProfileScreen from './src/screens/ProfileScreen';
 import ReceiveMoneyScreen from './src/screens/ReceiveMoneyScreen';
 import SendMoneyScreen from './src/screens/SendMoneyScreen';
 import ServicesScreen from './src/screens/ServicesScreen';
+import StatementDetailScreen from './src/screens/StatementDetailScreen';
 import TransferMoneyScreen from './src/screens/TransferMoneyScreen';
 import SignInScreen from './src/screens/SignInScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen';
@@ -133,7 +134,8 @@ export default function App() {
     if (screen === 'profile') return <ProfileScreen cards={cards} onOpenCards={() => open('cards')} setStepText={setStepText} />;
     if (screen === 'cards') return <CardManagerScreen cards={cards} onAddCard={handleAddCard} />;
     if (screen === 'branch') return <BranchScreen />;
-    if (screen === 'notifications') return <NotificationsScreen />;
+    if (screen === 'notifications' || screen === 'updates') return <NotificationsScreen />;
+    if (screen === 'statement_detail') return <StatementDetailScreen finish={finish} />;
 
     if (tab === 'Money') return <MoneyScreen open={open} cards={cards} balance={balance} onDepositFunds={handleDepositFunds} recentActivity={recentActivity} />;
     if (tab === 'Participate') return <HomeScreen open={open} balance={balance} />;
