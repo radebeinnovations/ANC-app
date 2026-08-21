@@ -37,8 +37,9 @@ export default function Header({ screen, tab, onBack, onOpenMenu, onOpenNotifica
           <Text style={s.headerTitleMember}>African National Congress</Text>
         </View>
 
-        <TouchableOpacity style={s.headerIconBtn} activeOpacity={0.7}>
-          <Icon name="search" size={20} color={Colors.primary} />
+        <TouchableOpacity style={s.headerIconBtn} onPress={onOpenNotifications} activeOpacity={0.7}>
+          <Icon name="notifications-none" size={22} color={Colors.primary} />
+          {unreadCount > 0 && <View style={s.badgeDot} />}
         </TouchableOpacity>
       </View>
     );
