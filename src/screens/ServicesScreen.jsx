@@ -153,8 +153,6 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
     setTokenAmount(num);
     setTokenMeter(meterNumber);
     setActiveSubScreen('token_receipt');
-
-    finish(`Electricity Token: ${newToken} (${estimatedKwh} kWh) generated for Meter ${meterNumber}.`);
   };
 
   const handlePayBills = () => {
@@ -620,7 +618,7 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
           </Text>
         </View>
 
-        <Button text="Done (Return to Services)" onPress={() => setActiveSubScreen('hub')} />
+        <Button text="Done" onPress={() => finish('')} />
       </ScrollView>
     );
   }
