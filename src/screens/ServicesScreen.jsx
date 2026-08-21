@@ -51,6 +51,27 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
   const [meterNumber, setMeterNumber] = useState('1234 5678 9012');
   const [electricityAmount, setElectricityAmount] = useState('250');
 
+  // STS Electricity Token Voucher Modal State
+  const [showTokenModal, setShowTokenModal] = useState(false);
+  const [generatedToken, setGeneratedToken] = useState('');
+  const [tokenUnits, setTokenUnits] = useState('');
+  const [tokenAmount, setTokenAmount] = useState(0);
+  const [tokenMeter, setTokenMeter] = useState('');
+  const [copiedToast, setCopiedToast] = useState(false);
+
+  const generateSTSToken = () => {
+    const g = () => Math.floor(1000 + Math.random() * 9000);
+    return `${g()} ${g()} ${g()} ${g()} ${g()}`;
+  };
+
+  const copyTokenToClipboard = () => {
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(generatedToken.replace(/\s+/g, ''));
+    }
+    setCopiedToast(true);
+    setTimeout(() => setCopiedToast(false), 2500);
+  };
+
   // Bills State
   const [selectedBiller, setSelectedBiller] = useState('City of Johannesburg');
   const [billAccount, setBillAccount] = useState('9876 5432 10');
@@ -123,8 +144,17 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
   const handlePayElectricity = () => {
     const num = parseFloat(electricityAmount) || 0;
     const estimatedKwh = (num / 2.65).toFixed(1);
-    if (onDeductBalance) onDeductBalance(num, `Prepaid Electricity (${estimatedKwh} kWh)`);
-    finish(`Prepaid Electricity token (${estimatedKwh} kWh) purchase of ${rand(num)} complete.`);
+    const newToken = generateSTSToken();
+
+    if (onDeductBalance) onDeductBalance(num, `Prepaid Electricity Token (${newToken})`);
+
+    setGeneratedToken(newToken);
+    setTokenUnits(estimatedKwh);
+    setTokenAmount(num);
+    setTokenMeter(meterNumber);
+    setActiveSubScreen('token_receipt');
+
+    finish(`Electricity Token: ${newToken} (${estimatedKwh} kWh) generated for Meter ${meterNumber}.`);
   };
 
   const handlePayBills = () => {
@@ -405,6 +435,13 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
 
   // 3. DATA SCREEN
   if (activeSubScreen === 'data') {
+    const networks = [
+      { id: 'MTN', name: 'MTN', bg: '#FECC00', text: '#1A1C1C' },
+      { id: 'Vodacom', name: 'Vodacom', bg: '#E50000', text: '#FFFFFF' },
+      { id: 'Telkom', name: 'Telkom', bg: '#0099FF', text: '#FFFFFF' },
+      { id: 'CellC', name: 'Cell C', bg: '#000000', text: '#FFFFFF' },
+    ];
+
     return (
       <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
         <TouchableOpacity style={s.backSubHeader} onPress={() => setActiveSubScreen('hub')}>
@@ -416,6 +453,40 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
         <Text style={s.subText}>Fast data packages directly to your line.</Text>
 
         <Field label="RECIPIENT NUMBER" value={dataRecipient} onChangeText={setDataRecipient} keyboardType="phone-pad" />
+
+        {/* SELECT NETWORK Cards */}
+        <Text style={s.subSectionLabel}>SELECT NETWORK</Text>
+        <View style={s.networkCardRow}>
+          {networks.map(net => {
+            const isSelected = selectedNetwork === net.id;
+            return (
+              <TouchableOpacity
+                key={net.id}
+                style={[s.networkBox, isSelected && s.networkBoxOn]}
+                onPress={() => setSelectedNetwork(net.id)}
+                activeOpacity={0.8}
+              >
+                <View style={[s.networkCircle, { backgroundColor: net.bg }]}>
+                  <Text style={[s.networkCircleLetter, { color: net.text }]}>{net.name[0]}</Text>
+                </View>
+                <Text style={s.networkNameLabel}>{net.name}</Text>
+                {isSelected ? (
+                  <View style={s.networkCheckCircle}>
+                    <Icon name="check-circle" size={16} color={Colors.primary} />
+                  </View>
+                ) : null}
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+
+        {/* Network Selection Helpful Note */}
+        <View style={s.networkNoteBanner}>
+          <Icon name="info-outline" size={16} color={Colors.primary} />
+          <Text style={s.networkNoteText}>
+            <Text style={{ fontWeight: '800' }}>Note:</Text> Please ensure you select the correct mobile network operator (MTN, Vodacom, Telkom, Cell C) matching the recipient's phone number so the data bundle top-up is processed successfully.
+          </Text>
+        </View>
 
         <Text style={s.subSectionLabel}>SELECT BUNDLE</Text>
         <View style={s.bundleStack}>
@@ -489,6 +560,71 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
     );
   }
 
+  // 6. DEDICATED ELECTRICITY TOKEN RECEIPT SCREEN
+  if (activeSubScreen === 'token_receipt') {
+    return (
+      <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
+        <TouchableOpacity style={s.backSubHeader} onPress={() => setActiveSubScreen('hub')}>
+          <Icon name="arrow-back" size={18} color={Colors.primary} />
+          <Text style={s.backSubText}>Pay & Services</Text>
+        </TouchableOpacity>
+
+        {/* Success Header Badge */}
+        <View style={s.receiptSuccessCard}>
+          <View style={s.receiptSuccessIconCircle}>
+            <Icon name="check" size={24} color="#008542" />
+          </View>
+          <Text style={s.receiptSuccessTitle}>Electricity Voucher Token</Text>
+          <Text style={s.receiptSuccessSub}>Your 20-digit STS prepaid electricity token has been generated.</Text>
+        </View>
+
+        {/* Giant 20-Digit Token Display Box */}
+        <View style={s.giantTokenCard}>
+          <Text style={s.giantTokenHeaderLabel}>20-DIGIT METER TOKEN PIN</Text>
+          <Text style={s.giantTokenPinText}>{generatedToken}</Text>
+
+          <TouchableOpacity style={s.giantCopyBtn} onPress={copyTokenToClipboard} activeOpacity={0.8}>
+            <Icon name="content-copy" size={18} color={Colors.white} />
+            <Text style={s.giantCopyBtnText}>{copiedToast ? '✓ Copied to Clipboard!' : 'Copy 20-Digit Token'}</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Summary Stack */}
+        <View style={s.receiptSummaryStack}>
+          <View style={s.receiptSummaryRow}>
+            <Text style={s.receiptSummaryLabel}>Meter Number</Text>
+            <Text style={s.receiptSummaryValue}>{tokenMeter}</Text>
+          </View>
+
+          <View style={s.receiptSummaryRow}>
+            <Text style={s.receiptSummaryLabel}>Units Issued</Text>
+            <Text style={s.receiptSummaryValueGreen}>{tokenUnits} kWh</Text>
+          </View>
+
+          <View style={s.receiptSummaryRow}>
+            <Text style={s.receiptSummaryLabel}>Tariff Rate</Text>
+            <Text style={s.receiptSummaryValue}>~R2.65 / kWh</Text>
+          </View>
+
+          <View style={[s.receiptSummaryRow, { borderBottomWidth: 0 }]}>
+            <Text style={s.receiptSummaryLabel}>Total Amount Paid</Text>
+            <Text style={s.receiptSummaryValue}>R{Number(tokenAmount).toFixed(2)}</Text>
+          </View>
+        </View>
+
+        {/* Keypad Meter Notice */}
+        <View style={s.meterNoticeBox}>
+          <Icon name="lightbulb" size={20} color="#6E5700" />
+          <Text style={s.meterNoticeText}>
+            Key in this 20-digit PIN number into your prepaid keypad meter at home followed by the enter (↵) button to load your electricity units.
+          </Text>
+        </View>
+
+        <Button text="Done (Return to Services)" onPress={() => setActiveSubScreen('hub')} />
+      </ScrollView>
+    );
+  }
+
   // 5. ELECTRICITY SCREEN
   const numElectricity = parseFloat(electricityAmount || 0);
   const estimatedKwh = (numElectricity / 2.65).toFixed(1);
@@ -524,6 +660,64 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
       </View>
 
       <Button text={`Buy R${electricityAmount} Token (${estimatedKwh} kWh)`} onPress={handlePayElectricity} />
+
+      {/* PREPAID ELECTRICITY STS TOKEN VOUCHER MODAL */}
+      <Modal visible={showTokenModal} animationType="slide" transparent>
+        <View style={s.modalBackdrop}>
+          <View style={[s.modalCard, { backgroundColor: '#FFFFFF' }]}>
+            <View style={s.modalHeader}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                <View style={s.tokenIconCircle}>
+                  <Icon name="bolt" size={20} color="#6E5700" />
+                </View>
+                <Text style={s.modalTitle}>Electricity Voucher Token</Text>
+              </View>
+              <TouchableOpacity onPress={() => setShowTokenModal(false)}>
+                <Text style={{ fontSize: 18, fontWeight: '800', color: Colors.muted }}>✕</Text>
+              </TouchableOpacity>
+            </View>
+
+            <Text style={s.tokenSuccessSub}>
+              Your 20-digit STS prepaid electricity voucher token has been generated successfully.
+            </Text>
+
+            {/* 20-Digit Token Display Box */}
+            <View style={s.tokenDisplayCard}>
+              <Text style={s.tokenDisplayLabel}>20-DIGIT METER TOKEN PIN</Text>
+              <Text style={s.tokenPinText}>{generatedToken}</Text>
+              
+              <TouchableOpacity style={s.copyTokenBtn} onPress={copyTokenToClipboard} activeOpacity={0.8}>
+                <Icon name="content-copy" size={16} color={Colors.white} />
+                <Text style={s.copyTokenBtnText}>{copiedToast ? '✓ Copied to Clipboard!' : 'Copy 20-Digit Token'}</Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Summary Details Stack */}
+            <View style={s.tokenDetailsStack}>
+              <View style={s.tokenDetailRow}>
+                <Text style={s.tokenDetailLabel}>Meter Number</Text>
+                <Text style={s.tokenDetailValue}>{tokenMeter}</Text>
+              </View>
+
+              <View style={s.tokenDetailRow}>
+                <Text style={s.tokenDetailLabel}>Units Issued</Text>
+                <Text style={s.tokenDetailValueHighlight}>{tokenUnits} kWh</Text>
+              </View>
+
+              <View style={[s.tokenDetailRow, { borderBottomWidth: 0 }]}>
+                <Text style={s.tokenDetailLabel}>Amount Paid</Text>
+                <Text style={s.tokenDetailValue}>R{Number(tokenAmount).toFixed(2)}</Text>
+              </View>
+            </View>
+
+            <Text style={s.meterInstructionsNotice}>
+              💡 Key in this 20-digit number into your prepaid keypad meter followed by the enter button.
+            </Text>
+
+            <Button text="Done" onPress={() => setShowTokenModal(false)} />
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   );
 }
@@ -732,4 +926,80 @@ const s = StyleSheet.create({
     marginBottom: 14,
   },
   networkNoteText: { flex: 1, marginLeft: 8, fontSize: 11, color: Colors.ink, lineHeight: 15, fontFamily: 'Inter' },
+
+  tokenIconCircle: { width: 32, height: 32, borderRadius: 16, backgroundColor: '#FECC00', alignItems: 'center', justifyContent: 'center' },
+  tokenSuccessSub: { fontSize: 13, color: Colors.muted, marginBottom: 14, fontFamily: 'Inter' },
+  tokenDisplayCard: {
+    backgroundColor: '#0F172A',
+    borderRadius: 14,
+    padding: 16,
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  tokenDisplayLabel: { color: '#94A3B8', fontSize: 10, fontWeight: '800', letterSpacing: 1, marginBottom: 6, fontFamily: 'Inter' },
+  tokenPinText: { color: '#FECC00', fontSize: 20, fontWeight: '900', letterSpacing: 2, fontFamily: 'monospace', textAlign: 'center', marginBottom: 12 },
+  copyTokenBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: Colors.primary,
+    borderRadius: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+  },
+  copyTokenBtnText: { color: Colors.white, fontSize: 12, fontWeight: '800', fontFamily: 'Inter' },
+
+  tokenDetailsStack: { backgroundColor: '#F8FAFC', borderRadius: 12, borderWidth: 1, borderColor: '#E2E8F0', paddingHorizontal: 14, marginBottom: 14 },
+  tokenDetailRow: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#E2E8F0' },
+  tokenDetailLabel: { fontSize: 12, color: Colors.muted, fontFamily: 'Inter' },
+  tokenDetailValue: { fontSize: 13, fontWeight: '700', color: Colors.ink, fontFamily: 'Inter' },
+  tokenDetailValueHighlight: { fontSize: 13, fontWeight: '800', color: Colors.primary, fontFamily: 'Inter' },
+
+  meterInstructionsNotice: { fontSize: 11, color: Colors.muted, lineHeight: 16, marginBottom: 16, fontFamily: 'Inter' },
+
+  receiptSuccessCard: { alignItems: 'center', marginVertical: 12 },
+  receiptSuccessIconCircle: { width: 48, height: 48, borderRadius: 24, backgroundColor: '#E2F4E6', alignItems: 'center', justifyContent: 'center', marginBottom: 8 },
+  receiptSuccessTitle: { fontSize: 22, fontWeight: '900', color: Colors.ink, fontFamily: 'Hanken Grotesk' },
+  receiptSuccessSub: { fontSize: 13, color: Colors.muted, marginTop: 2, fontFamily: 'Inter', textAlign: 'center' },
+
+  giantTokenCard: {
+    backgroundColor: '#0F172A',
+    borderRadius: 16,
+    padding: 20,
+    alignItems: 'center',
+    marginVertical: 16,
+    borderWidth: 2,
+    borderColor: '#FECC00',
+  },
+  giantTokenHeaderLabel: { color: '#94A3B8', fontSize: 11, fontWeight: '900', letterSpacing: 1.5, marginBottom: 10, fontFamily: 'Inter' },
+  giantTokenPinText: { color: '#FECC00', fontSize: 24, fontWeight: '900', letterSpacing: 2, fontFamily: 'monospace', textAlign: 'center', marginBottom: 16 },
+  giantCopyBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: '#006933',
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 18,
+  },
+  giantCopyBtnText: { color: Colors.white, fontSize: 13, fontWeight: '800', fontFamily: 'Inter' },
+
+  receiptSummaryStack: { backgroundColor: Colors.white, borderRadius: 14, borderWidth: 1, borderColor: '#E2E8F0', paddingHorizontal: 16, marginBottom: 16 },
+  receiptSummaryRow: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: '#E2E8F0' },
+  receiptSummaryLabel: { fontSize: 13, color: Colors.muted, fontFamily: 'Inter' },
+  receiptSummaryValue: { fontSize: 14, fontWeight: '700', color: Colors.ink, fontFamily: 'Inter' },
+  receiptSummaryValueGreen: { fontSize: 14, fontWeight: '900', color: '#008542', fontFamily: 'Inter' },
+
+  meterNoticeBox: {
+    backgroundColor: '#FFFBEB',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#FEF3C7',
+    padding: 14,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginBottom: 20,
+  },
+  meterNoticeText: { flex: 1, fontSize: 12, color: '#92400E', lineHeight: 17, fontFamily: 'Inter' },
 });
