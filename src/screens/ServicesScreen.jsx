@@ -122,8 +122,9 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
 
   const handlePayElectricity = () => {
     const num = parseFloat(electricityAmount) || 0;
-    if (onDeductBalance) onDeductBalance(num, `Prepaid Electricity (${meterNumber})`);
-    finish(`Electricity purchase of ${rand(num)} complete.`);
+    const estimatedKwh = (num / 2.5).toFixed(1);
+    if (onDeductBalance) onDeductBalance(num, `Prepaid Electricity (${estimatedKwh} kWh)`);
+    finish(`Prepaid Electricity token (${estimatedKwh} kWh) purchase of ${rand(num)} complete.`);
   };
 
   const handlePayBills = () => {
@@ -481,6 +482,9 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
   }
 
   // 5. ELECTRICITY SCREEN
+  const numElectricity = parseFloat(electricityAmount || 0);
+  const estimatedKwh = (numElectricity / 2.5).toFixed(1);
+
   return (
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
       <TouchableOpacity style={s.backSubHeader} onPress={() => setActiveSubScreen('hub')}>
@@ -496,7 +500,22 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
       <Field label="AMOUNT (ZAR)" value={electricityAmount} onChangeText={setElectricityAmount} keyboardType="numeric" />
       <Pills value={electricityAmount} setValue={setElectricityAmount} options={[50, 100, 250, 500]} />
 
-      <Button text={`Buy R${electricityAmount} Token`} onPress={handlePayElectricity} />
+      {/* ESTIMATED UNITS / KWH CALCULATOR CARD */}
+      <View style={s.kwhInfoCard}>
+        <View style={s.kwhIconCircle}>
+          <Icon name="bolt" size={24} color="#6E5700" />
+        </View>
+        <View style={{ flex: 1, marginLeft: 12 }}>
+          <Text style={s.kwhLabel}>ESTIMATED ELECTRICITY UNITS</Text>
+          <View style={s.kwhValueRow}>
+            <Text style={s.kwhValueText}>{estimatedKwh}</Text>
+            <Text style={s.kwhUnitText}>kWh</Text>
+          </View>
+          <Text style={s.kwhSubText}>Based on standard municipal prepaid tariff (~R2.50 / kWh)</Text>
+        </View>
+      </View>
+
+      <Button text={`Buy R${electricityAmount} Token (${estimatedKwh} kWh)`} onPress={handlePayElectricity} />
     </ScrollView>
   );
 }
@@ -667,4 +686,29 @@ const s = StyleSheet.create({
   bundleLabel: { fontSize: 14, fontWeight: '800', color: Colors.ink },
   bundleSub: { fontSize: 11, color: Colors.muted, marginTop: 1 },
   bundlePrice: { fontSize: 14, fontWeight: '900', color: Colors.primary },
+
+  kwhInfoCard: {
+    backgroundColor: '#FFFBEB',
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: '#FEF3C7',
+    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 16,
+    marginBottom: 20,
+  },
+  kwhIconCircle: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#FECC00',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  kwhLabel: { fontSize: 10, fontWeight: '900', color: '#6E5700', letterSpacing: 1, fontFamily: 'Inter' },
+  kwhValueRow: { flexDirection: 'row', alignItems: 'baseline', marginTop: 2, marginBottom: 2 },
+  kwhValueText: { fontSize: 26, fontWeight: '900', color: '#6E5700', fontFamily: 'Hanken Grotesk' },
+  kwhUnitText: { fontSize: 14, fontWeight: '800', color: '#92400E', marginLeft: 4, fontFamily: 'Inter' },
+  kwhSubText: { fontSize: 11, color: '#92400E', fontFamily: 'Inter' },
 });
