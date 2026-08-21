@@ -122,7 +122,7 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
 
   const handlePayElectricity = () => {
     const num = parseFloat(electricityAmount) || 0;
-    const estimatedKwh = (num / 2.5).toFixed(1);
+    const estimatedKwh = (num / 2.65).toFixed(1);
     if (onDeductBalance) onDeductBalance(num, `Prepaid Electricity (${estimatedKwh} kWh)`);
     finish(`Prepaid Electricity token (${estimatedKwh} kWh) purchase of ${rand(num)} complete.`);
   };
@@ -372,6 +372,14 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
           })}
         </View>
 
+        {/* Network Selection Helpful Note */}
+        <View style={s.networkNoteBanner}>
+          <Icon name="info-outline" size={16} color={Colors.primary} />
+          <Text style={s.networkNoteText}>
+            <Text style={{ fontWeight: '800' }}>Note:</Text> Please ensure you select the correct mobile network operator (MTN, Vodacom, Telkom, Cell C) matching the recipient's phone number so the top-up completes successfully.
+          </Text>
+        </View>
+
         {/* Select Amount */}
         <Text style={s.subSectionLabel}>SELECT AMOUNT</Text>
         <View style={s.amountGrid}>
@@ -483,7 +491,7 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
 
   // 5. ELECTRICITY SCREEN
   const numElectricity = parseFloat(electricityAmount || 0);
-  const estimatedKwh = (numElectricity / 2.5).toFixed(1);
+  const estimatedKwh = (numElectricity / 2.65).toFixed(1);
 
   return (
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
@@ -511,7 +519,7 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
             <Text style={s.kwhValueText}>{estimatedKwh}</Text>
             <Text style={s.kwhUnitText}>kWh</Text>
           </View>
-          <Text style={s.kwhSubText}>Based on standard municipal prepaid tariff (~R2.50 / kWh)</Text>
+          <Text style={s.kwhSubText}>Based on SA municipal domestic prepaid tariff (~R2.65 / kWh incl. VAT)</Text>
         </View>
       </View>
 
@@ -711,4 +719,17 @@ const s = StyleSheet.create({
   kwhValueText: { fontSize: 26, fontWeight: '900', color: '#6E5700', fontFamily: 'Hanken Grotesk' },
   kwhUnitText: { fontSize: 14, fontWeight: '800', color: '#92400E', marginLeft: 4, fontFamily: 'Inter' },
   kwhSubText: { fontSize: 11, color: '#92400E', fontFamily: 'Inter' },
+
+  networkNoteBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F0F9F2',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 105, 51, 0.2)',
+    padding: 10,
+    marginTop: 4,
+    marginBottom: 14,
+  },
+  networkNoteText: { flex: 1, marginLeft: 8, fontSize: 11, color: Colors.ink, lineHeight: 15, fontFamily: 'Inter' },
 });
