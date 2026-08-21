@@ -161,7 +161,7 @@ export default function HomeScreen({ open }) {
       <View style={s.sectionContainer}>
         <View style={s.sectionHeaderRow}>
           <Text style={s.sectionTitle}>Latest from ANC</Text>
-          <TouchableOpacity onPress={() => open('updates')}>
+          <TouchableOpacity onPress={() => open('newsroom')}>
             <Text style={s.viewAllLink}>View all</Text>
           </TouchableOpacity>
         </View>

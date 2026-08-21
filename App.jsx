@@ -14,6 +14,7 @@ import HomeScreen from './src/screens/HomeScreen';
 import MembershipScreen from './src/screens/MembershipScreen';
 import MoneyScreen from './src/screens/MoneyScreen';
 import NotificationsScreen from './src/screens/NotificationsScreen';
+import NewsroomScreen from './src/screens/NewsroomScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import ReceiveMoneyScreen from './src/screens/ReceiveMoneyScreen';
 import SendMoneyScreen from './src/screens/SendMoneyScreen';
@@ -143,6 +144,7 @@ export default function App() {
     if (screen === 'cards') return <CardManagerScreen cards={cards} onAddCard={handleAddCard} />;
     if (screen === 'branch') return <BranchScreen />;
     if (screen === 'notifications' || screen === 'updates') return <NotificationsScreen />;
+    if (screen === 'newsroom') return <NewsroomScreen finish={finish} open={open} />;
     if (screen === 'statement_detail') return <StatementDetailScreen finish={finish} />;
 
     if (tab === 'Money') return <MoneyScreen open={open} cards={cards} balance={balance} onDepositFunds={handleDepositFunds} recentActivity={recentActivity} />;
