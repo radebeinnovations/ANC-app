@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Button from '../components/Button';
-import { Icon } from '../components/Icons';
+import { Icon, ReceiveMoneySvgIcon, SendMoneySvgIcon } from '../components/Icons';
 import YamiFooter from '../components/YamiFooter';
 import { Colors } from '../theme/colors';
 
 const AVATAR_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDP7zlfBNbg5jSucUfG5tPD3BtnVuTQAY2I1kjxSuVqrYNxWqB2lpmvbct4HtE9rdYUrNvLmyCoODdPJBfEqJlKcTv1n486W4ZiNoD2hMMB6ygx62xZumjQQcA9Q5uBGXVyeqgizdBJTJZhYHK0e2jGRtVRt-uNnljNFVUKXpdgq2Cyhy3xUtsvwfSISYHxtEhER8JSmDx9fJe9hVTzN3FqNWNa4aOez8vY3D9vx2YwUd9oJmGKaKmb';
 const COMMUNITY_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAHtomXsNt6ZfeyvGZOeE5XMikoE5zxU6RquvkfvLhr4T0JYKXccFIuYI8r2T8-9ZZlaqqwWNNziIBcMoWa6jD-ILIRWc02WFG9hRmYaM5BbCiDBXKNUaGsyOhxcgb2bbd-Rzx6m0FPLxfh6dQLM5XA30dGG_LKc4u72FFmXlnnxQsZ_gmIR0jV8GlW5p6QYUO-h6qfrqHZGSfWJY6mootTuO2zTIRBZjmzjM-J9VHYQU1WxM4WEO0i';
+const NEWS_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAHR1a7BGP_bULWHfBqmlTZgAdHLDUGaQ9n42EuYpuscyM7zEqqysnBEFBchrBndc5olw-z7m9zHt8J2f1KlBsIEJcbViTOgrDKxoOMDSxwyhbm6Celjx0pd0-OYh-6kDsXNsIIzcF7FU30QbvhS_w9U5M0GZjAah-V1bZR0ig9UAONPSann0NLQ6JAl8wcx2iBNtAuzSB1IZwBp7qqfHtgzBTb68fJZD2IlcmApjWzMBVXT3-_Ba0X';
 
 export default function ParticipateScreen({ open }) {
-  const [activeSegment, setActiveSegment] = useState('All');
+  const [activeFilter, setActiveFilter] = useState('My Community');
 
-  const segments = ['All', 'My Community', 'Branch Executive', 'Campaigns'];
+  const filters = ['Important Dates', 'My Community', 'Quick Services', 'Latest Updates'];
 
   return (
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
-      {/* Header Greeting Row */}
+      {/* Top Greeting Header */}
       <View style={s.headerRow}>
         <View style={{ flex: 1 }}>
           <Text style={s.greetingTitle}>Good morning, Lerumo</Text>
@@ -27,11 +27,13 @@ export default function ParticipateScreen({ open }) {
         </TouchableOpacity>
       </View>
 
-      {/* Member Status Card */}
+      {/* Member Status Card (1:1 with Target HTML) */}
       <View style={s.statusCard}>
-        <View style={s.activeChipPill}>
-          <View style={s.activeDotGreen} />
-          <Text style={s.activeChipText}>ACTIVE</Text>
+        <View style={s.cardHeaderRow}>
+          <View style={s.activeChipPill}>
+            <View style={s.activeDotGreen} />
+            <Text style={s.activeChipText}>ACTIVE</Text>
+          </View>
         </View>
 
         <Text style={s.cardLabel}>MEMBERSHIP NUMBER</Text>
@@ -48,99 +50,158 @@ export default function ParticipateScreen({ open }) {
         </TouchableOpacity>
       </View>
 
-      {/* Segment Filter Pills Carousel */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.segmentsRow}>
-        {segments.map(seg => (
+      {/* Category Filter Pills Row (Exact 1:1 with Target HTML) */}
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.pillsRow}>
+        {filters.map(filter => (
           <TouchableOpacity
-            key={seg}
-            style={[s.segPill, activeSegment === seg && s.segPillActive]}
-            onPress={() => setActiveSegment(seg)}
+            key={filter}
+            style={[s.pillBtn, activeFilter === filter && s.pillBtnActive]}
+            onPress={() => setActiveFilter(filter)}
             activeOpacity={0.8}
           >
-            <Text style={[s.segPillText, activeSegment === seg && s.segPillTextActive]}>{seg}</Text>
+            <Text style={[s.pillText, activeFilter === filter && s.pillTextActive]}>{filter}</Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
 
-      {/* Section 1: My Community Event Card */}
-      <Text style={s.sectionHeaderTitle}>MY COMMUNITY</Text>
-      <View style={s.communityCard}>
-        <Image source={{ uri: COMMUNITY_IMG_URL }} style={s.communityImage} resizeMode="cover" />
+      {/* DYNAMIC SECTION RENDERER BASED ON ACTIVE FILTER */}
 
-        <View style={s.communityBody}>
-          <Text style={s.branchTag}>BRANCH MEETING</Text>
-          <Text style={s.meetingHeadline}>Monthly Strategy Session</Text>
-          
-          <View style={s.scheduleRow}>
-            <Icon name="schedule" size={16} color="#4A5568" />
-            <Text style={s.scheduleText}>Saturday · 10:00 at Walter Sisulu House</Text>
+      {/* 1. IMPORTANT DATES */}
+      {(activeFilter === 'Important Dates' || activeFilter === 'All') && (
+        <View style={s.sectionContainer}>
+          <View style={s.sectionHeaderRow}>
+            <Text style={s.sectionTitle}>IMPORTANT DATES</Text>
+            <TouchableOpacity onPress={() => open('updates')}>
+              <Text style={s.viewAllLink}>View all</Text>
+            </TouchableOpacity>
           </View>
 
-          <TouchableOpacity style={s.viewEventBtn} onPress={() => open('branch')} activeOpacity={0.85}>
-            <Text style={s.viewEventBtnText}>View Event & RSVP</Text>
+          <TouchableOpacity style={s.importantDateCard} onPress={() => open('updates')} activeOpacity={0.85}>
+            <View style={s.dateBoxSquare}>
+              <Text style={s.dateBoxMonth}>NOV</Text>
+              <Text style={s.dateBoxDay}>04</Text>
+            </View>
+
+            <View style={{ flex: 1, marginLeft: 14 }}>
+              <Text style={s.importantDateHeadline}>2026 Local Government Elections</Text>
+              <Text style={s.importantDateSub}>Nationwide Municipal Polling Day</Text>
+            </View>
+
+            <Icon name="chevron-right" size={20} color="#BDCABC" />
           </TouchableOpacity>
         </View>
-      </View>
+      )}
 
-      {/* Section 2: Branch Executive Committee List */}
-      <Text style={s.sectionHeaderTitle}>BRANCH EXECUTIVE COMMITTEE</Text>
-      <View style={s.executiveCardStack}>
-        <View style={s.execRow}>
-          <View style={[s.badgeCircle, { backgroundColor: '#E2F4E6' }]}>
-            <Text style={[s.badgeText, { color: Colors.primary }]}>SEC</Text>
+      {/* 2. MY COMMUNITY */}
+      {(activeFilter === 'My Community' || activeFilter === 'All') && (
+        <View style={s.sectionContainer}>
+          <View style={s.sectionHeaderRow}>
+            <Text style={s.sectionTitle}>MY COMMUNITY</Text>
           </View>
-          <View style={{ flex: 1, marginLeft: 12 }}>
-            <Text style={s.execTitle}>Nomsa Dlamini</Text>
-            <Text style={s.execRole}>Branch Secretary · 082 112 4490</Text>
+
+          <View style={s.communityCard}>
+            <Image source={{ uri: COMMUNITY_IMG_URL }} style={s.communityImage} resizeMode="cover" />
+
+            <View style={s.communityBody}>
+              <Text style={s.branchTag}>BRANCH MEETING</Text>
+              <Text style={s.meetingHeadline}>Monthly Strategy Session</Text>
+              
+              <View style={s.scheduleRow}>
+                <Icon name="schedule" size={16} color="#4A5568" />
+                <Text style={s.scheduleText}>Saturday · 10:00 at Walter Sisulu House</Text>
+              </View>
+
+              <TouchableOpacity style={s.viewEventBtn} onPress={() => open('branch')} activeOpacity={0.85}>
+                <Text style={s.viewEventBtnText}>View Event & RSVP</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          <TouchableOpacity style={s.contactIconBtn} onPress={() => open('branch')}>
-            <Icon name="phone" size={18} color={Colors.primary} />
+        </View>
+      )}
+
+      {/* 3. QUICK SERVICES */}
+      {(activeFilter === 'Quick Services' || activeFilter === 'All') && (
+        <View style={s.sectionContainer}>
+          <Text style={s.sectionTitle}>QUICK SERVICES</Text>
+
+          <View style={s.services3Grid}>
+            <TouchableOpacity style={s.serviceSquareCard} onPress={() => open('send')} activeOpacity={0.8}>
+              <View style={[s.squircleIconBox, { backgroundColor: 'rgba(0, 105, 51, 0.1)' }]}>
+                <SendMoneySvgIcon size={24} color="#006933" />
+              </View>
+              <Text style={s.serviceSquareLabel}>Send{'\n'}Money</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={s.serviceSquareCard} onPress={() => open('receive')} activeOpacity={0.8}>
+              <View style={[s.squircleIconBox, { backgroundColor: 'rgba(0, 105, 51, 0.1)' }]}>
+                <ReceiveMoneySvgIcon size={24} color="#006933" />
+              </View>
+              <Text style={s.serviceSquareLabel}>Receive{'\n'}Money</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={s.serviceSquareCard} onPress={() => open('airtime')} activeOpacity={0.8}>
+              <View style={[s.squircleIconBox, { backgroundColor: '#E2E2E2' }]}>
+                <Icon name="smartphone" size={22} color="#1A1C1C" />
+              </View>
+              <Text style={s.serviceSquareLabel}>Buy{'\n'}Airtime</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={s.serviceSquareCard} onPress={() => open('data')} activeOpacity={0.8}>
+              <View style={[s.squircleIconBox, { backgroundColor: '#E2E2E2' }]}>
+                <Icon name="wifi" size={22} color="#1A1C1C" />
+              </View>
+              <Text style={s.serviceSquareLabel}>Buy{'\n'}Data</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={s.serviceSquareCard} onPress={() => open('electricity')} activeOpacity={0.8}>
+              <View style={[s.squircleIconBox, { backgroundColor: '#E2E2E2' }]}>
+                <Icon name="bolt" size={22} color="#1A1C1C" />
+              </View>
+              <Text style={s.serviceSquareLabel}>Buy{'\n'}Electricity</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={s.serviceSquareCard} onPress={() => open('donate')} activeOpacity={0.8}>
+              <View style={[s.squircleIconBox, { backgroundColor: '#FECC00' }]}>
+                <Icon name="volunteer-activism" size={22} color="#6E5700" />
+              </View>
+              <Text style={s.serviceSquareLabel}>Donate{'\n'}Now</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
+
+      {/* 4. LATEST UPDATES */}
+      {(activeFilter === 'Latest Updates' || activeFilter === 'All') && (
+        <View style={s.sectionContainer}>
+          <View style={s.sectionHeaderRow}>
+            <Text style={s.sectionTitle}>LATEST FROM THE ANC</Text>
+            <TouchableOpacity onPress={() => open('newsroom')}>
+              <Text style={s.viewAllLink}>View all</Text>
+            </TouchableOpacity>
+          </View>
+
+          <TouchableOpacity style={s.newsCard} onPress={() => open('statement_detail')} activeOpacity={0.85}>
+            <Image source={{ uri: NEWS_IMG_URL }} style={s.newsImage} resizeMode="cover" />
+
+            <View style={s.newsBody}>
+              <View style={s.newsMetaRow}>
+                <Text style={s.newsMetaTag}>ANC STATEMENT</Text>
+                <Text style={s.newsMetaDate}>12 August 2026</Text>
+              </View>
+
+              <Text style={s.newsHeadline}>Building Stronger Local Government</Text>
+              <Text style={s.newsSnippet}>
+                Our commitment to service delivery and community empowerment remains steadfast as we approach the upcoming municipal elections.
+              </Text>
+
+              <View style={s.readUpdateLink}>
+                <Text style={s.readUpdateText}>Read Full Statement</Text>
+                <Icon name="arrow-forward" size={18} color="#006933" />
+              </View>
+            </View>
           </TouchableOpacity>
         </View>
-
-        <View style={s.execRow}>
-          <View style={[s.badgeCircle, { backgroundColor: '#FEF3C7' }]}>
-            <Text style={[s.badgeText, { color: '#B45309' }]}>CHR</Text>
-          </View>
-          <View style={{ flex: 1, marginLeft: 12 }}>
-            <Text style={s.execTitle}>Sibusiso Thwala</Text>
-            <Text style={s.execRole}>Branch Chairperson</Text>
-          </View>
-          <TouchableOpacity style={s.contactIconBtn} onPress={() => open('branch')}>
-            <Icon name="person" size={18} color={Colors.primary} />
-          </TouchableOpacity>
-        </View>
-
-        <View style={[s.execRow, { borderBottomWidth: 0 }]}>
-          <View style={[s.badgeCircle, { backgroundColor: '#E2E8F0' }]}>
-            <Text style={[s.badgeText, { color: '#475569' }]}>VEN</Text>
-          </View>
-          <View style={{ flex: 1, marginLeft: 12 }}>
-            <Text style={s.execTitle}>Orlando East Community Hall</Text>
-            <Text style={s.execRole}>Branch Meeting Venue · Ward 62</Text>
-          </View>
-          <TouchableOpacity style={s.contactIconBtn} onPress={() => open('branch')}>
-            <Icon name="navigation" size={18} color={Colors.primary} />
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      {/* Section 3: Active Volunteer Campaigns */}
-      <Text style={s.sectionHeaderTitle}>VOLUNTEER & PARTICIPATE</Text>
-      <View style={s.campaignCard}>
-        <View style={s.campaignHeaderRow}>
-          <View style={s.campaignIconSquare}>
-            <Icon name="how-to-vote" size={20} color="#6E5700" />
-          </View>
-          <View style={{ flex: 1, marginLeft: 12 }}>
-            <Text style={s.campaignTitle}>2026 Local Elections Volunteer</Text>
-            <Text style={s.campaignSub}>Ward Mobilization & Voter Registration</Text>
-          </View>
-        </View>
-        <TouchableOpacity style={s.volunteerBtn} onPress={() => open('branch')} activeOpacity={0.85}>
-          <Text style={s.volunteerBtnText}>Join Ward Volunteer Team</Text>
-        </TouchableOpacity>
-      </View>
+      )}
 
       <YamiFooter />
     </ScrollView>
@@ -154,7 +215,7 @@ const s = StyleSheet.create({
   headerRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 },
   greetingTitle: { fontSize: 24, fontWeight: '800', color: '#1A1C1C', fontFamily: 'Hanken Grotesk' },
   greetingSub: { fontSize: 11, fontWeight: '700', color: '#4A5568', textTransform: 'uppercase', marginTop: 2, fontFamily: 'Inter' },
-  avatarContainer: { width: 44, height: 44, borderRadius: 22, overflow: 'hidden', borderWidth: 2, borderColor: '#E8E8E8' },
+  avatarContainer: { width: 48, height: 48, borderRadius: 24, overflow: 'hidden', borderWidth: 2, borderColor: '#E8E8E8' },
   avatarImage: { width: '100%', height: '100%', resizeMode: 'cover' },
 
   /* MEMBER STATUS CARD */
@@ -164,13 +225,14 @@ const s = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#E2E8F0',
     padding: 18,
-    marginBottom: 20,
+    marginBottom: 18,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.04,
     shadowRadius: 6,
     elevation: 2,
   },
+  cardHeaderRow: { marginBottom: 10 },
   activeChipPill: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -180,7 +242,6 @@ const s = StyleSheet.create({
     paddingVertical: 4,
     paddingHorizontal: 10,
     alignSelf: 'flex-start',
-    marginBottom: 12,
   },
   activeDotGreen: { width: 8, height: 8, borderRadius: 4, backgroundColor: '#008542' },
   activeChipText: { fontSize: 11, fontWeight: '800', color: '#008542', letterSpacing: 0.5, fontFamily: 'Inter' },
@@ -203,17 +264,51 @@ const s = StyleSheet.create({
   },
   viewMemberCardBtnText: { color: '#FFFFFF', fontSize: 14, fontWeight: '700', fontFamily: 'Inter' },
 
-  /* SEGMENTS CAROUSEL */
-  segmentsRow: { flexDirection: 'row', gap: 8, marginBottom: 20 },
-  segPill: { backgroundColor: '#EEEEEE', borderRadius: 20, paddingVertical: 8, paddingHorizontal: 16 },
-  segPillActive: { backgroundColor: Colors.primary },
-  segPillText: { fontSize: 13, fontWeight: '700', color: '#4A5568', fontFamily: 'Inter' },
-  segPillTextActive: { color: '#FFFFFF' },
+  /* CATEGORY PILLS BAR */
+  pillsRow: { flexDirection: 'row', gap: 8, marginBottom: 20 },
+  pillBtn: {
+    backgroundColor: '#EEEEEE',
+    borderRadius: 20,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+  },
+  pillBtnActive: { backgroundColor: '#006933' },
+  pillText: { fontSize: 13, fontWeight: '700', color: '#4A5568', fontFamily: 'Inter' },
+  pillTextActive: { color: '#FFFFFF' },
 
-  sectionHeaderTitle: { fontSize: 11, fontWeight: '900', color: '#4A5568', letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: 10, fontFamily: 'Inter' },
+  /* SECTIONS */
+  sectionContainer: { marginBottom: 22 },
+  sectionHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
+  sectionTitle: { fontSize: 11, fontWeight: '900', color: '#4A5568', letterSpacing: 1.2, textTransform: 'uppercase', fontFamily: 'Inter' },
+  viewAllLink: { fontSize: 13, fontWeight: '700', color: '#006933', fontFamily: 'Inter' },
+
+  /* IMPORTANT DATES CARD */
+  importantDateCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  dateBoxSquare: {
+    backgroundColor: '#F3F3F3',
+    borderRadius: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+  },
+  dateBoxMonth: { fontSize: 11, fontWeight: '800', color: '#4A5568', textTransform: 'uppercase', fontFamily: 'Inter' },
+  dateBoxDay: { fontSize: 20, fontWeight: '800', color: '#006933', fontFamily: 'Hanken Grotesk' },
+  importantDateHeadline: { fontSize: 16, fontWeight: '700', color: '#1A1C1C', marginBottom: 2, fontFamily: 'Hanken Grotesk' },
+  importantDateSub: { fontSize: 13, color: '#4A5568', fontFamily: 'Inter' },
 
   /* MY COMMUNITY CARD */
-  communityCard: { backgroundColor: '#FFFFFF', borderRadius: 16, overflow: 'hidden', borderWidth: 1, borderColor: '#E2E8F0', marginBottom: 22 },
+  communityCard: { backgroundColor: '#FFFFFF', borderRadius: 16, overflow: 'hidden', borderWidth: 1, borderColor: '#E2E8F0' },
   communityImage: { width: '100%', height: 160 },
   communityBody: { padding: 16 },
   branchTag: { fontSize: 11, fontWeight: '800', color: '#006933', letterSpacing: 1, textTransform: 'uppercase', marginBottom: 4, fontFamily: 'Inter' },
@@ -223,21 +318,30 @@ const s = StyleSheet.create({
   viewEventBtn: { backgroundColor: '#006933', borderRadius: 10, paddingVertical: 12, alignItems: 'center' },
   viewEventBtnText: { color: '#FFFFFF', fontSize: 14, fontWeight: '700', fontFamily: 'Inter' },
 
-  /* EXECUTIVE STACK */
-  executiveCardStack: { backgroundColor: '#FFFFFF', borderRadius: 16, borderWidth: 1, borderColor: '#E2E8F0', paddingHorizontal: 16, marginBottom: 22 },
-  execRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: '#E2E8F0' },
-  badgeCircle: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center' },
-  badgeText: { fontSize: 11, fontWeight: '900', fontFamily: 'Inter' },
-  execTitle: { fontSize: 14, fontWeight: '700', color: '#1A1C1C', fontFamily: 'Inter' },
-  execRole: { fontSize: 12, color: '#4A5568', marginTop: 2, fontFamily: 'Inter' },
-  contactIconBtn: { width: 34, height: 34, borderRadius: 17, backgroundColor: 'rgba(0, 105, 51, 0.1)', alignItems: 'center', justifyContent: 'center' },
+  /* QUICK SERVICES GRID */
+  services3Grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+  serviceSquareCard: {
+    width: '31%',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 14,
+    paddingVertical: 16,
+    paddingHorizontal: 8,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+  },
+  squircleIconBox: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center', marginBottom: 8 },
+  serviceSquareLabel: { fontSize: 12, fontWeight: '700', color: '#1A1C1C', textAlign: 'center', lineHeight: 15, fontFamily: 'Inter' },
 
-  /* CAMPAIGN CARD */
-  campaignCard: { backgroundColor: '#FFFBEB', borderRadius: 16, borderWidth: 1, borderColor: '#FEF3C7', padding: 16, marginBottom: 24 },
-  campaignHeaderRow: { flexDirection: 'row', alignItems: 'center' },
-  campaignIconSquare: { width: 40, height: 40, borderRadius: 10, backgroundColor: '#FECC00', alignItems: 'center', justifyContent: 'center' },
-  campaignTitle: { fontSize: 15, fontWeight: '700', color: '#6E5700', fontFamily: 'Hanken Grotesk' },
-  campaignSub: { fontSize: 12, color: '#92400E', marginTop: 2, fontFamily: 'Inter' },
-  volunteerBtn: { backgroundColor: '#6E5700', borderRadius: 10, paddingVertical: 10, alignItems: 'center', marginTop: 14 },
-  volunteerBtnText: { color: '#FECC00', fontSize: 13, fontWeight: '700', fontFamily: 'Inter' },
+  /* LATEST FROM ANC CARD */
+  newsCard: { backgroundColor: '#FFFFFF', borderRadius: 16, overflow: 'hidden', borderWidth: 1, borderColor: '#E2E8F0' },
+  newsImage: { width: '100%', height: 180 },
+  newsBody: { padding: 16 },
+  newsMetaRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6 },
+  newsMetaTag: { fontSize: 11, fontWeight: '800', color: '#4A5568', textTransform: 'uppercase', letterSpacing: 1, fontFamily: 'Inter' },
+  newsMetaDate: { fontSize: 12, color: '#4A5568', fontFamily: 'Inter' },
+  newsHeadline: { fontSize: 20, fontWeight: '700', color: '#1A1C1C', marginBottom: 6, fontFamily: 'Hanken Grotesk' },
+  newsSnippet: { fontSize: 14, color: '#4A5568', lineHeight: 20, marginBottom: 14, fontFamily: 'Inter' },
+  readUpdateLink: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  readUpdateText: { color: '#006933', fontSize: 14, fontWeight: '700', fontFamily: 'Inter' },
 });
