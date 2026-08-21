@@ -264,8 +264,8 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
         <View style={s.recipientChipCard}>
           <Image source={{ uri: activeContact.avatar || AVATAR_3 }} style={s.chipAvatarImg} />
           <View style={{ flex: 1, marginLeft: 10 }}>
-            <Text style={s.chipNameText}>Lerumo Maisela</Text>
-            <Text style={s.chipIdSub}>ANC-1234567</Text>
+            <Text style={s.chipNameText}>{activeContact.name}</Text>
+            <Text style={s.chipIdSub}>{activeContact.phone || 'ANC Member'}</Text>
           </View>
           <TouchableOpacity onPress={() => setStep(1)} activeOpacity={0.7}>
             <Icon name="edit" size={18} color="#4A5568" />
@@ -279,7 +279,7 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
           </View>
           <View style={{ marginLeft: 12 }}>
             <Text style={s.availBalLabel}>Available Balance</Text>
-            <Text style={s.availBalVal}>R1,500.00</Text>
+            <Text style={s.availBalVal}>R{parseFloat(balance).toLocaleString('en-ZA', { minimumFractionDigits: 2 })}</Text>
           </View>
         </View>
 
@@ -390,14 +390,14 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
       {/* Headline & Confirmation Message */}
       <Text style={s.successHeadline}>Money Sent</Text>
       <Text style={s.successSubMessage}>
-        R{numAmount.toFixed(2)} successfully sent to <Text style={s.greenBoldRecipient}>Lerumo Thabo.</Text>
+        R{numAmount.toFixed(2)} successfully sent to <Text style={s.greenBoldRecipient}>{activeContact.name}.</Text>
       </Text>
 
       {/* Transaction Details Box */}
       <View style={s.receiptCardBox}>
         <View style={s.receiptRow}>
           <Text style={s.receiptLabel}>Date & Time</Text>
-          <Text style={s.receiptVal}>Oct 24, 2023 14:30</Text>
+          <Text style={s.receiptVal}>Today, {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
         </View>
 
         <View style={s.receiptRow}>
@@ -407,12 +407,12 @@ export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalanc
 
         <View style={[s.receiptRow, { borderBottomWidth: 0 }]}>
           <Text style={s.receiptLabel}>Transaction Ref</Text>
-          <Text style={s.receiptRefGreen}>ANC–TXN–88291</Text>
+          <Text style={s.receiptRefGreen}>ANC–TXN–{Math.floor(10000 + Math.random() * 90000)}</Text>
         </View>
       </View>
 
       {/* Done Button */}
-      <Button text="Done" onPress={() => finish(`Sent R${numAmount.toFixed(2)} to Lerumo Thabo`)} />
+      <Button text="Done" onPress={() => finish(`Sent R${numAmount.toFixed(2)} to ${activeContact.name}`)} />
     </ScrollView>
   );
 }
