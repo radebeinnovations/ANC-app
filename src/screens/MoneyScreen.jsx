@@ -13,7 +13,7 @@ export default function MoneyScreen({ open, balance = 1500, onDepositFunds, rece
   const handleDeposit = () => {
     const num = parseFloat(depositAmount);
     if (!isNaN(num) && num > 0) {
-      onDepositFunds(num);
+      if (onDepositFunds) onDepositFunds(num);
       setShowDepositModal(false);
       setDepositAmount('500');
     }
@@ -54,20 +54,29 @@ export default function MoneyScreen({ open, balance = 1500, onDepositFunds, rece
           <View style={s.bankBase} />
         </View>
 
-        {/* 3 Core Action Buttons */}
+        {/* 4 Core Action Buttons */}
         <View style={s.actionRow}>
+          {/* 1. Add Funds (Gold Button) */}
+          <TouchableOpacity style={s.addFundsGoldBtn} onPress={() => setShowDepositModal(true)} activeOpacity={0.8}>
+            <Icon name="add" size={16} color="#241A00" />
+            <Text style={s.addFundsGoldText}>Add Funds</Text>
+          </TouchableOpacity>
+
+          {/* 2. Send */}
           <TouchableOpacity style={s.sendActionBtn} onPress={() => open('send')} activeOpacity={0.8}>
-            <Icon name="send" size={16} color={Colors.white} />
+            <Icon name="send" size={14} color={Colors.white} />
             <Text style={s.sendActionText}>Send</Text>
           </TouchableOpacity>
 
+          {/* 3. Receive */}
           <TouchableOpacity style={s.greyActionBtn} onPress={() => open('receive')} activeOpacity={0.8}>
-            <Icon name="file-download" size={16} color={Colors.ink} />
+            <Icon name="file-download" size={14} color={Colors.ink} />
             <Text style={s.greyActionText}>Receive</Text>
           </TouchableOpacity>
 
+          {/* 4. Transfer */}
           <TouchableOpacity style={s.greyActionBtn} onPress={() => open('transfer')} activeOpacity={0.8}>
-            <Icon name="swap-horiz" size={18} color={Colors.ink} />
+            <Icon name="swap-horiz" size={16} color={Colors.ink} />
             <Text style={s.greyActionText}>Transfer</Text>
           </TouchableOpacity>
         </View>
@@ -118,14 +127,14 @@ export default function MoneyScreen({ open, balance = 1500, onDepositFunds, rece
 
         <TouchableOpacity style={s.contributeRow} onPress={() => open('membership')} activeOpacity={0.7}>
           <View style={[s.contributeSquare, { backgroundColor: Colors.primary }]}>
-            <Icon name="card-membership" size={18} color={Colors.white} />
+            <Icon name="badge" size={18} color={Colors.white} />
           </View>
           <Text style={s.contributeTitle}>Membership</Text>
           <Icon name="chevron-right" size={18} color="#9E9E9E" />
         </TouchableOpacity>
 
-        <TouchableOpacity style={s.contributeRow} onPress={() => open('community')} activeOpacity={0.7}>
-          <View style={[s.contributeSquare, { backgroundColor: '#3E4A3F' }]}>
+        <TouchableOpacity style={s.contributeRow} onPress={() => open('branch')} activeOpacity={0.7}>
+          <View style={[s.contributeSquare, { backgroundColor: '#4A5568' }]}>
             <Icon name="groups" size={18} color={Colors.white} />
           </View>
           <Text style={s.contributeTitle}>Community</Text>
@@ -165,22 +174,24 @@ export default function MoneyScreen({ open, balance = 1500, onDepositFunds, rece
         })}
       </View>
 
-      {/* Deposit Modal */}
+      {/* Deposit / Add Funds Modal */}
       <Modal visible={showDepositModal} animationType="slide" transparent>
         <View style={s.modalBackdrop}>
           <View style={s.modalCard}>
             <View style={s.modalHeader}>
-              <Text style={s.modalTitle}>Deposit Funds</Text>
+              <Text style={s.modalTitle}>Add Funds to Wallet</Text>
               <TouchableOpacity onPress={() => setShowDepositModal(false)}>
                 <Text style={{ fontSize: 18, fontWeight: '800', color: Colors.muted }}>✕</Text>
               </TouchableOpacity>
             </View>
-            <Text style={s.modalSub}>Select or enter an amount to top up your wallet balance.</Text>
+            <Text style={s.modalSub}>Select or enter an amount to instant top-up your ANC Member Wallet.</Text>
 
             <Field label="AMOUNT (ZAR)" value={depositAmount} onChangeText={setDepositAmount} keyboardType="numeric" placeholder="Enter amount" />
             <Pills value={depositAmount} setValue={setDepositAmount} options={[100, 250, 500, 1000]} />
 
-            <Button text={`＋ Deposit R${depositAmount}`} onPress={handleDeposit} />
+            <View style={{ marginTop: 20 }}>
+              <Button text={`＋ Deposit R${depositAmount}`} onPress={handleDeposit} />
+            </View>
           </View>
         </View>
       </Modal>
@@ -190,8 +201,8 @@ export default function MoneyScreen({ open, balance = 1500, onDepositFunds, rece
 
 const s = StyleSheet.create({
   content: { padding: 16, paddingBottom: 90, backgroundColor: Colors.background },
-  h1: { fontSize: 26, fontWeight: '900', color: Colors.ink },
-  subText: { fontSize: 12, color: Colors.muted, marginTop: 2, marginBottom: 14, fontWeight: '600' },
+  h1: { fontSize: 26, fontWeight: '900', color: Colors.ink, fontFamily: 'Hanken Grotesk' },
+  subText: { fontSize: 12, color: Colors.muted, marginTop: 2, marginBottom: 14, fontWeight: '600', fontFamily: 'Inter' },
   activeText: { color: Colors.primary, fontWeight: '900' },
 
   balanceCard: {
@@ -203,27 +214,61 @@ const s = StyleSheet.create({
     marginBottom: 16,
     position: 'relative',
     overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.04,
+    shadowRadius: 6,
+    elevation: 2,
   },
-  balanceCardLeft: {
-    marginBottom: 16,
-  },
-  balanceLabel: { fontSize: 10, fontWeight: '800', color: Colors.muted, letterSpacing: 1 },
-  balanceAmount: { fontSize: 32, fontWeight: '900', color: Colors.ink, marginTop: 4 },
+  balanceCardLeft: { marginBottom: 16 },
+  balanceLabel: { fontSize: 10, fontWeight: '800', color: Colors.muted, letterSpacing: 1, fontFamily: 'Inter' },
+  balanceAmount: { fontSize: 32, fontWeight: '900', color: Colors.ink, marginTop: 4, fontFamily: 'Hanken Grotesk' },
 
-  addFundsPillBtn: {
+  actionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    width: '100%',
+  },
+
+  addFundsGoldBtn: {
+    flex: 1.2,
+    backgroundColor: '#FECC00',
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
+  },
+  addFundsGoldText: { color: '#241A00', fontSize: 12, fontWeight: '800', fontFamily: 'Inter' },
+
+  sendActionBtn: {
+    flex: 1,
     backgroundColor: Colors.primary,
-    borderRadius: 20,
-    paddingVertical: 6,
-    paddingHorizontal: 14,
-    alignSelf: 'flex-start',
-    marginTop: 8,
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
   },
-  addFundsPillText: {
-    color: Colors.white,
-    fontSize: 12,
-    fontWeight: '800',
-    fontFamily: 'Inter',
+  sendActionText: { color: Colors.white, fontSize: 12, fontWeight: '800', fontFamily: 'Inter' },
+
+  greyActionBtn: {
+    flex: 1,
+    backgroundColor: '#EEEEEE',
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 6,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
   },
+  greyActionText: { color: Colors.ink, fontSize: 12, fontWeight: '800', fontFamily: 'Inter' },
 
   bankGraphicContainer: {
     position: 'absolute',
@@ -232,7 +277,7 @@ const s = StyleSheet.create({
     width: 60,
     height: 48,
     alignItems: 'center',
-    justify: 'center',
+    justifyContent: 'center',
     opacity: 0.25,
   },
   bankRoof: {
@@ -245,143 +290,43 @@ const s = StyleSheet.create({
     borderRightColor: 'transparent',
     borderBottomColor: Colors.primary,
   },
-  bankPillarsRow: {
-    flexDirection: 'row',
-    gap: 5,
-    marginVertical: 3,
-  },
-  pillar: {
-    width: 6,
-    height: 20,
-    backgroundColor: Colors.primary,
-    borderRadius: 1,
-  },
-  bankBase: {
-    width: 52,
-    height: 4,
-    backgroundColor: Colors.primary,
-    borderRadius: 1,
-  },
+  bankPillarsRow: { flexDirection: 'row', gap: 5, marginVertical: 3 },
+  pillar: { width: 6, height: 20, backgroundColor: Colors.primary, borderRadius: 1 },
+  bankBase: { width: 52, height: 4, backgroundColor: Colors.primary, borderRadius: 1 },
 
-  actionRow: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  sendActionBtn: {
-    flex: 1,
-    backgroundColor: Colors.primary,
-    borderRadius: 10,
-    paddingVertical: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-  },
-  sendActionText: { color: Colors.white, fontWeight: '800', fontSize: 13 },
-
-  greyActionBtn: {
-    flex: 1,
-    backgroundColor: '#EFEFEF',
-    borderRadius: 10,
-    paddingVertical: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-  },
-  greyActionText: { color: Colors.ink, fontWeight: '800', fontSize: 13 },
-
-  sectionHeader: { fontSize: 15, fontWeight: '800', color: Colors.ink, marginTop: 14, marginBottom: 10 },
-
-  servicesGrid: {
-    flexDirection: 'row',
-    gap: 10,
-    marginBottom: 16,
-  },
+  sectionHeader: { fontSize: 18, fontWeight: '900', color: Colors.ink, marginTop: 14, marginBottom: 10, fontFamily: 'Hanken Grotesk' },
+  servicesGrid: { flexDirection: 'row', gap: 10, marginBottom: 16 },
   serviceCard: {
     flex: 1,
     backgroundColor: Colors.white,
-    borderRadius: 12,
-    paddingVertical: 14,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-  },
-  serviceIconSquare: {
-    width: 36,
-    height: 36,
-    borderRadius: 8,
-    backgroundColor: '#F0F9F2',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 6,
-  },
-  serviceCardLabel: { fontSize: 11, fontWeight: '700', color: Colors.ink },
-
-  contributeStack: {
-    backgroundColor: Colors.white,
     borderRadius: 14,
+    padding: 12,
+    alignItems: 'center',
     borderWidth: 1,
     borderColor: Colors.surfaceBorder,
-    marginBottom: 16,
   },
-  contributeRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 14,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.surfaceBorder,
-  },
-  contributeSquare: {
-    width: 36,
-    height: 36,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  contributeTitle: { flex: 1, fontSize: 14, fontWeight: '700', color: Colors.ink },
+  serviceIconSquare: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#F0F9F2', alignItems: 'center', justifyContent: 'center', marginBottom: 8 },
+  serviceCardLabel: { fontSize: 12, fontWeight: '700', color: Colors.ink, fontFamily: 'Inter' },
 
-  activityHeaderRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  viewAllText: { fontSize: 12, fontWeight: '700', color: Colors.primary },
-  activityList: {
-    backgroundColor: Colors.white,
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: Colors.surfaceBorder,
-    paddingHorizontal: 14,
-  },
-  activityRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.line,
-  },
-  activityIconCircle: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: '#F4F5F4',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  depositCircle: {
-    backgroundColor: '#E2F4E5',
-  },
-  activityTitle: { fontSize: 13, fontWeight: '700', color: Colors.ink },
-  activityTime: { fontSize: 11, color: Colors.muted, marginTop: 1 },
-  positiveAmount: { fontSize: 13, fontWeight: '800', color: Colors.primary },
-  negativeAmount: { fontSize: 13, fontWeight: '800', color: Colors.ink },
+  contributeStack: { backgroundColor: Colors.white, borderRadius: 14, borderWidth: 1, borderColor: Colors.surfaceBorder, marginBottom: 16, overflow: 'hidden' },
+  contributeRow: { flexDirection: 'row', alignItems: 'center', padding: 14, borderBottomWidth: 1, borderBottomColor: Colors.line },
+  contributeSquare: { width: 36, height: 36, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
+  contributeTitle: { flex: 1, marginLeft: 12, fontSize: 14, fontWeight: '700', color: Colors.ink, fontFamily: 'Inter' },
 
-  modalBackdrop: { flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.5)', justifyContent: 'flex-end' },
-  modalCard: { backgroundColor: Colors.white, borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20 },
-  modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  modalTitle: { fontSize: 18, fontWeight: '900', color: Colors.ink },
-  modalSub: { fontSize: 12, color: Colors.muted, marginTop: 4, marginBottom: 14 },
+  activityHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  viewAllText: { fontSize: 12, fontWeight: '800', color: Colors.primary, fontFamily: 'Inter' },
+  activityList: { backgroundColor: Colors.white, borderRadius: 14, borderWidth: 1, borderColor: Colors.surfaceBorder, padding: 14, marginBottom: 16 },
+  activityRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: Colors.line },
+  activityIconCircle: { width: 32, height: 32, borderRadius: 16, backgroundColor: '#EEEEEE', alignItems: 'center', justifyContent: 'center' },
+  depositCircle: { backgroundColor: '#F0F9F2' },
+  activityTitle: { fontSize: 13, fontWeight: '700', color: Colors.ink, fontFamily: 'Inter' },
+  activityTime: { fontSize: 11, color: Colors.muted, marginTop: 2, fontFamily: 'Inter' },
+  positiveAmount: { fontSize: 14, fontWeight: '800', color: Colors.primary, fontFamily: 'Inter' },
+  negativeAmount: { fontSize: 14, fontWeight: '800', color: Colors.ink, fontFamily: 'Inter' },
+
+  modalBackdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
+  modalCard: { backgroundColor: Colors.white, borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20, paddingBottom: 40 },
+  modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
+  modalTitle: { fontSize: 20, fontWeight: '900', color: Colors.ink, fontFamily: 'Hanken Grotesk' },
+  modalSub: { fontSize: 13, color: Colors.muted, marginBottom: 16, fontFamily: 'Inter' },
 });
