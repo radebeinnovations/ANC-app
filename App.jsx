@@ -96,7 +96,7 @@ export default function App() {
       setScreen(name);
     }
   };
-  const finish = (message) => { setScreen('main'); setNotice(message); };
+  const finish = (message = '') => { setScreen(''); setStepText(''); if (message) setNotice(message); };
 
   const handleAddCard = (newCard) => {
     setCards([...cards, { ...newCard, id: String(Date.now()), isDefault: false }]);
