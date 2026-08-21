@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Icon, ReceiveMoneySvgIcon, SendMoneySvgIcon } from '../components/Icons';
 import YamiFooter from '../components/YamiFooter';
 import { Colors } from '../theme/colors';
 
 const AVATAR_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDP7zlfBNbg5jSucUfG5tPD3BtnVuTQAY2I1kjxSuVqrYNxWqB2lpmvbct4HtE9rdYUrNvLmyCoODdPJBfEqJlKcTv1n486W4ZiNoD2hMMB6ygx62xZumjQQcA9Q5uBGXVyeqgizdBJTJZhYHK0e2jGRtVRt-uNnljNFVUKXpdgq2Cyhy3xUtsvwfSISYHxtEhER8JSmDx9fJe9hVTzN3FqNWNa4aOez8vY3D9vx2YwUd9oJmGKaKmb';
 const COMMUNITY_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAHtomXsNt6ZfeyvGZOeE5XMikoE5zxU6RquvkfvLhr4T0JYKXccFIuYI8r2T8-9ZZlaqqwWNNziIBcMoWa6jD-ILIRWc02WFG9hRmYaM5BbCiDBXKNUaGsyOhxcgb2bbd-Rzx6m0FPLxfh6dQLM5XA30dGG_LKc4u72FFmXlnnxQsZ_gmIR0jV8GlW5p6QYUO-h6qfrqHZGSfWJY6mootTuO2zTIRBZjmzjM-J9VHYQU1WxM4WEO0i';
-const NEWS_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAHR1a7BGP_bULWHfBqmlTZgAdHLDUGaQ9n42EuYpuscyM7zEqqysnBEFBchrBndc5olw-z7m9zHt8J2f1KlBsIEJcbViTOgrDKxoOMDSxwyhbm6Celjx0pd0-OYh-6kDsXNsIIzcF7FU30QbvhS_w9U5M0GZjAah-V1bZR0ig9UAONPSann0NLQ6JAl8wcx2iBNtAuzSB1IZwBp7qqfHtgzBTb68fJZD2IlcmApjWzMBVXT3-_Ba0X';
+const LATEST_HERO_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDHgtndFSg1VNHObIGcZIVyJ5csQDFMufbynzecuPzTzzip8_SF-7bE1hkBqrIDk2z9WdB1hn7AkKoRKDOPoriFESQprpaPvPA6Ho8WSsUUujbo0AHfZDXL7hrjhX2QtMPeRC1k8BjZvaMiIJfrxsBDvqyp6IXPPHOShgQ7OAxnrFAIm-k2Bi-gVqHYdMwDGMJuAdeIw59P2iO6C99NyhzmCY0_uxbJOPsLZtsOaecMLdGGehVIy_3GQW0_gNbsLDWnGA';
 
 export default function ParticipateScreen({ open }) {
   const [activeFilter, setActiveFilter] = useState('My Community');
@@ -170,35 +170,32 @@ export default function ParticipateScreen({ open }) {
         </View>
       )}
 
-      {/* 4. LATEST UPDATES */}
+      {/* 4. LATEST UPDATES (HERO EDITORIAL CARD MATCHING SCREENSHOT 100%) */}
       {(activeFilter === 'Latest Updates' || activeFilter === 'All') && (
         <View style={s.sectionContainer}>
           <View style={s.sectionHeaderRow}>
             <Text style={s.sectionTitle}>LATEST FROM THE ANC</Text>
-            <TouchableOpacity onPress={() => open('newsroom')}>
-              <Text style={s.viewAllLink}>View all</Text>
-            </TouchableOpacity>
           </View>
 
-          <TouchableOpacity style={s.newsCard} onPress={() => open('statement_detail')} activeOpacity={0.85}>
-            <Image source={{ uri: NEWS_IMG_URL }} style={s.newsImage} resizeMode="cover" />
+          <TouchableOpacity style={s.latestHeroCard} onPress={() => open('statement_detail')} activeOpacity={0.85}>
+            <ImageBackground source={{ uri: LATEST_HERO_IMG_URL }} style={s.latestHeroBg} resizeMode="cover">
+              {/* Dark Gradient Overlay Container */}
+              <View style={s.latestHeroOverlay}>
+                <View style={s.latestHeroMetaRow}>
+                  <View style={s.goldStatementBadge}>
+                    <Text style={s.goldStatementBadgeText}>ANC STATEMENT</Text>
+                  </View>
+                  <Text style={s.latestHeroDateText}>12 August 2026</Text>
+                </View>
 
-            <View style={s.newsBody}>
-              <View style={s.newsMetaRow}>
-                <Text style={s.newsMetaTag}>ANC STATEMENT</Text>
-                <Text style={s.newsMetaDate}>12 August 2026</Text>
+                <Text style={s.latestHeroHeadline}>Building Stronger Local Government</Text>
+
+                <View style={s.readFullRow}>
+                  <Text style={s.readFullText}>Read Full Statement</Text>
+                  <Icon name="arrow-forward" size={16} color={Colors.white} />
+                </View>
               </View>
-
-              <Text style={s.newsHeadline}>Building Stronger Local Government</Text>
-              <Text style={s.newsSnippet}>
-                Our commitment to service delivery and community empowerment remains steadfast as we approach the upcoming municipal elections.
-              </Text>
-
-              <View style={s.readUpdateLink}>
-                <Text style={s.readUpdateText}>Read Full Statement</Text>
-                <Icon name="arrow-forward" size={18} color="#006933" />
-              </View>
-            </View>
+            </ImageBackground>
           </TouchableOpacity>
         </View>
       )}
@@ -333,15 +330,29 @@ const s = StyleSheet.create({
   squircleIconBox: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center', marginBottom: 8 },
   serviceSquareLabel: { fontSize: 12, fontWeight: '700', color: '#1A1C1C', textAlign: 'center', lineHeight: 15, fontFamily: 'Inter' },
 
-  /* LATEST FROM ANC CARD */
-  newsCard: { backgroundColor: '#FFFFFF', borderRadius: 16, overflow: 'hidden', borderWidth: 1, borderColor: '#E2E8F0' },
-  newsImage: { width: '100%', height: 180 },
-  newsBody: { padding: 16 },
-  newsMetaRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6 },
-  newsMetaTag: { fontSize: 11, fontWeight: '800', color: '#4A5568', textTransform: 'uppercase', letterSpacing: 1, fontFamily: 'Inter' },
-  newsMetaDate: { fontSize: 12, color: '#4A5568', fontFamily: 'Inter' },
-  newsHeadline: { fontSize: 20, fontWeight: '700', color: '#1A1C1C', marginBottom: 6, fontFamily: 'Hanken Grotesk' },
-  newsSnippet: { fontSize: 14, color: '#4A5568', lineHeight: 20, marginBottom: 14, fontFamily: 'Inter' },
-  readUpdateLink: { flexDirection: 'row', alignItems: 'center', gap: 6 },
-  readUpdateText: { color: '#006933', fontSize: 14, fontWeight: '700', fontFamily: 'Inter' },
+  /* LATEST HERO EDITORIAL CARD (MATCHING SCREENSHOT 100%) */
+  latestHeroCard: {
+    borderRadius: 16,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  latestHeroBg: { width: '100%', height: 260, justifyContent: 'flex-end' },
+  latestHeroOverlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.72)',
+    padding: 18,
+    justifyContent: 'flex-end',
+  },
+  latestHeroMetaRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
+  goldStatementBadge: { backgroundColor: '#FECC00', borderRadius: 4, paddingVertical: 4, paddingHorizontal: 8 },
+  goldStatementBadgeText: { color: '#241A00', fontSize: 11, fontWeight: '900', letterSpacing: 0.5, fontFamily: 'Inter' },
+  latestHeroDateText: { color: 'rgba(255, 255, 255, 0.85)', fontSize: 12, fontWeight: '600', fontFamily: 'Inter' },
+  latestHeroHeadline: { color: Colors.white, fontSize: 20, fontWeight: '800', lineHeight: 26, marginBottom: 12, fontFamily: 'Hanken Grotesk' },
+  readFullRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  readFullText: { color: Colors.white, fontSize: 14, fontWeight: '700', fontFamily: 'Inter' },
 });
