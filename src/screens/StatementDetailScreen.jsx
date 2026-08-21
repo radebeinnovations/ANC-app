@@ -11,7 +11,7 @@ export default function StatementDetailScreen({ finish }) {
   return (
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
       {/* Back Navigation Bar */}
-      <TouchableOpacity style={s.backRow} onPress={finish} activeOpacity={0.7}>
+      <TouchableOpacity style={s.backRow} onPress={() => finish()} activeOpacity={0.7}>
         <Icon name="arrow-back" size={20} color={Colors.primary} />
         <Text style={s.backText}>Back to Updates</Text>
       </TouchableOpacity>
@@ -87,7 +87,7 @@ export default function StatementDetailScreen({ finish }) {
 
         {/* Action Button */}
         <View style={{ marginTop: 24 }}>
-          <Button text="Return to Main Menu" onPress={finish} />
+          <Button text="Return to Main Menu" onPress={() => finish()} />
         </View>
       </View>
 

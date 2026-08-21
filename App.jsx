@@ -96,7 +96,15 @@ export default function App() {
       setScreen(name);
     }
   };
-  const finish = (message = '') => { setScreen(''); setStepText(''); if (message) setNotice(message); };
+  const finish = (message) => {
+    setScreen('');
+    setStepText('');
+    if (typeof message === 'string' && message.trim().length > 0) {
+      setNotice(message);
+    } else {
+      setNotice('');
+    }
+  };
 
   const handleAddCard = (newCard) => {
     setCards([...cards, { ...newCard, id: String(Date.now()), isDefault: false }]);
