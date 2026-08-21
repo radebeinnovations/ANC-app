@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Button from '../components/Button';
 import Field from '../components/Field';
-import { Icon } from '../components/Icons';
+import { Icon, MastercardLogo } from '../components/Icons';
 import Pills from '../components/Pills';
 import { Colors } from '../theme/colors';
 
@@ -189,6 +189,21 @@ export default function MoneyScreen({ open, balance = 1500, onDepositFunds, rece
             <Field label="AMOUNT (ZAR)" value={depositAmount} onChangeText={setDepositAmount} keyboardType="numeric" placeholder="Enter amount" />
             <Pills value={depositAmount} setValue={setDepositAmount} options={[100, 250, 500, 1000]} />
 
+            {/* Linked Mastercard Payment Source */}
+            <Text style={s.paymentMethodLabel}>FUNDING PAYMENT SOURCE</Text>
+            <View style={s.linkedCardRow}>
+              <View style={s.cardDarkIconBox}>
+                <MastercardLogo width={32} height={20} />
+              </View>
+              <View style={{ flex: 1, marginLeft: 12 }}>
+                <Text style={s.cardTitleText}>Standard Bank Gold Mastercard</Text>
+                <Text style={s.cardSubText}>•••• •••• •••• 4892 · Exp 08/28</Text>
+              </View>
+              <View style={s.defaultCardBadge}>
+                <Text style={s.defaultCardBadgeText}>DEFAULT</Text>
+              </View>
+            </View>
+
             <View style={{ marginTop: 20 }}>
               <Button text={`＋ Deposit R${depositAmount}`} onPress={handleDeposit} />
             </View>
@@ -329,4 +344,27 @@ const s = StyleSheet.create({
   modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
   modalTitle: { fontSize: 20, fontWeight: '900', color: Colors.ink, fontFamily: 'Hanken Grotesk' },
   modalSub: { fontSize: 13, color: Colors.muted, marginBottom: 16, fontFamily: 'Inter' },
+
+  paymentMethodLabel: { fontSize: 10, fontWeight: '800', color: Colors.muted, letterSpacing: 0.9, marginTop: 16, marginBottom: 8, fontFamily: 'Inter' },
+  linkedCardRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F8FAFC',
+    borderRadius: 12,
+    borderWidth: 1.5,
+    borderColor: '#006933',
+    padding: 12,
+  },
+  cardDarkIconBox: {
+    width: 44,
+    height: 30,
+    borderRadius: 6,
+    backgroundColor: '#0F172A',
+    alignItems: 'center',
+    justify: 'center',
+  },
+  cardTitleText: { fontSize: 13, fontWeight: '700', color: Colors.ink, fontFamily: 'Inter' },
+  cardSubText: { fontSize: 11, color: Colors.muted, marginTop: 2, fontFamily: 'Inter' },
+  defaultCardBadge: { backgroundColor: 'rgba(0, 105, 51, 0.1)', borderRadius: 6, paddingVertical: 4, paddingHorizontal: 8 },
+  defaultCardBadgeText: { fontSize: 10, fontWeight: '800', color: Colors.primary, fontFamily: 'Inter' },
 });
