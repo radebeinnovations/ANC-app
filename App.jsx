@@ -28,7 +28,7 @@ import WelcomeScreen from './src/screens/WelcomeScreen';
 import { Colors } from './src/theme/colors';
 
 export default function App() {
-  const [signedIn, setSignedIn] = useState(true);
+  const [signedIn, setSignedIn] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
   const [tab, setTab] = useState('Home');
   const [screen, setScreen] = useState('main');
