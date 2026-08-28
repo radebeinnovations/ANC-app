@@ -29,7 +29,8 @@ import { Colors } from './src/theme/colors';
 
 export default function App() {
   const [signedIn, setSignedIn] = useState(false);
-  const [showWelcome, setShowWelcome] = useState(false);
+  // The Stitch prototype begins at the public welcome screen; sign-in remains one tap away.
+  const [showWelcome, setShowWelcome] = useState(true);
   const [tab, setTab] = useState('Home');
   const [screen, setScreen] = useState('main');
   const [notice, setNotice] = useState('');
@@ -138,7 +139,7 @@ export default function App() {
     if (screen === 'send') return <SendMoneyScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} setStepText={setStepText} />;
     if (screen === 'receive') return <ReceiveMoneyScreen finish={finish} setNotice={setNotice} />;
     if (screen === 'transfer') return <TransferMoneyScreen finish={finish} balance={balance} onDeductBalance={handleDeductBalance} setStepText={setStepText} setNotice={setNotice} />;
-    if (screen === 'services') return <ServicesScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} onDepositFunds={handleDepositFunds} setStepText={setStepText} initialSubScreen={initialSubScreen} />;
+    if (screen === 'services') return <ServicesScreen open={open} finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} onDepositFunds={handleDepositFunds} setStepText={setStepText} initialSubScreen={initialSubScreen} />;
     if (screen === 'donate') return <DonationScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} setStepText={setStepText} initialStep={initialDonationStep} />;
     if (screen === 'membership') return <MembershipScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} />;
     if (screen === 'profile') return <ProfileScreen cards={cards} onOpenCards={() => open('cards')} setStepText={setStepText} />;
@@ -174,6 +175,7 @@ export default function App() {
             <SignInScreen
               finish={() => setSignedIn(true)}
               onSignIn={() => setSignedIn(true)}
+              onBackToWelcome={() => setShowWelcome(true)}
             />
           )
         ) : (

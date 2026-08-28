@@ -14,6 +14,8 @@ export default function DonationScreen({ finish, cards = [], balance = 1500, onD
   const [frequency, setFrequency] = useState('one-time'); // 'one-time' | 'monthly'
   const [amount, setAmount] = useState('250');
   const [customAmount, setCustomAmount] = useState('');
+  const [showTransparency, setShowTransparency] = useState(false);
+  const [showPaymentOptions, setShowPaymentOptions] = useState(false);
 
   // Web-Safe Animated values for Success Receipt checkmark
   const scaleAnim = useRef(new Animated.Value(1)).current;
@@ -152,10 +154,11 @@ export default function DonationScreen({ finish, cards = [], balance = 1500, onD
         </View>
 
         {/* Transparency Link */}
-        <TouchableOpacity style={s.transparencyRow} activeOpacity={0.7}>
+        <TouchableOpacity style={s.transparencyRow} onPress={() => setShowTransparency(value => !value)} activeOpacity={0.7}>
           <Icon name="info" size={16} color={Colors.primary} />
           <Text style={s.transparencyText}>Where your contribution goes</Text>
         </TouchableOpacity>
+        {showTransparency ? <Text style={s.transparencyDetail}>Demo campaign funds are illustrative only: 70% community programmes, 20% local coordination and 10% reporting.</Text> : null}
 
         <YamiFooter />
       </ScrollView>
@@ -235,7 +238,7 @@ export default function DonationScreen({ finish, cards = [], balance = 1500, onD
           <View style={s.updateBorderBox}>
             <Text style={s.updateCategoryText}>LATEST UPDATE • 12 AUGUST 2026</Text>
             <Text style={s.updateTitleBold}>Community programme update</Text>
-            <TouchableOpacity style={s.readUpdateLink} activeOpacity={0.7}>
+            <TouchableOpacity style={s.readUpdateLink} onPress={() => setShowTransparency(true)} activeOpacity={0.7}>
               <Text style={s.readUpdateLinkText}>Read update</Text>
               <Icon name="arrow-forward" size={14} color={Colors.primary} />
             </TouchableOpacity>
@@ -329,7 +332,7 @@ export default function DonationScreen({ finish, cards = [], balance = 1500, onD
         {/* Payment Method Card */}
         <View style={s.paymentMethodHeaderRow}>
           <Text style={s.fieldLabel}>Payment Method</Text>
-          <TouchableOpacity activeOpacity={0.7}>
+          <TouchableOpacity onPress={() => setShowPaymentOptions(value => !value)} activeOpacity={0.7}>
             <Text style={s.changePaymentLinkText}>Change</Text>
           </TouchableOpacity>
         </View>
@@ -344,6 +347,7 @@ export default function DonationScreen({ finish, cards = [], balance = 1500, onD
           </View>
           <Icon name="check-circle" size={22} color="#008542" />
         </View>
+        {showPaymentOptions ? <Text style={s.paymentDemoNote}>ANC Member Money is selected for this local demo. No payment method can be charged.</Text> : null}
 
         {/* Donation Summary Box */}
         <View style={s.summaryCardBox}>
@@ -424,10 +428,11 @@ export default function DonationScreen({ finish, cards = [], balance = 1500, onD
               <Text style={s.reviewValTitle}>ANC Member Money</Text>
               <Text style={s.reviewBalSub}>Balance: R{Number(balance).toLocaleString('en-ZA', { minimumFractionDigits: 2 })}</Text>
             </View>
-            <TouchableOpacity activeOpacity={0.7}>
+            <TouchableOpacity onPress={() => setShowPaymentOptions(value => !value)} activeOpacity={0.7}>
               <Text style={s.changePaymentLinkText}>Change</Text>
             </TouchableOpacity>
           </View>
+          {showPaymentOptions ? <Text style={s.paymentDemoNote}>ANC Member Money remains selected; no payment is processed in this demo.</Text> : null}
 
           {/* Amounts */}
           <View style={s.reviewCostRow}>
@@ -669,6 +674,8 @@ const s = StyleSheet.create({
 
   secureFooterRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 4, marginTop: 12 },
   secureFooterText: { fontSize: 12, color: '#6E7A6E', fontWeight: '700' },
+  transparencyDetail: { fontSize: 12, color: Colors.onSurfaceVariant, lineHeight: 18, marginTop: -10, marginBottom: 16, textAlign: 'center' },
+  paymentDemoNote: { fontSize: 12, color: Colors.primary, lineHeight: 17, marginTop: -16, marginBottom: 16 },
 
   /* STEP 3: REVIEW DONATION STYLES */
   stepProgressBarContainer: { marginBottom: 20, marginTop: 4 },

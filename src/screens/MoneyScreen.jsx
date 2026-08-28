@@ -9,6 +9,7 @@ import { Colors } from '../theme/colors';
 export default function MoneyScreen({ open, balance = 1500, onDepositFunds, recentActivity = [] }) {
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [depositAmount, setDepositAmount] = useState('500');
+  const [showAllActivity, setShowAllActivity] = useState(false);
 
   const handleDeposit = () => {
     const num = parseFloat(depositAmount);
@@ -26,6 +27,7 @@ export default function MoneyScreen({ open, balance = 1500, onDepositFunds, rece
   ];
 
   const displayList = recentActivity.length > 0 ? recentActivity : defaultActivity;
+  const visibleActivity = showAllActivity ? displayList : displayList.slice(0, 3);
 
   return (
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
@@ -145,13 +147,13 @@ export default function MoneyScreen({ open, balance = 1500, onDepositFunds, rece
       {/* Recent Activity Section */}
       <View style={s.activityHeaderRow}>
         <Text style={s.sectionHeader}>Recent Activity</Text>
-        <TouchableOpacity activeOpacity={0.7}>
-          <Text style={s.viewAllText}>View All</Text>
+        <TouchableOpacity accessibilityLabel={showAllActivity ? 'Show fewer activities' : 'View all activities'} onPress={() => setShowAllActivity(value => !value)} activeOpacity={0.7}>
+          <Text style={s.viewAllText}>{showAllActivity ? 'Show Less' : 'View All'}</Text>
         </TouchableOpacity>
       </View>
 
       <View style={s.activityList}>
-        {displayList.map((item, idx) => {
+        {visibleActivity.map((item, idx) => {
           const isDeposit = item.type === 'deposit';
           return (
             <View key={item.id || idx} style={s.activityRow}>

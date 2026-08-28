@@ -8,7 +8,7 @@ import { Colors } from '../theme/colors';
 
 const rand = (n) => `R${Number(n || 0).toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
-export default function ServicesScreen({ finish, balance = 1500, onDeductBalance, onDepositFunds, setStepText, initialSubScreen = 'hub' }) {
+export default function ServicesScreen({ open, finish, balance = 1500, onDeductBalance, onDepositFunds, setStepText, initialSubScreen = 'hub' }) {
   const [activeSubScreen, setActiveSubScreen] = useState(initialSubScreen || 'hub'); // 'hub' | 'airtime' | 'data' | 'electricity' | 'bills'
 
   // Clear stepText header subtitle on Services screen so it doesn't show "STEP 1 OF 3"
@@ -234,14 +234,14 @@ export default function ServicesScreen({ finish, balance = 1500, onDeductBalance
             <Text style={s.gridServiceText}>Bills</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={s.gridServiceCard} onPress={() => finish('Donation screen')} activeOpacity={0.8}>
+          <TouchableOpacity style={s.gridServiceCard} onPress={() => open?.('donate')} activeOpacity={0.8}>
             <View style={s.gridIconCircle}>
               <Icon name="volunteer-activism" size={22} color={Colors.primary} />
             </View>
             <Text style={s.gridServiceText}>Donations</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={s.gridServiceCard} onPress={() => finish('Membership screen')} activeOpacity={0.8}>
+          <TouchableOpacity style={s.gridServiceCard} onPress={() => open?.('membership')} activeOpacity={0.8}>
             <View style={s.gridIconCircle}>
               <Icon name="card-membership" size={22} color={Colors.primary} />
             </View>

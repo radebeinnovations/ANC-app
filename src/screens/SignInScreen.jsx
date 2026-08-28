@@ -5,7 +5,7 @@ import { Icon } from '../components/Icons';
 import YamiFooter from '../components/YamiFooter';
 import { Colors } from '../theme/colors';
 
-export default function SignInScreen({ finish, onSignIn }) {
+export default function SignInScreen({ finish, onSignIn, onBackToWelcome }) {
   const [loginType, setLoginType] = useState('membership'); // 'membership' | 'phone'
   const [identifier, setIdentifier] = useState('ANC-1234567');
   const [password, setPassword] = useState('123456');
@@ -54,7 +54,7 @@ export default function SignInScreen({ finish, onSignIn }) {
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
       {/* Top Header Bar */}
       <View style={s.topBar}>
-        <TouchableOpacity style={s.backBtn} onPress={() => finish('Back to Welcome')}>
+        <TouchableOpacity style={s.backBtn} onPress={() => onBackToWelcome ? onBackToWelcome() : finish('Back to Welcome')}>
           <Icon name="arrow-back" size={20} color={Colors.ink} />
         </TouchableOpacity>
         <Text style={s.topBarTitle}>ANC</Text>
@@ -167,7 +167,7 @@ export default function SignInScreen({ finish, onSignIn }) {
           <Text style={s.rememberText}>Remember me</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => finish('Forgot password screen')}>
+        <TouchableOpacity onPress={() => setErrorMessage('Password recovery is not connected in this local demo. Use the displayed demo credentials.')}>
           <Text style={s.forgotText}>Forgot Password?</Text>
         </TouchableOpacity>
       </View>
@@ -186,7 +186,7 @@ export default function SignInScreen({ finish, onSignIn }) {
       <View style={s.footerContainer}>
         <Text style={s.newMemberText}>
           New to ANC Member?{' '}
-          <Text style={s.joinLinkText} onPress={() => finish('Join ANC screen')}>
+          <Text style={s.joinLinkText} onPress={() => setErrorMessage('ANC registration is not connected in this local demo. You can continue as a guest.')}>
             Join the ANC
           </Text>
         </Text>
