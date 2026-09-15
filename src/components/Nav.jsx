@@ -7,6 +7,7 @@ export default function Nav({ active, onChange }) {
   const tabs = [
     { name: 'Home', icon: 'home' },
     { name: 'Money', icon: 'account-balance-wallet' },
+    { name: 'Chat', icon: 'chat' },
     { name: 'Participate', icon: 'groups' },
     { name: 'Updates', icon: 'newspaper' },
     { name: 'Member', icon: 'badge' },
@@ -40,7 +41,7 @@ const s = StyleSheet.create({
     paddingTop: 6,
     paddingBottom: 6,
   },
-  navButton: { alignItems: 'center', width: '20%' },
+  navButton: { alignItems: 'center', flex: 1, minWidth: 0 },
   iconBox: {
     width: 44,
     height: 28,

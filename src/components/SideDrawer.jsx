@@ -15,6 +15,7 @@ export default function SideDrawer({ visible, onClose, onNavigate, onSignOut }) 
     { id: 'send', title: 'Send Money', icon: 'send' },
     { id: 'services', title: 'Buy Airtime / Data', icon: 'phone-android' },
     { id: 'branch', title: 'My Branch & Region', icon: 'groups' },
+    { id: 'chat', title: 'ANC Community Chats', icon: 'chat' },
     { id: 'notifications', title: 'Notifications', icon: 'notifications' },
   ];
 

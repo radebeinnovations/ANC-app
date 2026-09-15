@@ -23,6 +23,16 @@ The application is currently configured to boot directly into a demonstration lo
 - **Digital Wallet (MzansiPay Integration):** Deposit funds via Mastercard and manage your app balance securely.
 - **Everyday Services:** Purchase Airtime, Data, and Prepaid Electricity (STS 20-digit tokens) seamlessly using your wallet balance.
 - **Subscription Management:** Easily pay your annual ANC membership subscription fees.
+- **ANC Community Chats:** Local demo chat UI with direct messages, group creation, suggested members, and Supabase Realtime-ready messaging/presence.
+
+## 💬 Enable live ANC Community Chats with Supabase
+
+The chat UI works with realistic local demo data until Supabase is configured. To make it live:
+
+1. Create a Supabase project and run [`supabase/chat_schema.sql`](supabase/chat_schema.sql) in its SQL editor.
+2. Add `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_ANON_KEY` to your local environment. Never place a Supabase service-role key in the app.
+3. Replace the demo sign-in flow with Supabase Auth. At registration, store `full_name`, `membership_number`, and `branch_name` in user metadata. Chat shows the registered **full name** (name and surname) to other members.
+4. Test RLS as two distinct member accounts before release. Configure Supabase Realtime quotas, abuse reporting/moderation, retention, and a privacy policy before onboarding real members.
 
 ## 🛠️ Technology Stack
 

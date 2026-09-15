@@ -24,17 +24,32 @@ import StatementDetailScreen from './src/screens/StatementDetailScreen';
 import TransferMoneyScreen from './src/screens/TransferMoneyScreen';
 import SignInScreen from './src/screens/SignInScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen';
+import ChatScreen from './src/screens/ChatScreen';
 
 import { Colors } from './src/theme/colors';
+import { isSupabaseConfigured, supabase } from './src/services/supabase';
 
 export default function App() {
   const [signedIn, setSignedIn] = useState(false);
+  const [authUser, setAuthUser] = useState(null);
   // The Stitch prototype begins at the public welcome screen; sign-in remains one tap away.
   const [showWelcome, setShowWelcome] = useState(true);
   const [tab, setTab] = useState('Home');
   const [screen, setScreen] = useState('main');
   const [notice, setNotice] = useState('');
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  React.useEffect(() => {
+    if (!isSupabaseConfigured()) return undefined;
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session?.user) { setAuthUser(data.session.user); setSignedIn(true); setShowWelcome(false); }
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setAuthUser(session?.user || null);
+      if (session?.user) { setSignedIn(true); setShowWelcome(false); }
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
   // Interactive Demo Wallet Balance & Transactions State
   const [balance, setBalance] = useState(1500.00);
@@ -148,8 +163,10 @@ export default function App() {
     if (screen === 'notifications' || screen === 'updates') return <NotificationsScreen />;
     if (screen === 'newsroom') return <NewsroomScreen finish={finish} open={open} />;
     if (screen === 'statement_detail') return <StatementDetailScreen finish={finish} />;
+    if (screen === 'chat') return <ChatScreen user={authUser} />;
 
     if (tab === 'Money') return <MoneyScreen open={open} cards={cards} balance={balance} onDepositFunds={handleDepositFunds} recentActivity={recentActivity} />;
+    if (tab === 'Chat') return <ChatScreen user={authUser} />;
     if (tab === 'Participate') return <ParticipateScreen open={open} />;
     if (tab === 'Updates') return <NotificationsScreen />;
     if (tab === 'Member') return <ProfileScreen cards={cards} onOpenCards={() => open('cards')} setStepText={setStepText} />;
@@ -175,6 +192,7 @@ export default function App() {
             <SignInScreen
               finish={() => setSignedIn(true)}
               onSignIn={() => setSignedIn(true)}
+              onAuthSuccess={(user) => { setAuthUser(user); setSignedIn(true); }}
               onBackToWelcome={() => setShowWelcome(true)}
             />
           )
@@ -209,6 +227,8 @@ export default function App() {
               onClose={() => setDrawerOpen(false)}
               onNavigate={(target) => open(target)}
               onSignOut={() => {
+                if (isSupabaseConfigured()) supabase.auth.signOut();
+                setAuthUser(null);
                 setSignedIn(false);
                 setShowWelcome(true);
               }}
