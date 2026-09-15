@@ -68,6 +68,14 @@ export default function App() {
 
   React.useEffect(() => {
     if (typeof document !== 'undefined') {
+      let viewport = document.querySelector('meta[name="viewport"]');
+      if (!viewport) {
+        viewport = document.createElement('meta');
+        viewport.name = 'viewport';
+        document.head.appendChild(viewport);
+      }
+      viewport.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover';
+
       const linkId = 'google-fonts-anc';
       if (!document.getElementById(linkId)) {
         const link = document.createElement('link');
@@ -85,10 +93,34 @@ export default function App() {
           @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
           body, html, #root {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            touch-action: manipulation;
           }
         `;
         document.head.appendChild(style);
       }
+
+      // Mobile browsers occasionally ignore viewport zoom settings after an
+      // input receives focus. Keep the app at the device scale while allowing
+      // normal one-finger scrolling inside the screens.
+      const preventPinchZoom = (event) => event.preventDefault();
+      const preventMultiTouchZoom = (event) => {
+        if (event.touches?.length > 1) event.preventDefault();
+      };
+      let lastTouchEnd = 0;
+      const preventDoubleTapZoom = (event) => {
+        const now = Date.now();
+        if (now - lastTouchEnd < 300) event.preventDefault();
+        lastTouchEnd = now;
+      };
+      document.addEventListener('gesturestart', preventPinchZoom, { passive: false });
+      document.addEventListener('touchmove', preventMultiTouchZoom, { passive: false });
+      document.addEventListener('touchend', preventDoubleTapZoom, { passive: false });
+
+      return () => {
+        document.removeEventListener('gesturestart', preventPinchZoom);
+        document.removeEventListener('touchmove', preventMultiTouchZoom);
+        document.removeEventListener('touchend', preventDoubleTapZoom);
+      };
     }
   }, []);
 

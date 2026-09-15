@@ -11,7 +11,8 @@
       "web"
     ],
     "android": {
-      "package": "za.org.anc.unity"
+      "package": "za.org.anc.unity",
+      "softwareKeyboardLayoutMode": "resize"
     },
     "ios": {
       "bundleIdentifier": "za.org.anc.unity"
