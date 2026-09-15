@@ -11,7 +11,9 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     // Keeping this false prevents a demo identity from being mistaken for a real session.
     persistSession: false,
     autoRefreshToken: false,
-    detectSessionInUrl: false,
+    // Lets the web app exchange Supabase's email-confirmation code after the
+    // member returns from the verification link.
+    detectSessionInUrl: true,
   },
 });
 

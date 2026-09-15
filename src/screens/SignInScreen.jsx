@@ -27,7 +27,8 @@ export default function SignInScreen({ finish, onSignIn, onAuthSuccess, onBackTo
     setLoading(true);
     try {
       if (mode === 'signup') {
-        const { data, error } = await supabase.auth.signUp({ email: email.trim().toLowerCase(), password, options: { data: { full_name: fullName.trim(), phone_number: phoneNumber.trim(), membership_number: membershipNumber.trim().toUpperCase() || null, branch_name: branchName.trim() || null } } });
+        const emailRedirectTo = typeof window !== 'undefined' ? `${window.location.origin}/?verification=success` : undefined;
+        const { data, error } = await supabase.auth.signUp({ email: email.trim().toLowerCase(), password, options: { emailRedirectTo, data: { full_name: fullName.trim(), phone_number: phoneNumber.trim(), membership_number: membershipNumber.trim().toUpperCase() || null, branch_name: branchName.trim() || null } } });
         if (error) throw error;
         if (data.session) onAuthSuccess?.(data.user);
         else setMessage('Account created. Check your email to confirm your account, then sign in.');
