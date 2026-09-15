@@ -1,14 +1,17 @@
 -- Run once in Supabase SQL Editor after installing chat_schema.sql.
 -- It safely creates profiles for accounts created before the profile trigger.
 
-insert into public.profiles (id, full_name, membership_number, branch_name)
+alter table public.profiles add column if not exists phone_number text;
+
+insert into public.profiles (id, full_name, phone_number, membership_number, branch_name)
 select
   u.id,
   coalesce(nullif(trim(u.raw_user_meta_data ->> 'full_name'), ''), 'ANC Member'),
+  nullif(trim(u.raw_user_meta_data ->> 'phone_number'), ''),
   nullif(trim(u.raw_user_meta_data ->> 'membership_number'), ''),
   nullif(trim(u.raw_user_meta_data ->> 'branch_name'), '')
 from auth.users u
-on conflict (id) do nothing;
+on conflict (id) do update set phone_number = coalesce(public.profiles.phone_number, excluded.phone_number);
 
 -- Secure discovery endpoint for the mobile app. It repairs the caller's
 -- profile from their Auth metadata, then returns other registered members.
@@ -16,10 +19,11 @@ create or replace function public.discover_members()
 returns table (id uuid, full_name text, membership_number text, branch_name text)
 language sql security definer set search_path = public, auth as $$
   with ensure_callers_profile as (
-    insert into public.profiles (id, full_name, membership_number, branch_name)
+    insert into public.profiles (id, full_name, phone_number, membership_number, branch_name)
     select
       u.id,
       coalesce(nullif(trim(u.raw_user_meta_data ->> 'full_name'), ''), 'ANC Member'),
+      nullif(trim(u.raw_user_meta_data ->> 'phone_number'), ''),
       nullif(trim(u.raw_user_meta_data ->> 'membership_number'), ''),
       nullif(trim(u.raw_user_meta_data ->> 'branch_name'), '')
     from auth.users u

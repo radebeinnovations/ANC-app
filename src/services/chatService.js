@@ -97,9 +97,9 @@ export function subscribeToMessages(conversationId, onMessage) {
   return () => supabase.removeChannel(channel);
 }
 
-export function createTypingChannel(conversationId, onTyping) {
+export function createTypingChannel(conversationId, currentUserId, onTyping) {
   if (!usesLiveChat()) return { sendTyping: () => {}, close: () => {} };
-  const channel = supabase.channel(`typing:${conversationId}`, { config: { presence: { key: 'member' } } });
+  const channel = supabase.channel(`typing:${conversationId}`, { config: { presence: { key: currentUserId } } });
   channel.on('presence', { event: 'sync' }, () => onTyping(Object.values(channel.presenceState()).flat())).subscribe();
   return { sendTyping: (name, typing) => channel.track({ name, typing, at: Date.now() }), close: () => supabase.removeChannel(channel) };
 }

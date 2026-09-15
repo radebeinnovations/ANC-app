@@ -3,6 +3,7 @@
 create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   full_name text not null,
+  phone_number text,
   membership_number text unique,
   branch_name text,
   created_at timestamptz not null default now()
@@ -49,8 +50,8 @@ alter publication supabase_realtime add table public.chat_messages;
 create or replace function public.handle_new_member()
 returns trigger language plpgsql security definer set search_path = public as $$
 begin
-  insert into public.profiles (id, full_name, membership_number, branch_name)
-  values (new.id, coalesce(new.raw_user_meta_data->>'full_name', 'ANC Member'), new.raw_user_meta_data->>'membership_number', new.raw_user_meta_data->>'branch_name')
+  insert into public.profiles (id, full_name, phone_number, membership_number, branch_name)
+  values (new.id, coalesce(new.raw_user_meta_data->>'full_name', 'ANC Member'), new.raw_user_meta_data->>'phone_number', new.raw_user_meta_data->>'membership_number', new.raw_user_meta_data->>'branch_name')
   on conflict (id) do nothing;
   return new;
 end;
