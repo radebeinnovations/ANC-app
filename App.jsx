@@ -25,6 +25,7 @@ import TransferMoneyScreen from './src/screens/TransferMoneyScreen';
 import SignInScreen from './src/screens/SignInScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import ChatScreen from './src/screens/ChatScreen';
+import VerificationSuccessScreen from './src/screens/VerificationSuccessScreen';
 
 import { Colors } from './src/theme/colors';
 import { isSupabaseConfigured, supabase } from './src/services/supabase';
@@ -40,30 +41,23 @@ export default function App() {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const returnedFromVerification = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('verification') === 'success';
+  const [showVerificationSuccess, setShowVerificationSuccess] = useState(returnedFromVerification);
 
   React.useEffect(() => {
     if (!isSupabaseConfigured()) return undefined;
     supabase.auth.getSession().then(({ data }) => {
       if (data.session?.user) {
         setAuthUser(data.session.user); setSignedIn(true); setShowWelcome(false);
-        if (returnedFromVerification) setNotice('Email verified successfully. Welcome to ANC Unity.');
       }
     });
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setAuthUser(session?.user || null);
       if (session?.user) {
         setSignedIn(true); setShowWelcome(false);
-        if (returnedFromVerification) setNotice('Email verified successfully. Welcome to ANC Unity.');
       }
     });
     return () => subscription.unsubscribe();
   }, []);
-
-  React.useEffect(() => {
-    if (returnedFromVerification && typeof window !== 'undefined') {
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }
-  }, [returnedFromVerification]);
 
   // Interactive Demo Wallet Balance & Transactions State
   const [balance, setBalance] = useState(1500.00);
@@ -223,7 +217,12 @@ export default function App() {
   return (
     <View style={s.outerContainer}>
       <View style={s.phoneFrame}>
-        {!signedIn ? (
+        {showVerificationSuccess ? (
+          <VerificationSuccessScreen onContinue={() => {
+            setShowVerificationSuccess(false);
+            if (typeof window !== 'undefined') window.history.replaceState({}, document.title, window.location.pathname);
+          }} />
+        ) : !signedIn ? (
           showWelcome ? (
             <WelcomeScreen
               open={(target) => {
