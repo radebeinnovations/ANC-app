@@ -166,12 +166,12 @@ export default function App() {
     if (screen === 'chat') return <ChatScreen user={authUser} />;
 
     if (tab === 'Money') return <MoneyScreen open={open} cards={cards} balance={balance} onDepositFunds={handleDepositFunds} recentActivity={recentActivity} />;
-    if (tab === 'Chat') return <ChatScreen user={authUser} />;
+    if (tab === 'Chat') return <ChatScreen user={authUser} onRequireSignIn={() => { setSignedIn(false); setShowWelcome(false); }} />;
     if (tab === 'Participate') return <ParticipateScreen open={open} />;
     if (tab === 'Updates') return <NotificationsScreen />;
     if (tab === 'Member') return <ProfileScreen cards={cards} onOpenCards={() => open('cards')} setStepText={setStepText} />;
 
-    return <HomeScreen open={open} balance={balance} />;
+    return <HomeScreen open={open} balance={balance} user={authUser} />;
   };
 
   return (

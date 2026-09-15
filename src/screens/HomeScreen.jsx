@@ -7,7 +7,10 @@ const AVATAR_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDP7z
 const COMMUNITY_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAHtomXsNt6ZfeyvGZOeE5XMikoE5zxU6RquvkfvLhr4T0JYKXccFIuYI8r2T8-9ZZlaqqwWNNziIBcMoWa6jD-ILIRWc02WFG9hRmYaM5BbCiDBXKNUaGsyOhxcgb2bbd-Rzx6m0FPLxfh6dQLM5XA30dGG_LKc4u72FFmXlnnxQsZ_gmIR0jV8GlW5p6QYUO-h6qfrqHZGSfWJY6mootTuO2zTIRBZjmzjM-J9VHYQU1WxM4WEO0i';
 const NEWS_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAHR1a7BGP_bULWHfBqmlTZgAdHLDUGaQ9n42EuYpuscyM7zEqqysnBEFBchrBndc5olw-z7m9zHt8J2f1KlBsIEJcbViTOgrDKxoOMDSxwyhbm6Celjx0pd0-OYh-6kDsXNsIIzcF7FU30QbvhS_w9U5M0GZjAah-V1bZR0ig9UAONPSann0NLQ6JAl8wcx2iBNtAuzSB1IZwBp7qqfHtgzBTb68fJZD2IlcmApjWzMBVXT3-_Ba0X';
 
-export default function HomeScreen({ open }) {
+export default function HomeScreen({ open, user }) {
+  const memberName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Lerumo Thabo';
+  const memberNumber = user?.user_metadata?.membership_number || 'ANC-1234567';
+  const memberBranch = user?.user_metadata?.branch_name || 'Johannesburg Region';
   return (
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
       {/* Header Section (1:1 with Target HTML) */}
@@ -17,8 +20,8 @@ export default function HomeScreen({ open }) {
         </TouchableOpacity>
 
         <View style={{ flex: 1, marginLeft: 12 }}>
-          <Text style={s.greetingTitle}>Good morning, Lerumo Thabo</Text>
-          <Text style={s.greetingSub}>ANC Member · Johannesburg Region</Text>
+          <Text style={s.greetingTitle}>Good morning, {memberName}</Text>
+          <Text style={s.greetingSub}>ANC Member · {memberBranch}</Text>
         </View>
 
         <TouchableOpacity style={s.bellBtn} onPress={() => open('notifications')} activeOpacity={0.7}>
@@ -40,12 +43,12 @@ export default function HomeScreen({ open }) {
         <View style={s.detailsGrid2Col}>
           <View style={s.gridCol}>
             <Text style={s.gridLabel}>Membership Number</Text>
-            <Text style={s.gridVal}>ANC-1234567</Text>
+            <Text style={s.gridVal}>{memberNumber}</Text>
           </View>
 
           <View style={s.gridCol}>
             <Text style={s.gridLabel}>Branch</Text>
-            <Text style={s.gridVal}>Johannesburg Region</Text>
+            <Text style={s.gridVal}>{memberBranch}</Text>
           </View>
         </View>
 

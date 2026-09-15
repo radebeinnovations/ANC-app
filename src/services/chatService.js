@@ -25,11 +25,7 @@ const usesLiveChat = () => isSupabaseConfigured();
 
 export async function getPeopleYouMayKnow(currentUserId) {
   if (!usesLiveChat()) return demoPeople;
-  const { data, error } = await supabase
-    .from('profiles')
-    .select('id, full_name, membership_number, branch_name')
-    .neq('id', currentUserId)
-    .limit(12);
+  const { data, error } = await supabase.rpc('discover_members');
   if (error) throw error;
   return data.map(person => ({ ...person, initials: initials(person.full_name) }));
 }
@@ -41,10 +37,23 @@ export async function getConversations(currentUserId) {
     .select('conversation_id, chat_conversations(id, type, name, updated_at, chat_messages(content, created_at))')
     .eq('user_id', currentUserId);
   if (error) throw error;
+  const conversationIds = data.map(row => row.conversation_id);
+  const { data: members, error: membersError } = conversationIds.length
+    ? await supabase
+      .from('conversation_members')
+      .select('conversation_id, user_id, profiles(full_name)')
+      .in('conversation_id', conversationIds)
+    : { data: [], error: null };
+  if (membersError) throw membersError;
   return data.map(row => {
     const conversation = row.chat_conversations;
+    const conversationMembers = members.filter(member => member.conversation_id === conversation.id);
+    const otherMember = conversationMembers.find(member => member.user_id !== currentUserId);
+    const displayName = conversation.type === 'direct'
+      ? otherMember?.profiles?.full_name || 'Direct message'
+      : conversation.name || 'ANC Group';
     const last = [...(conversation.chat_messages || [])].sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
-    return { id: conversation.id, type: conversation.type, name: conversation.name || 'Direct message', member_count: 0, last_message: last?.content || 'No messages yet', last_message_at: last?.created_at || conversation.updated_at, initials: initials(conversation.name || 'DM') };
+    return { id: conversation.id, type: conversation.type, name: displayName, member_count: conversationMembers.length, last_message: last?.content || 'No messages yet', last_message_at: last?.created_at || conversation.updated_at, initials: initials(displayName) };
   });
 }
 
