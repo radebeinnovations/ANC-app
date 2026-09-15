@@ -1,4 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AppState, Platform } from 'react-native';
 
 // Supabase Configuration
 // Default to placeholder environment variables if not set in .env.local
@@ -7,15 +9,23 @@ const SUPABASE_ANON_KEY = process.env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY || pr
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
-    // Session persistence is added once the production authentication flow is enabled.
-    // Keeping this false prevents a demo identity from being mistaken for a real session.
-    persistSession: false,
-    autoRefreshToken: false,
+    // Store the member session securely on native devices and allow the web
+    // client to use its browser storage. This prevents expired JWTs in chat.
+    storage: Platform.OS === 'web' ? undefined : AsyncStorage,
+    persistSession: true,
+    autoRefreshToken: true,
     // Lets the web app exchange Supabase's email-confirmation code after the
     // member returns from the verification link.
-    detectSessionInUrl: true,
+    detectSessionInUrl: Platform.OS === 'web',
   },
 });
+
+if (Platform.OS !== 'web') {
+  AppState.addEventListener('change', state => {
+    if (state === 'active') supabase.auth.startAutoRefresh();
+    else supabase.auth.stopAutoRefresh();
+  });
+}
 
 /**
  * Helper to check if live Supabase project credentials are configured
