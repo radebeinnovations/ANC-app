@@ -53,7 +53,17 @@ export async function getConversations(currentUserId) {
       ? otherMember?.profiles?.full_name || 'Direct message'
       : conversation.name || 'ANC Group';
     const last = [...(conversation.chat_messages || [])].sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
-    return { id: conversation.id, type: conversation.type, name: displayName, member_count: conversationMembers.length, last_message: last?.content || 'No messages yet', last_message_at: last?.created_at || conversation.updated_at, initials: initials(displayName) };
+    return {
+      id: conversation.id,
+      type: conversation.type,
+      name: displayName,
+      member_count: conversationMembers.length,
+      member_ids: conversationMembers.map(member => member.user_id),
+      other_member_id: otherMember?.user_id || null,
+      last_message: last?.content || 'No messages yet',
+      last_message_at: last?.created_at || conversation.updated_at,
+      initials: initials(displayName),
+    };
   });
 }
 
@@ -69,17 +79,17 @@ export async function getMessages(conversationId) {
 }
 
 export async function createDirectConversation(currentUserId, person) {
-  if (!usesLiveChat()) return { id: person.id, type: 'direct', name: person.full_name, initials: person.initials, member_count: 2 };
+  if (!usesLiveChat()) return { id: person.id, type: 'direct', name: person.full_name, initials: person.initials, member_count: 2, member_ids: [currentUserId, person.id], other_member_id: person.id };
   const { data, error } = await supabase.rpc('create_direct_conversation', { other_member_id: person.id });
   if (error) throw error;
-  return { id: data, type: 'direct', name: person.full_name, initials: initials(person.full_name), member_count: 2 };
+  return { id: data, type: 'direct', name: person.full_name, initials: initials(person.full_name), member_count: 2, member_ids: [currentUserId, person.id], other_member_id: person.id };
 }
 
-export async function createGroupConversation(name, memberIds) {
-  if (!usesLiveChat()) return { id: `group-${Date.now()}`, type: 'group', name, initials: initials(name), member_count: memberIds.length + 1, last_message: 'Group created', last_message_at: new Date().toISOString() };
+export async function createGroupConversation(name, memberIds, currentUserId) {
+  if (!usesLiveChat()) return { id: `group-${Date.now()}`, type: 'group', name, initials: initials(name), member_count: memberIds.length + 1, member_ids: [currentUserId, ...memberIds], last_message: 'Group created', last_message_at: new Date().toISOString() };
   const { data, error } = await supabase.rpc('create_group_conversation', { group_name: name, member_ids: memberIds });
   if (error) throw error;
-  return { id: data, type: 'group', name, initials: initials(name), member_count: memberIds.length + 1 };
+  return { id: data, type: 'group', name, initials: initials(name), member_count: memberIds.length + 1, member_ids: [currentUserId, ...memberIds] };
 }
 
 export async function sendMessage(conversationId, content) {
@@ -102,6 +112,26 @@ export function createTypingChannel(conversationId, currentUserId, onTyping) {
   const channel = supabase.channel(`typing:${conversationId}`, { config: { presence: { key: currentUserId } } });
   channel.on('presence', { event: 'sync' }, () => onTyping(Object.values(channel.presenceState()).flat())).subscribe();
   return { sendTyping: (name, typing) => channel.track({ name, typing, at: Date.now() }), close: () => supabase.removeChannel(channel) };
+}
+
+// This is deliberately a separate presence room from typing. A member is
+// online while they have ANC Chat open, even when they are not composing.
+// Presence is ephemeral and is never written to the database.
+export function createOnlinePresenceChannel(currentUserId, fullName, onPresence) {
+  if (!usesLiveChat()) return { close: () => {} };
+  const channel = supabase.channel('anc-chat-online', { config: { presence: { key: currentUserId } } });
+  channel
+    .on('presence', { event: 'sync' }, () => {
+      const members = Object.entries(channel.presenceState()).map(([id, entries]) => ({
+        id,
+        ...(entries[entries.length - 1] || {}),
+      }));
+      onPresence(members);
+    })
+    .subscribe(status => {
+      if (status === 'SUBSCRIBED') channel.track({ name: fullName, online_at: Date.now() });
+    });
+  return { close: () => supabase.removeChannel(channel) };
 }
 
 function initials(name = '') { return name.split(' ').map(part => part[0]).join('').slice(0, 2).toUpperCase() || 'AN'; }
