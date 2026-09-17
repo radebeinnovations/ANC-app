@@ -62,7 +62,7 @@ create or replace function public.admin_is_allowed(target_branch text default nu
 returns boolean language plpgsql security definer set search_path = public as $$
 declare current_role text; current_branch text;
 begin
-  select role, branch_name into current_role, current_branch from public.admin_roles where user_id = auth.uid();
+  select ar.role, ar.branch_name into current_role, current_branch from public.admin_roles ar where ar.user_id = auth.uid();
   if current_role = 'super_admin' then return true; end if;
   if current_role = 'branch_organiser' and not allow_national and current_branch = target_branch then return true; end if;
   return false;
@@ -74,7 +74,7 @@ returns table(member_count bigint, published_event_count bigint, rsvp_count bigi
 language plpgsql security definer set search_path = public as $$
 declare current_role text; current_branch text;
 begin
-  select role, branch_name into current_role, current_branch from public.admin_roles where user_id = auth.uid();
+  select ar.role, ar.branch_name into current_role, current_branch from public.admin_roles ar where ar.user_id = auth.uid();
   if current_role is null then raise exception 'Dashboard access denied'; end if;
   return query select
     (select count(*) from public.profiles p where current_role = 'super_admin' or p.branch_name = current_branch),
@@ -88,7 +88,7 @@ returns table(id uuid, full_name text, membership_number text, branch_name text,
 language plpgsql security definer set search_path = public as $$
 declare current_role text; current_branch text;
 begin
-  select role, branch_name into current_role, current_branch from public.admin_roles where user_id = auth.uid();
+  select ar.role, ar.branch_name into current_role, current_branch from public.admin_roles ar where ar.user_id = auth.uid();
   if current_role is null then raise exception 'Dashboard access denied'; end if;
   return query select p.id, p.full_name, p.membership_number, p.branch_name, p.created_at
     from public.profiles p
@@ -103,7 +103,7 @@ returns table(id uuid, title text, description text, starts_at timestamptz, ends
 language plpgsql security definer set search_path = public as $$
 declare current_role text; current_branch text;
 begin
-  select role, branch_name into current_role, current_branch from public.admin_roles where user_id = auth.uid();
+  select ar.role, ar.branch_name into current_role, current_branch from public.admin_roles ar where ar.user_id = auth.uid();
   if current_role is null then raise exception 'Dashboard access denied'; end if;
   return query select e.id, e.title, e.description, e.starts_at, e.ends_at, e.venue, e.location, e.branch_name, e.audience, e.status, count(r.user_id)
     from public.community_events e left join public.event_rsvps r on r.event_id = e.id
@@ -116,7 +116,7 @@ create or replace function public.admin_create_event(event_title text, starts_at
 returns uuid language plpgsql security definer set search_path = public as $$
 declare current_role text; current_branch text; new_event uuid; target_branch text;
 begin
-  select role, branch_name into current_role, current_branch from public.admin_roles where user_id = auth.uid();
+  select ar.role, ar.branch_name into current_role, current_branch from public.admin_roles ar where ar.user_id = auth.uid();
   if current_role is null then raise exception 'Dashboard access denied'; end if;
   if event_audience not in ('branch', 'national') then raise exception 'Invalid event audience'; end if;
   if current_role <> 'super_admin' and event_audience = 'national' then raise exception 'Only a Super Admin can publish national events'; end if;
