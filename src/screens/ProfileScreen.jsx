@@ -5,6 +5,7 @@ import { Icon } from '../components/Icons';
 import List from '../components/List';
 import YamiFooter from '../components/YamiFooter';
 import { Colors } from '../theme/colors';
+import { getMemberProfile } from '../utils/memberProfile';
 
 function OfficialANCCrestEmblem() {
   return (
@@ -57,10 +58,11 @@ function DiamondMeshBackground() {
   );
 }
 
-export default function ProfileScreen({ cards = [], onOpenCards, setStepText }) {
+export default function ProfileScreen({ cards = [], onOpenCards, setStepText, user }) {
   const [activeTab, setActiveTab] = useState('CARD'); // 'CARD' | 'DETAILS'
   const [showQRModal, setShowQRModal] = useState(false);
   const [showVerifyModal, setShowVerifyModal] = useState(false);
+  const member = getMemberProfile(user);
 
   // Explicitly clear stepText header subtitle on Member Card screen
   React.useEffect(() => {
@@ -90,21 +92,21 @@ export default function ProfileScreen({ cards = [], onOpenCards, setStepText }) 
         </View>
 
         {/* Member Name */}
-        <Text style={s.memberName}>LERUMO THABO</Text>
+        <Text style={s.memberName}>{member.fullName.toUpperCase()}</Text>
 
         {/* Member Badge & ID Row */}
         <View style={s.badgeIdRow}>
           <View style={s.memberRoleBadge}>
             <Text style={s.memberRoleText}>MEMBER</Text>
           </View>
-          <Text style={s.memberIdNumber}>ANC–1234567</Text>
+          <Text style={s.memberIdNumber}>{member.membershipNumber}</Text>
         </View>
 
         {/* Card Details Grid (Province & Photo Thumbnail) */}
         <View style={s.cardDetailsGrid}>
           <View>
             <Text style={s.gridDetailLabel}>PROVINCE</Text>
-            <Text style={s.gridDetailVal}>GAUTENG</Text>
+            <Text style={s.gridDetailVal}>{member.branchName}</Text>
           </View>
 
           <View style={s.photoThumbnailBox}>
@@ -167,9 +169,9 @@ export default function ProfileScreen({ cards = [], onOpenCards, setStepText }) 
         /* TAB 2: DETAILS (Member Details List) */
         <View style={s.detailsContainer}>
           <Text style={s.detailsSectionHeader}>Member Account Details</Text>
-          <List badge="MOB" title="082 555 0105" sub="Verified Mobile Number" />
-          <List badge="EML" title="lerumo.thabo@anc-unity.org.za" sub="Verified Email Address" />
-          <List badge="LOC" title="Soweto, Gauteng" sub="Home Branch (Ward 62)" />
+          <List badge="MOB" title={member.phoneNumber} sub="Registered mobile number" />
+          <List badge="EML" title={member.email} sub="Verified email address" />
+          <List badge="LOC" title={member.branchName} sub="Home branch" />
           <List badge="CRD" title="Saved Payment Cards" sub={`${cards.length} linked cards`} onPress={onOpenCards} />
           <List badge="SET" title="App Settings & Security" sub="Biometrics & PIN lock" />
         </View>
@@ -193,7 +195,7 @@ export default function ProfileScreen({ cards = [], onOpenCards, setStepText }) 
               <Icon name="qr-code-2" size={140} color={Colors.primary} />
             </View>
 
-            <Text style={s.modalMemberInfo}>Lerumo Thabo • ANC–1234567</Text>
+            <Text style={s.modalMemberInfo}>{member.fullName} • {member.membershipNumber}</Text>
             <Button text="Close" onPress={() => setShowQRModal(false)} />
           </View>
         </View>

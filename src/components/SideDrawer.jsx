@@ -5,7 +5,7 @@ import { Icon } from './Icons';
 
 const AVATAR_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDP7zlfBNbg5jSucUfG5tPD3BtnVuTQAY2I1kjxSuVqrYNxWqB2lpmvbct4HtE9rdYUrNvLmyCoODdPJBfEqJlKcTv1n486W4ZiNoD2hMMB6ygx62xZumjQQcA9Q5uBGXVyeqgizdBJTJZhYHK0e2jGRtVRt-uNnljNFVUKXpdgq2Cyhy3xUtsvwfSISYHxtEhER8JSmDx9fJe9hVTzN3FqNWNa4aOez8vY3D9vx2YwUd9oJmGKaKmb';
 
-export default function SideDrawer({ visible, onClose, onNavigate, onSignOut }) {
+export default function SideDrawer({ visible, onClose, onNavigate, onSignOut, member }) {
   if (!visible) return null;
 
   const menuItems = [
@@ -37,8 +37,8 @@ export default function SideDrawer({ visible, onClose, onNavigate, onSignOut }) 
             <View style={s.profileRow}>
               <Image source={{ uri: AVATAR_IMG_URL }} style={s.avatar} />
               <View style={{ marginLeft: 12 }}>
-                <Text style={s.profileName}>Lerumo Thabo</Text>
-                <Text style={s.profileMeta}>ANC-1234567 • ACTIVE</Text>
+                <Text style={s.profileName}>{member?.fullName || 'ANC Member'}</Text>
+                <Text style={s.profileMeta}>{member?.membershipNumber || 'Membership pending'} • ACTIVE</Text>
               </View>
             </View>
           </View>

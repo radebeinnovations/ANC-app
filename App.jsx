@@ -29,6 +29,7 @@ import VerificationSuccessScreen from './src/screens/VerificationSuccessScreen';
 
 import { Colors } from './src/theme/colors';
 import { isSupabaseConfigured, supabase } from './src/services/supabase';
+import { getMemberProfile } from './src/utils/memberProfile';
 
 export default function App() {
   const [signedIn, setSignedIn] = useState(false);
@@ -39,6 +40,7 @@ export default function App() {
   const [screen, setScreen] = useState('main');
   const [notice, setNotice] = useState('');
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const memberProfile = getMemberProfile(authUser);
 
   const returnedFromVerification = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('verification') === 'success';
   const [showVerificationSuccess, setShowVerificationSuccess] = useState(returnedFromVerification);
@@ -196,8 +198,8 @@ export default function App() {
     if (screen === 'transfer') return <TransferMoneyScreen finish={finish} balance={balance} onDeductBalance={handleDeductBalance} setStepText={setStepText} setNotice={setNotice} />;
     if (screen === 'services') return <ServicesScreen open={open} finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} onDepositFunds={handleDepositFunds} setStepText={setStepText} initialSubScreen={initialSubScreen} />;
     if (screen === 'donate') return <DonationScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} setStepText={setStepText} initialStep={initialDonationStep} />;
-    if (screen === 'membership') return <MembershipScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} />;
-    if (screen === 'profile') return <ProfileScreen cards={cards} onOpenCards={() => open('cards')} setStepText={setStepText} />;
+    if (screen === 'membership') return <MembershipScreen finish={finish} cards={cards} balance={balance} onDeductBalance={handleDeductBalance} user={authUser} />;
+    if (screen === 'profile') return <ProfileScreen cards={cards} onOpenCards={() => open('cards')} setStepText={setStepText} user={authUser} />;
     if (screen === 'cards') return <CardManagerScreen cards={cards} onAddCard={handleAddCard} />;
     if (screen === 'branch') return <BranchScreen />;
     if (screen === 'notifications' || screen === 'updates') return <NotificationsScreen />;
@@ -205,11 +207,11 @@ export default function App() {
     if (screen === 'statement_detail') return <StatementDetailScreen finish={finish} />;
     if (screen === 'chat') return <ChatScreen user={authUser} />;
 
-    if (tab === 'Money') return <MoneyScreen open={open} cards={cards} balance={balance} onDepositFunds={handleDepositFunds} recentActivity={recentActivity} />;
+    if (tab === 'Money') return <MoneyScreen open={open} cards={cards} balance={balance} onDepositFunds={handleDepositFunds} recentActivity={recentActivity} user={authUser} />;
     if (tab === 'Chat') return <ChatScreen user={authUser} onRequireSignIn={() => { setSignedIn(false); setShowWelcome(false); }} />;
-    if (tab === 'Participate') return <ParticipateScreen open={open} />;
+    if (tab === 'Participate') return <ParticipateScreen open={open} user={authUser} />;
     if (tab === 'Updates') return <NotificationsScreen />;
-    if (tab === 'Member') return <ProfileScreen cards={cards} onOpenCards={() => open('cards')} setStepText={setStepText} />;
+    if (tab === 'Member') return <ProfileScreen cards={cards} onOpenCards={() => open('cards')} setStepText={setStepText} user={authUser} />;
 
     return <HomeScreen open={open} balance={balance} user={authUser} />;
   };
@@ -269,8 +271,14 @@ export default function App() {
 
             <SideDrawer
               visible={drawerOpen}
+              member={memberProfile}
               onClose={() => setDrawerOpen(false)}
-              onNavigate={(target) => open(target)}
+              onNavigate={(target) => {
+                if (target === 'home') { setTab('Home'); setScreen('main'); }
+                else if (target === 'money') { setTab('Money'); setScreen('main'); }
+                else if (target === 'chat') { setTab('Chat'); setScreen('main'); }
+                else open(target);
+              }}
               onSignOut={() => {
                 if (isSupabaseConfigured()) supabase.auth.signOut();
                 setAuthUser(null);

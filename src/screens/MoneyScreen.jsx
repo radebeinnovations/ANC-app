@@ -5,8 +5,9 @@ import Field from '../components/Field';
 import { Icon, MastercardLogo } from '../components/Icons';
 import Pills from '../components/Pills';
 import { Colors } from '../theme/colors';
+import { getMemberProfile } from '../utils/memberProfile';
 
-export default function MoneyScreen({ open, balance = 1500, onDepositFunds, recentActivity = [] }) {
+export default function MoneyScreen({ open, balance = 1500, onDepositFunds, recentActivity = [], user }) {
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [depositAmount, setDepositAmount] = useState('500');
   const [showAllActivity, setShowAllActivity] = useState(false);
@@ -28,13 +29,14 @@ export default function MoneyScreen({ open, balance = 1500, onDepositFunds, rece
 
   const displayList = recentActivity.length > 0 ? recentActivity : defaultActivity;
   const visibleActivity = showAllActivity ? displayList : displayList.slice(0, 3);
+  const member = getMemberProfile(user);
 
   return (
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
       {/* Title & Sub */}
       <Text style={s.h1}>Money</Text>
       <Text style={s.subText}>
-        Lerumo Thabo • ANC-1234567 • <Text style={s.activeText}>ACTIVE</Text>
+        {member.fullName} • {member.membershipNumber} • <Text style={s.activeText}>ACTIVE</Text>
       </Text>
 
       {/* Available Balance Card with Graphic */}

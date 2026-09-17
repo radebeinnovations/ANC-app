@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Icon } from '../components/Icons';
 import { Colors } from '../theme/colors';
+import { getMemberProfile } from '../utils/memberProfile';
 
 const rand = (n) => `R${Number(n || 0).toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
-export default function MembershipScreen({ finish, balance = 1500, onDeductBalance }) {
+export default function MembershipScreen({ finish, balance = 1500, onDeductBalance, user }) {
   const [amount, setAmount] = useState('250');
   const [frequency, setFrequency] = useState('Monthly');
   const [isCustom, setIsCustom] = useState(false);
@@ -16,6 +17,7 @@ export default function MembershipScreen({ finish, balance = 1500, onDeductBalan
   };
 
   const numericAmount = parseFloat(amount) || 0;
+  const member = getMemberProfile(user);
 
   const handleReviewContribution = () => {
     if (numericAmount <= 0) return;
@@ -41,8 +43,8 @@ export default function MembershipScreen({ finish, balance = 1500, onDeductBalan
         <View style={s.identityCard}>
           <View style={s.watermarkCircle} />
           <Text style={s.identityLabel}>MEMBER IDENTITY</Text>
-          <Text style={s.memberName}>LERUMO THABO</Text>
-          <Text style={s.memberIdCode}>ANC-1234567</Text>
+          <Text style={s.memberName}>{member.fullName.toUpperCase()}</Text>
+          <Text style={s.memberIdCode}>{member.membershipNumber}</Text>
         </View>
 
         {/* Membership Status Card */}

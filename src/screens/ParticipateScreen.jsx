@@ -3,13 +3,15 @@ import { Image, ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity,
 import { Icon, ReceiveMoneySvgIcon, SendMoneySvgIcon } from '../components/Icons';
 import YamiFooter from '../components/YamiFooter';
 import { Colors } from '../theme/colors';
+import { getMemberProfile } from '../utils/memberProfile';
 
 const AVATAR_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDP7zlfBNbg5jSucUfG5tPD3BtnVuTQAY2I1kjxSuVqrYNxWqB2lpmvbct4HtE9rdYUrNvLmyCoODdPJBfEqJlKcTv1n486W4ZiNoD2hMMB6ygx62xZumjQQcA9Q5uBGXVyeqgizdBJTJZhYHK0e2jGRtVRt-uNnljNFVUKXpdgq2Cyhy3xUtsvwfSISYHxtEhER8JSmDx9fJe9hVTzN3FqNWNa4aOez8vY3D9vx2YwUd9oJmGKaKmb';
 const COMMUNITY_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAHtomXsNt6ZfeyvGZOeE5XMikoE5zxU6RquvkfvLhr4T0JYKXccFIuYI8r2T8-9ZZlaqqwWNNziIBcMoWa6jD-ILIRWc02WFG9hRmYaM5BbCiDBXKNUaGsyOhxcgb2bbd-Rzx6m0FPLxfh6dQLM5XA30dGG_LKc4u72FFmXlnnxQsZ_gmIR0jV8GlW5p6QYUO-h6qfrqHZGSfWJY6mootTuO2zTIRBZjmzjM-J9VHYQU1WxM4WEO0i';
 const LATEST_HERO_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDHgtndFSg1VNHObIGcZIVyJ5csQDFMufbynzecuPzTzzip8_SF-7bE1hkBqrIDk2z9WdB1hn7AkKoRKDOPoriFESQprpaPvPA6Ho8WSsUUujbo0AHfZDXL7hrjhX2QtMPeRC1k8BjZvaMiIJfrxsBDvqyp6IXPPHOShgQ7OAxnrFAIm-k2Bi-gVqHYdMwDGMJuAdeIw59P2iO6C99NyhzmCY0_uxbJOPsLZtsOaecMLdGGehVIy_3GQW0_gNbsLDWnGA';
 
-export default function ParticipateScreen({ open }) {
+export default function ParticipateScreen({ open, user }) {
   const [activeFilter, setActiveFilter] = useState('My Community');
+  const member = getMemberProfile(user);
 
   const filters = ['Important Dates', 'My Community', 'Quick Services', 'Latest Updates'];
 
@@ -18,8 +20,8 @@ export default function ParticipateScreen({ open }) {
       {/* Top Greeting Header */}
       <View style={s.headerRow}>
         <View style={{ flex: 1 }}>
-          <Text style={s.greetingTitle}>Good morning, Lerumo</Text>
-          <Text style={s.greetingSub}>ANC MEMBER · Johannesburg Region · Branch Name</Text>
+          <Text style={s.greetingTitle}>Good morning, {member.firstName}</Text>
+          <Text style={s.greetingSub}>ANC MEMBER · {member.branchName}</Text>
         </View>
 
         <TouchableOpacity style={s.avatarContainer} onPress={() => open('profile')} activeOpacity={0.8}>
@@ -37,11 +39,11 @@ export default function ParticipateScreen({ open }) {
         </View>
 
         <Text style={s.cardLabel}>MEMBERSHIP NUMBER</Text>
-        <Text style={s.membershipNumberText}>ANC–1234567</Text>
+        <Text style={s.membershipNumberText}>{member.membershipNumber}</Text>
 
         <View style={s.locationRow}>
           <Icon name="location-on" size={16} color="#4A5568" />
-          <Text style={s.locationText}>Johannesburg Region Branch</Text>
+          <Text style={s.locationText}>{member.branchName}</Text>
         </View>
 
         <TouchableOpacity style={s.viewMemberCardBtn} onPress={() => open('profile')} activeOpacity={0.85}>
