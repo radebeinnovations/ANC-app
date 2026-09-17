@@ -30,6 +30,18 @@ export async function getPeopleYouMayKnow(currentUserId) {
   return data.map(person => ({ ...person, initials: initials(person.full_name) }));
 }
 
+// The database function returns profiles only — never any member's phone
+// number.  Phone numbers from the device address book are used only as a
+// short-lived match input and are not written to Supabase.
+export async function getMembersInContacts(phoneNumbers) {
+  if (!usesLiveChat() || !phoneNumbers?.length) return [];
+  const { data, error } = await supabase.rpc('discover_members_in_contacts', {
+    contact_phone_numbers: phoneNumbers,
+  });
+  if (error) throw error;
+  return (data || []).map(person => ({ ...person, initials: initials(person.full_name), matched_contact: true }));
+}
+
 export async function getConversations(currentUserId) {
   if (!usesLiveChat()) return demoConversations;
   const { data, error } = await supabase

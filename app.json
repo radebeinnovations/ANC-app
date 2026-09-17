@@ -18,7 +18,13 @@
       "bundleIdentifier": "za.org.anc.unity"
     },
     "plugins": [
-      "expo-asset"
+      "expo-asset",
+      [
+        "expo-contacts",
+        {
+          "contactsPermission": "Allow ANC Unity to find ANC members already in your contacts. Your contacts are not stored."
+        }
+      ]
     ]
   }
 }
