@@ -75,6 +75,7 @@ function getScreenTitle(screen, stepText) {
   if (screen === 'profile') return 'Member Card';
   if (screen === 'cards') return 'My Cards';
   if (screen === 'branch') return 'My Branch';
+  if (screen === 'event') return 'Event details';
   if (screen === 'notifications') return 'Notifications';
   return 'ANC UNITY';
 }

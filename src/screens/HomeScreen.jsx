@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Icon, ReceiveMoneySvgIcon, SendMoneySvgIcon } from '../components/Icons';
 import { Colors } from '../theme/colors';
-import { getMyPublishedEvents, rsvpToEvent } from '../services/eventsService';
+import { getMyPublishedEvents } from '../services/eventsService';
 
 const AVATAR_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDP7zlfBNbg5jSucUfG5tPD3BtnVuTQAY2I1kjxSuVqrYNxWqB2lpmvbct4HtE9rdYUrNvLmyCoODdPJBfEqJlKcTv1n486W4ZiNoD2hMMB6ygx62xZumjQQcA9Q5uBGXVyeqgizdBJTJZhYHK0e2jGRtVRt-uNnljNFVUKXpdgq2Cyhy3xUtsvwfSISYHxtEhER8JSmDx9fJe9hVTzN3FqNWNa4aOez8vY3D9vx2YwUd9oJmGKaKmb';
 const COMMUNITY_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAHtomXsNt6ZfeyvGZOeE5XMikoE5zxU6RquvkfvLhr4T0JYKXccFIuYI8r2T8-9ZZlaqqwWNNziIBcMoWa6jD-ILIRWc02WFG9hRmYaM5BbCiDBXKNUaGsyOhxcgb2bbd-Rzx6m0FPLxfh6dQLM5XA30dGG_LKc4u72FFmXlnnxQsZ_gmIR0jV8GlW5p6QYUO-h6qfrqHZGSfWJY6mootTuO2zTIRBZjmzjM-J9VHYQU1WxM4WEO0i';
@@ -13,19 +13,10 @@ export default function HomeScreen({ open, user }) {
   const memberNumber = user?.user_metadata?.membership_number || 'ANC-1234567';
   const memberBranch = user?.user_metadata?.branch_name || 'Johannesburg Region';
   const [communityEvents, setCommunityEvents] = useState([]);
-  const [eventNotice, setEventNotice] = useState({});
   useEffect(() => {
     if (!user) return undefined;
     getMyPublishedEvents().then(events => setCommunityEvents(events)).catch(() => setCommunityEvents([]));
   }, [user?.id]);
-  async function rsvp(event) {
-    if (!event) { open('branch'); return; }
-    try {
-      await rsvpToEvent(event.id, 'going');
-      setCommunityEvents(current => current.map(item => item.id === event.id ? { ...item, rsvp_response: 'going' } : item));
-      setEventNotice(current => ({ ...current, [event.id]: 'You are going — the organiser has your RSVP.' }));
-    } catch (error) { setEventNotice(current => ({ ...current, [event.id]: error?.message || 'We could not save your RSVP.' })); }
-  }
   const displayedEvents = communityEvents.length ? communityEvents : [{ id: 'demo-event', title: 'Monthly Strategy Session', venue: 'Walter Sisulu House', starts_at: null, rsvp_response: null, isDemo: true }];
   return (
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
@@ -114,10 +105,13 @@ export default function HomeScreen({ open, user }) {
                 <Icon name="schedule" size={16} color="#4A5568" />
                 <Text style={s.scheduleText}>{eventSchedule}</Text>
               </View>
-              <TouchableOpacity style={s.viewEventGreenBtn} onPress={() => rsvp(event.isDemo ? null : event)} activeOpacity={0.8}>
-                <Text style={s.viewEventGreenBtnText}>{event.rsvp_response === 'going' ? 'You are going' : event.isDemo ? 'View Event & RSVP' : 'RSVP to event'}</Text>
+              <TouchableOpacity
+                style={s.viewEventGreenBtn}
+                onPress={() => event.isDemo ? open('branch') : open('event', event)}
+                activeOpacity={0.8}
+              >
+                <Text style={s.viewEventGreenBtnText}>{event.isDemo ? 'View Event & RSVP' : 'View event details'}</Text>
               </TouchableOpacity>
-              {eventNotice[event.id] ? <Text style={s.eventNotice}>{eventNotice[event.id]}</Text> : null}
             </View>
           </View>;
         })}

@@ -24,6 +24,12 @@
         {
           "contactsPermission": "Allow ANC Unity to find ANC members already in your contacts. Your contacts are not stored."
         }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Allow ANC Unity to use your location while you view event directions and distance. Your location is not stored."
+        }
       ]
     ]
   }

@@ -27,6 +27,7 @@ import WelcomeScreen from './src/screens/WelcomeScreen';
 import ChatScreen from './src/screens/ChatScreen';
 import VerificationSuccessScreen from './src/screens/VerificationSuccessScreen';
 import AdminDashboard from './src/screens/AdminDashboard';
+import EventDetailScreen from './src/screens/EventDetailScreen';
 
 import { Colors } from './src/theme/colors';
 import { isSupabaseConfigured, supabase } from './src/services/supabase';
@@ -146,6 +147,7 @@ function MemberApp() {
 
   const [initialSubScreen, setInitialSubScreen] = useState('hub');
   const [initialDonationStep, setInitialDonationStep] = useState(0);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   const open = (name, subScreen = 'hub') => {
     setNotice('');
@@ -161,6 +163,9 @@ function MemberApp() {
     } else if (name === 'donate') {
       setInitialDonationStep(2);
       setScreen('donate');
+    } else if (name === 'event') {
+      setSelectedEvent(subScreen);
+      setScreen('event');
     } else {
       setInitialSubScreen(subScreen);
       setScreen(name);
@@ -212,6 +217,7 @@ function MemberApp() {
     if (screen === 'profile') return <ProfileScreen cards={cards} onOpenCards={() => open('cards')} setStepText={setStepText} user={authUser} />;
     if (screen === 'cards') return <CardManagerScreen cards={cards} onAddCard={handleAddCard} />;
     if (screen === 'branch') return <BranchScreen />;
+    if (screen === 'event') return <EventDetailScreen event={selectedEvent} finish={finish} />;
     if (screen === 'notifications' || screen === 'updates') return <NotificationsScreen />;
     if (screen === 'newsroom') return <NewsroomScreen finish={finish} open={open} />;
     if (screen === 'statement_detail') return <StatementDetailScreen finish={finish} />;
