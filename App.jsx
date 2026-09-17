@@ -26,12 +26,22 @@ import SignInScreen from './src/screens/SignInScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import ChatScreen from './src/screens/ChatScreen';
 import VerificationSuccessScreen from './src/screens/VerificationSuccessScreen';
+import AdminDashboard from './src/screens/AdminDashboard';
 
 import { Colors } from './src/theme/colors';
 import { isSupabaseConfigured, supabase } from './src/services/supabase';
 import { getMemberProfile } from './src/utils/memberProfile';
 
 export default function App() {
+  // The organiser dashboard is a web-only portal in the same Vercel project.
+  // It is protected again by Supabase role checks inside AdminDashboard.
+  if (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('admin') === '1') {
+    return <AdminDashboard />;
+  }
+  return <MemberApp />;
+}
+
+function MemberApp() {
   const [signedIn, setSignedIn] = useState(false);
   const [authUser, setAuthUser] = useState(null);
   // The Stitch prototype begins at the public welcome screen; sign-in remains one tap away.

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Icon, ReceiveMoneySvgIcon, SendMoneySvgIcon } from '../components/Icons';
 import { Colors } from '../theme/colors';
+import { getMyPublishedEvents, rsvpToEvent } from '../services/eventsService';
 
 const AVATAR_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDP7zlfBNbg5jSucUfG5tPD3BtnVuTQAY2I1kjxSuVqrYNxWqB2lpmvbct4HtE9rdYUrNvLmyCoODdPJBfEqJlKcTv1n486W4ZiNoD2hMMB6ygx62xZumjQQcA9Q5uBGXVyeqgizdBJTJZhYHK0e2jGRtVRt-uNnljNFVUKXpdgq2Cyhy3xUtsvwfSISYHxtEhER8JSmDx9fJe9hVTzN3FqNWNa4aOez8vY3D9vx2YwUd9oJmGKaKmb';
 const COMMUNITY_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAHtomXsNt6ZfeyvGZOeE5XMikoE5zxU6RquvkfvLhr4T0JYKXccFIuYI8r2T8-9ZZlaqqwWNNziIBcMoWa6jD-ILIRWc02WFG9hRmYaM5BbCiDBXKNUaGsyOhxcgb2bbd-Rzx6m0FPLxfh6dQLM5XA30dGG_LKc4u72FFmXlnnxQsZ_gmIR0jV8GlW5p6QYUO-h6qfrqHZGSfWJY6mootTuO2zTIRBZjmzjM-J9VHYQU1WxM4WEO0i';
@@ -11,6 +12,23 @@ export default function HomeScreen({ open, user }) {
   const memberName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Lerumo Thabo';
   const memberNumber = user?.user_metadata?.membership_number || 'ANC-1234567';
   const memberBranch = user?.user_metadata?.branch_name || 'Johannesburg Region';
+  const [communityEvent, setCommunityEvent] = useState(null);
+  const [eventNotice, setEventNotice] = useState('');
+  useEffect(() => {
+    if (!user) return undefined;
+    getMyPublishedEvents().then(events => setCommunityEvent(events[0] || null)).catch(() => {});
+  }, [user?.id]);
+  async function rsvp() {
+    if (!communityEvent) { open('branch'); return; }
+    try {
+      await rsvpToEvent(communityEvent.id, 'going');
+      setCommunityEvent(current => ({ ...current, rsvp_response: 'going' }));
+      setEventNotice('You are going — the organiser has your RSVP.');
+    } catch (error) { setEventNotice(error?.message || 'We could not save your RSVP.'); }
+  }
+  const eventTitle = communityEvent?.title || 'Monthly Strategy Session';
+  const eventVenue = communityEvent?.venue || communityEvent?.location || 'Walter Sisulu House';
+  const eventSchedule = communityEvent ? `${new Date(communityEvent.starts_at).toLocaleDateString([], { weekday: 'long', month: 'short', day: 'numeric' })} · ${new Date(communityEvent.starts_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} at ${eventVenue}` : 'Saturday · 10:00 at Walter Sisulu House';
   return (
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
       {/* Header Section (1:1 with Target HTML) */}
@@ -91,16 +109,17 @@ export default function HomeScreen({ open, user }) {
 
           <View style={s.communityBody}>
             <Text style={s.branchMeetingTag}>BRANCH MEETING</Text>
-            <Text style={s.meetingTitle}>Monthly Strategy Session</Text>
+            <Text style={s.meetingTitle}>{eventTitle}</Text>
 
             <View style={s.scheduleRow}>
               <Icon name="schedule" size={16} color="#4A5568" />
-              <Text style={s.scheduleText}>Saturday · 10:00 at Walter Sisulu House</Text>
+              <Text style={s.scheduleText}>{eventSchedule}</Text>
             </View>
 
-            <TouchableOpacity style={s.viewEventGreenBtn} onPress={() => open('branch')} activeOpacity={0.8}>
-              <Text style={s.viewEventGreenBtnText}>View Event</Text>
+            <TouchableOpacity style={s.viewEventGreenBtn} onPress={rsvp} activeOpacity={0.8}>
+              <Text style={s.viewEventGreenBtnText}>{communityEvent?.rsvp_response === 'going' ? 'You are going' : 'View Event & RSVP'}</Text>
             </TouchableOpacity>
+            {eventNotice ? <Text style={s.eventNotice}>{eventNotice}</Text> : null}
           </View>
         </View>
       </View>
@@ -285,6 +304,7 @@ const s = StyleSheet.create({
   scheduleText: { fontSize: 13, color: '#4A5568', fontFamily: 'Inter' },
   viewEventGreenBtn: { backgroundColor: '#006933', borderRadius: 10, paddingVertical: 12, alignItems: 'center' },
   viewEventGreenBtnText: { color: '#FFFFFF', fontSize: 14, fontWeight: '700', fontFamily: 'Inter' },
+  eventNotice: { color: '#006933', fontSize: 12, fontWeight: '700', marginTop: 9, lineHeight: 17 },
 
   /* SECTION 4: QUICK SERVICES GRID */
   services3Grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
