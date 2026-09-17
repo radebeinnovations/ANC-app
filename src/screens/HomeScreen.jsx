@@ -12,23 +12,21 @@ export default function HomeScreen({ open, user }) {
   const memberName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Lerumo Thabo';
   const memberNumber = user?.user_metadata?.membership_number || 'ANC-1234567';
   const memberBranch = user?.user_metadata?.branch_name || 'Johannesburg Region';
-  const [communityEvent, setCommunityEvent] = useState(null);
-  const [eventNotice, setEventNotice] = useState('');
+  const [communityEvents, setCommunityEvents] = useState([]);
+  const [eventNotice, setEventNotice] = useState({});
   useEffect(() => {
     if (!user) return undefined;
-    getMyPublishedEvents().then(events => setCommunityEvent(events[0] || null)).catch(() => {});
+    getMyPublishedEvents().then(events => setCommunityEvents(events)).catch(() => setCommunityEvents([]));
   }, [user?.id]);
-  async function rsvp() {
-    if (!communityEvent) { open('branch'); return; }
+  async function rsvp(event) {
+    if (!event) { open('branch'); return; }
     try {
-      await rsvpToEvent(communityEvent.id, 'going');
-      setCommunityEvent(current => ({ ...current, rsvp_response: 'going' }));
-      setEventNotice('You are going — the organiser has your RSVP.');
-    } catch (error) { setEventNotice(error?.message || 'We could not save your RSVP.'); }
+      await rsvpToEvent(event.id, 'going');
+      setCommunityEvents(current => current.map(item => item.id === event.id ? { ...item, rsvp_response: 'going' } : item));
+      setEventNotice(current => ({ ...current, [event.id]: 'You are going — the organiser has your RSVP.' }));
+    } catch (error) { setEventNotice(current => ({ ...current, [event.id]: error?.message || 'We could not save your RSVP.' })); }
   }
-  const eventTitle = communityEvent?.title || 'Monthly Strategy Session';
-  const eventVenue = communityEvent?.venue || communityEvent?.location || 'Walter Sisulu House';
-  const eventSchedule = communityEvent ? `${new Date(communityEvent.starts_at).toLocaleDateString([], { weekday: 'long', month: 'short', day: 'numeric' })} · ${new Date(communityEvent.starts_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} at ${eventVenue}` : 'Saturday · 10:00 at Walter Sisulu House';
+  const displayedEvents = communityEvents.length ? communityEvents : [{ id: 'demo-event', title: 'Monthly Strategy Session', venue: 'Walter Sisulu House', starts_at: null, rsvp_response: null, isDemo: true }];
   return (
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
       {/* Header Section (1:1 with Target HTML) */}
@@ -104,24 +102,25 @@ export default function HomeScreen({ open, user }) {
       <View style={s.sectionContainer}>
         <Text style={s.sectionTitle}>My Community</Text>
 
-        <View style={s.communityCard}>
-          <Image source={{ uri: COMMUNITY_IMG_URL }} style={s.communityImage} resizeMode="cover" />
-
-          <View style={s.communityBody}>
-            <Text style={s.branchMeetingTag}>BRANCH MEETING</Text>
-            <Text style={s.meetingTitle}>{eventTitle}</Text>
-
-            <View style={s.scheduleRow}>
-              <Icon name="schedule" size={16} color="#4A5568" />
-              <Text style={s.scheduleText}>{eventSchedule}</Text>
+        {displayedEvents.map((event, index) => {
+          const eventVenue = event.venue || event.location || 'Venue to be confirmed';
+          const eventSchedule = event.starts_at ? `${new Date(event.starts_at).toLocaleDateString([], { weekday: 'long', month: 'short', day: 'numeric' })} · ${new Date(event.starts_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} at ${eventVenue}` : `Saturday · 10:00 at ${eventVenue}`;
+          return <View key={event.id} style={[s.communityCard, index > 0 && s.communityCardStacked]}>
+            <Image source={{ uri: COMMUNITY_IMG_URL }} style={s.communityImage} resizeMode="cover" />
+            <View style={s.communityBody}>
+              <Text style={s.branchMeetingTag}>{event.audience === 'national' ? 'ANC NATIONAL EVENT' : 'BRANCH MEETING'}</Text>
+              <Text style={s.meetingTitle}>{event.title}</Text>
+              <View style={s.scheduleRow}>
+                <Icon name="schedule" size={16} color="#4A5568" />
+                <Text style={s.scheduleText}>{eventSchedule}</Text>
+              </View>
+              <TouchableOpacity style={s.viewEventGreenBtn} onPress={() => rsvp(event.isDemo ? null : event)} activeOpacity={0.8}>
+                <Text style={s.viewEventGreenBtnText}>{event.rsvp_response === 'going' ? 'You are going' : event.isDemo ? 'View Event & RSVP' : 'RSVP to event'}</Text>
+              </TouchableOpacity>
+              {eventNotice[event.id] ? <Text style={s.eventNotice}>{eventNotice[event.id]}</Text> : null}
             </View>
-
-            <TouchableOpacity style={s.viewEventGreenBtn} onPress={rsvp} activeOpacity={0.8}>
-              <Text style={s.viewEventGreenBtnText}>{communityEvent?.rsvp_response === 'going' ? 'You are going' : 'View Event & RSVP'}</Text>
-            </TouchableOpacity>
-            {eventNotice ? <Text style={s.eventNotice}>{eventNotice}</Text> : null}
-          </View>
-        </View>
+          </View>;
+        })}
       </View>
 
       {/* Section 4: Quick Services 3-Grid (1:1 with Target HTML) */}
@@ -296,6 +295,7 @@ const s = StyleSheet.create({
 
   /* SECTION 3: MY COMMUNITY */
   communityCard: { backgroundColor: '#FFFFFF', borderRadius: 16, overflow: 'hidden', borderWidth: 1, borderColor: '#E2E8F0' },
+  communityCardStacked: { marginTop: 14 },
   communityImage: { width: '100%', height: 160 },
   communityBody: { padding: 16 },
   branchMeetingTag: { fontSize: 11, fontWeight: '800', color: '#006933', letterSpacing: 1, textTransform: 'uppercase', marginBottom: 4, fontFamily: 'Inter' },
