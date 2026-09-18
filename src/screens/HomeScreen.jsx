@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Icon, ReceiveMoneySvgIcon, SendMoneySvgIcon } from '../components/Icons';
 import { Colors } from '../theme/colors';
-import { getMyPublishedEvents } from '../services/eventsService';
+import { getMyPublishedEvents, subscribeToPublishedEventChanges } from '../services/eventsService';
 
 const AVATAR_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDP7zlfBNbg5jSucUfG5tPD3BtnVuTQAY2I1kjxSuVqrYNxWqB2lpmvbct4HtE9rdYUrNvLmyCoODdPJBfEqJlKcTv1n486W4ZiNoD2hMMB6ygx62xZumjQQcA9Q5uBGXVyeqgizdBJTJZhYHK0e2jGRtVRt-uNnljNFVUKXpdgq2Cyhy3xUtsvwfSISYHxtEhER8JSmDx9fJe9hVTzN3FqNWNa4aOez8vY3D9vx2YwUd9oJmGKaKmb';
 const COMMUNITY_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAHtomXsNt6ZfeyvGZOeE5XMikoE5zxU6RquvkfvLhr4T0JYKXccFIuYI8r2T8-9ZZlaqqwWNNziIBcMoWa6jD-ILIRWc02WFG9hRmYaM5BbCiDBXKNUaGsyOhxcgb2bbd-Rzx6m0FPLxfh6dQLM5XA30dGG_LKc4u72FFmXlnnxQsZ_gmIR0jV8GlW5p6QYUO-h6qfrqHZGSfWJY6mootTuO2zTIRBZjmzjM-J9VHYQU1WxM4WEO0i';
@@ -13,9 +13,20 @@ export default function HomeScreen({ open, user }) {
   const memberNumber = user?.user_metadata?.membership_number || 'ANC-1234567';
   const memberBranch = user?.user_metadata?.branch_name || 'Johannesburg Region';
   const [communityEvents, setCommunityEvents] = useState([]);
+  const [eventsLoading, setEventsLoading] = useState(false);
+  async function loadCommunityEvents({ showLoading = false } = {}) {
+    if (!user) return;
+    if (showLoading) setEventsLoading(true);
+    try { setCommunityEvents(await getMyPublishedEvents()); }
+    catch { setCommunityEvents([]); }
+    finally { if (showLoading) setEventsLoading(false); }
+  }
   useEffect(() => {
     if (!user) return undefined;
-    getMyPublishedEvents().then(events => setCommunityEvents(events)).catch(() => setCommunityEvents([]));
+    loadCommunityEvents();
+    const unsubscribe = subscribeToPublishedEventChanges(loadCommunityEvents);
+    const refreshTimer = setInterval(loadCommunityEvents, 30000);
+    return () => { unsubscribe(); clearInterval(refreshTimer); };
   }, [user?.id]);
   const displayedEvents = communityEvents.length ? communityEvents : [{ id: 'demo-event', title: 'Monthly Strategy Session', venue: 'Walter Sisulu House', starts_at: null, rsvp_response: null, isDemo: true }];
   return (
@@ -91,7 +102,13 @@ export default function HomeScreen({ open, user }) {
 
       {/* Section 3: My Community (1:1 with Target HTML) */}
       <View style={s.sectionContainer}>
-        <Text style={s.sectionTitle}>My Community</Text>
+        <View style={s.sectionHeaderRow}>
+          <Text style={s.sectionTitle}>My Community</Text>
+          <TouchableOpacity accessibilityLabel="Refresh community events" onPress={() => loadCommunityEvents({ showLoading: true })} style={s.eventsRefresh} disabled={eventsLoading}>
+            {eventsLoading ? <ActivityIndicator size="small" color="#006933" /> : <Icon name="refresh" size={19} color="#006933" />}
+            <Text style={s.eventsRefreshText}>Refresh</Text>
+          </TouchableOpacity>
+        </View>
 
         {displayedEvents.map((event, index) => {
           const eventVenue = event.venue || event.location || 'Venue to be confirmed';
@@ -322,6 +339,8 @@ const s = StyleSheet.create({
 
   /* SECTION 5: LATEST FROM ANC */
   sectionHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
+  eventsRefresh: { flexDirection: 'row', alignItems: 'center', gap: 5, paddingHorizontal: 8, paddingVertical: 6, marginBottom: 12 },
+  eventsRefreshText: { color: '#006933', fontSize: 13, fontWeight: '800' },
   viewAllLink: { fontSize: 14, fontWeight: '700', color: '#006933', fontFamily: 'Inter' },
   newsCard: { backgroundColor: '#FFFFFF', borderRadius: 16, overflow: 'hidden', borderWidth: 1, borderColor: '#E2E8F0' },
   newsImage: { width: '100%', height: 180 },

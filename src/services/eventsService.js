@@ -7,6 +7,18 @@ export async function getMyPublishedEvents() {
   return data || [];
 }
 
+// Realtime is used when the table has been enabled for Supabase Realtime.
+// Callers retain a polling fallback so a newly published event never depends
+// solely on a browser refresh or a Realtime setting.
+export function subscribeToPublishedEventChanges(onChange) {
+  if (!isSupabaseConfigured()) return () => {};
+  const channel = supabase
+    .channel('anc-community-events')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'community_events' }, onChange)
+    .subscribe();
+  return () => { supabase.removeChannel(channel); };
+}
+
 export async function rsvpToEvent(eventId, status = 'going') {
   const { data, error } = await supabase.rpc('rsvp_to_event', { event_id: eventId, response: status });
   if (error) throw error;
