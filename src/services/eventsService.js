@@ -46,6 +46,33 @@ export async function getAdminDashboard() {
 export async function createAdminEvent(event) {
   const targetBranches = Array.isArray(event.branches) ? event.branches : [];
   const hostBranch = event.hostBranch?.trim() || null;
+
+  // National events use a dedicated RPC instead of the historical generic
+  // publisher. Older versions of that RPC had several overloads in Supabase,
+  // which could cause a Super Admin to be routed to an obsolete permission
+  // check after a schema refresh. The dedicated endpoint has one purpose and
+  // independently verifies the current Super Admin role on the database.
+  if (event.audience === 'national') {
+    const nationalPayload = {
+      event_title: event.title,
+      starts_at: event.startsAt,
+      event_description: event.description || null,
+      ends_at: event.endsAt || null,
+      event_venue: event.venue || null,
+      event_location: event.location || null,
+    };
+    let { data, error } = await supabase.rpc('admin_publish_national_event', nationalPayload);
+    if (error && /Could not find the function|PGRST202/i.test(error.message || '')) {
+      await new Promise(resolve => setTimeout(resolve, 1200));
+      ({ data, error } = await supabase.rpc('admin_publish_national_event', nationalPayload));
+    }
+    if (error && /Could not find the function|PGRST202/i.test(error.message || '')) {
+      throw new Error('The dashboard database is still refreshing its National event publisher. Wait 30 seconds, refresh this page, and publish again.');
+    }
+    if (error) throw error;
+    return data;
+  }
+
   const payload = {
     event_title: event.title,
     event_description: event.description || null,
