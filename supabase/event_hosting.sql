@@ -103,10 +103,12 @@ declare
   current_role text;
   current_branch text;
 begin
-  select ar.role, ar.branch_name
-  into current_role, current_branch
-  from public.admin_roles ar
-  where ar.user_id = auth.uid();
+  -- Use the same signed-in role source consumed by the dashboard. This keeps
+  -- the publisher and the visible dashboard role in lock-step.
+  select scope.role, scope.branch_name
+    into current_role, current_branch
+  from public.get_admin_scope() as scope
+  limit 1;
 
   if current_role is null then
     raise exception 'Dashboard access denied';
@@ -203,10 +205,12 @@ begin
     raise exception 'Dashboard access denied';
   end if;
 
-  select ar.role, ar.branch_name
-  into current_role, current_branch
-  from public.admin_roles ar
-  where ar.user_id = auth.uid();
+  -- The publisher must use the identical Super Admin/Branch Organiser scope
+  -- shown in the dashboard, rather than a separate role lookup.
+  select scope.role, scope.branch_name
+    into current_role, current_branch
+  from public.get_admin_scope() as scope
+  limit 1;
 
   if current_role is null then
     raise exception 'Dashboard access denied';

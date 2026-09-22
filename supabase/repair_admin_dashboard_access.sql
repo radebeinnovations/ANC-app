@@ -6,6 +6,9 @@
 -- Safe repair: this does not remove member accounts, roles, RSVPs, or events.
 -- It only replaces two dashboard RPC functions whose older versions can
 -- incorrectly report an ambiguous `user_id` or "Dashboard access denied".
+-- The publisher deliberately reads the same get_admin_scope() result shown
+-- by the dashboard, so a recognised Super Admin cannot be denied by a
+-- second, inconsistent role lookup.
 
 begin;
 
@@ -73,10 +76,13 @@ begin
     raise exception 'Dashboard access denied';
   end if;
 
-  select ar.role, ar.branch_name
+  -- Keep publishing permission in lock-step with the role shown in the
+  -- dashboard header. get_admin_scope() is the public, security-definer
+  -- source of truth for the signed-in user.
+  select scope.role, scope.branch_name
     into current_role, current_branch
-  from public.admin_roles ar
-  where ar.user_id = auth.uid();
+  from public.get_admin_scope() as scope
+  limit 1;
 
   if current_role not in ('super_admin', 'branch_organiser') then
     raise exception 'Dashboard access denied';
