@@ -154,6 +154,7 @@ export default function AdminDashboard() {
   const [organiserDirectoryLoading, setOrganiserDirectoryLoading] = useState(false);
   const [organiserDirectoryError, setOrganiserDirectoryError] = useState('');
   const [organiserNotice, setOrganiserNotice] = useState('');
+  const [organiserActionError, setOrganiserActionError] = useState('');
   const [organiserActionId, setOrganiserActionId] = useState('');
 
   async function load() {
@@ -163,7 +164,7 @@ export default function AdminDashboard() {
       setLoading(false);
       return { error: message };
     }
-    setLoading(true); setAccessError('');
+    setLoading(true); setAccessError(''); setError('');
     const { data: { session } } = await supabase.auth.getSession();
     setUser(session?.user || null);
     if (!session?.user) { setLoading(false); return { user: null }; }
@@ -253,26 +254,26 @@ export default function AdminDashboard() {
       return;
     }
     setOrganiserActionId(member.user_id);
-    setOrganiserNotice('');
+    setOrganiserNotice(''); setOrganiserActionError('');
     try {
       await assignOrganiserRole({ userId: member.user_id, role, branchName: role === 'branch_organiser' ? member.member_branch_name : null });
       setOrganiserNotice(`${member.full_name} can now ${role === 'super_admin' ? 'manage organisers and publish national events.' : `publish events for ${member.member_branch_name}.`}`);
       await loadOrganiserDirectory();
     } catch (nextError) {
-      setOrganiserNotice(nextError?.message || 'The organiser role could not be updated.');
+      setOrganiserActionError(nextError?.message || 'The organiser role could not be updated.');
     } finally {
       setOrganiserActionId('');
     }
   }
   async function revokeOrganiserRole(member) {
     setOrganiserActionId(member.user_id);
-    setOrganiserNotice('');
+    setOrganiserNotice(''); setOrganiserActionError('');
     try {
       await removeOrganiserRole(member.user_id);
       setOrganiserNotice(`${member.full_name} no longer has organiser dashboard access.`);
       await loadOrganiserDirectory();
     } catch (nextError) {
-      setOrganiserNotice(nextError?.message || 'The organiser role could not be removed.');
+      setOrganiserActionError(nextError?.message || 'The organiser role could not be removed.');
     } finally {
       setOrganiserActionId('');
     }
@@ -384,6 +385,7 @@ export default function AdminDashboard() {
       <Text style={s.panelTitle}>Organiser access</Text>
       <Text style={s.panelCopy}>Only Super Admins can manage dashboard access. Members do not receive publishing rights unless you assign them here.</Text>
       {organiserNotice ? <Text style={ux.organiserNotice}>{organiserNotice}</Text> : null}
+      {organiserActionError ? <Text style={s.error}>{organiserActionError}</Text> : null}
       {organiserDirectoryLoading ? <View style={ux.directoryLoading}><ActivityIndicator color={Colors.primary}/><Text style={ux.directoryLoadingText}>Loading member access…</Text></View> : null}
       {!organiserDirectoryLoading && organiserDirectoryError ? <View style={ux.directoryError}><Text style={ux.directoryErrorTitle}>Role management needs one setup step</Text><Text style={ux.directoryErrorCopy}>Run <Text style={ux.directoryErrorFile}>supabase/admin_role_management.sql</Text> once in the Supabase SQL Editor, then retry. Publishing remains available while this setup is pending.</Text><TouchableOpacity style={ux.directoryRetry} onPress={loadOrganiserDirectory}><Text style={ux.directoryRetryText}>Retry role management</Text></TouchableOpacity></View> : null}
       {!organiserDirectoryLoading && !organiserDirectoryError ? organiserDirectory.map(member => {

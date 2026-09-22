@@ -148,7 +148,10 @@ begin
 
   insert into public.admin_roles (user_id, role, branch_name)
   values (target_user_id, requested_role, requested_branch)
-  on conflict (user_id) do update
+  -- The function's returned `user_id` column is also a PL/pgSQL variable.
+  -- Naming the primary-key constraint avoids PostgreSQL treating this as an
+  -- ambiguous column reference when a role is changed from the dashboard.
+  on conflict on constraint admin_roles_pkey do update
     set role = excluded.role,
         branch_name = excluded.branch_name;
 
