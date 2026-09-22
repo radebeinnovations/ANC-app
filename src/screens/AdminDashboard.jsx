@@ -39,6 +39,19 @@ const ux = StyleSheet.create({
   hostingBranchNotice: { flexDirection: 'row', alignItems: 'center', gap: 7, minHeight: 42, paddingHorizontal: 12, borderRadius: 8, backgroundColor: '#F7FAF7', borderWidth: 1, borderColor: '#D7E3D9', marginTop: 2 },
   hostingBranchNote: { color: Colors.primary, fontSize: 11, fontWeight: '700', lineHeight: 16, marginTop: -3, marginBottom: 2 },
   hostingBranchPrompt: { color: Colors.muted, fontSize: 11, lineHeight: 16, marginTop: -2 },
+  timeControls: { borderTopWidth: 1, borderTopColor: '#E6EEE7', marginTop: 11, paddingTop: 11 },
+  timeControlsHeader: { color: Colors.muted, fontSize: 10, fontWeight: '900', letterSpacing: .6, textTransform: 'uppercase' },
+  timeStepper: { alignItems: 'center', flexDirection: 'row', gap: 8, marginTop: 8 },
+  timeStep: { alignItems: 'center', backgroundColor: '#E7F5EA', borderRadius: 8, justifyContent: 'center', minHeight: 38, minWidth: 58, paddingHorizontal: 9 },
+  timeStepText: { color: Colors.primary, fontSize: 12, fontWeight: '900' },
+  selectedTime: { alignItems: 'center', backgroundColor: Colors.primary, borderRadius: 8, flex: 1, justifyContent: 'center', minHeight: 38, paddingHorizontal: 12 },
+  selectedTimeText: { color: Colors.white, fontSize: 16, fontWeight: '900' },
+  quickTimesLabel: { color: Colors.muted, fontSize: 11, fontWeight: '800', marginTop: 12 },
+  quickTimes: { flexDirection: 'row', flexWrap: 'wrap', gap: 7, marginTop: 7 },
+  quickTime: { alignItems: 'center', backgroundColor: '#F2F4F2', borderRadius: 15, justifyContent: 'center', minHeight: 30, minWidth: 54, paddingHorizontal: 9 },
+  quickTimeSelected: { backgroundColor: '#E7F5EA', borderWidth: 1, borderColor: Colors.primary },
+  quickTimeText: { color: Colors.muted, fontSize: 11, fontWeight: '800' },
+  quickTimeTextSelected: { color: Colors.primary },
   publishButton: { minHeight: 50, marginTop: 20 },
   organiserPanel: { marginTop: 0 },
   organiserNotice: { backgroundColor: '#E7F5EA', borderRadius: 9, color: Colors.primary, fontSize: 12, fontWeight: '700', lineHeight: 18, marginBottom: 14, padding: 11 },
@@ -74,7 +87,21 @@ const startOfMonth = value => new Date(value.getFullYear(), value.getMonth(), 1)
 const dateKey = value => `${value.getFullYear()}-${pad(value.getMonth() + 1)}-${pad(value.getDate())}`;
 const isSameDay = (left, right) => left && right && dateKey(left) === dateKey(right);
 const friendlyDate = value => value ? value.toLocaleDateString([], { weekday: 'short', month: 'long', day: 'numeric', year: 'numeric' }) : 'Choose a date';
-const toEventTimestamp = (date, time) => date ? `${dateKey(date)}T${/^\d{2}:\d{2}$/.test(time) ? time : '10:00'}:00+02:00` : '';
+const normaliseTime = value => {
+  const match = /^(\d{1,2}):(\d{2})$/.exec(String(value || ''));
+  const hour = Number(match?.[1]);
+  const minute = Number(match?.[2]);
+  return Number.isInteger(hour) && hour >= 0 && hour < 24 && Number.isInteger(minute) && minute >= 0 && minute < 60
+    ? `${pad(hour)}:${pad(minute)}`
+    : '10:00';
+};
+const shiftTime = (value, minutes) => {
+  const [hour, minute] = normaliseTime(value).split(':').map(Number);
+  const total = (hour * 60 + minute + minutes + 24 * 60) % (24 * 60);
+  return `${pad(Math.floor(total / 60))}:${pad(total % 60)}`;
+};
+const quickEventTimes = ['08:00', '09:00', '10:00', '12:00', '14:00', '16:00', '18:00'];
+const toEventTimestamp = (date, time) => date ? `${dateKey(date)}T${normaliseTime(time)}:00+02:00` : '';
 const normaliseBranchNames = value => {
   const seen = new Set();
   return String(value || '')
@@ -101,6 +128,7 @@ const eventHostName = event => {
 };
 
 function EventCalendar({ value, time, onChangeDate, onChangeTime }) {
+  const selectedTime = normaliseTime(time);
   const [visibleMonth, setVisibleMonth] = useState(() => startOfMonth(value || new Date()));
   const firstWeekday = visibleMonth.getDay();
   const daysInMonth = new Date(visibleMonth.getFullYear(), visibleMonth.getMonth() + 1, 0).getDate();
@@ -113,7 +141,17 @@ function EventCalendar({ value, time, onChangeDate, onChangeTime }) {
       <TouchableOpacity accessibilityLabel="Next month" style={s.monthButton} onPress={() => setVisibleMonth(current => new Date(current.getFullYear(), current.getMonth() + 1, 1))}><Text style={s.monthButtonText}>›</Text></TouchableOpacity>
     </View>
     <View style={s.calendarGrid}>{weekdayLabels.map(day => <Text key={day} style={s.weekday}>{day}</Text>)}{emptyDays.map(day => <View key={day} style={s.dayCell}/>) }{dates.map(day => <TouchableOpacity key={dateKey(day)} accessibilityLabel={`Select ${friendlyDate(day)}`} onPress={() => onChangeDate(day)} style={s.dayCell}><View style={[s.day, isSameDay(day, value) && s.daySelected]}><Text style={[s.dayText, isSameDay(day, value) && s.dayTextSelected]}>{day.getDate()}</Text></View></TouchableOpacity>)}</View>
-    <View style={s.selectedDateRow}><View><Text style={s.selectedDateLabel}>Selected start</Text><Text style={s.selectedDate}>{friendlyDate(value)}</Text></View><View style={s.timeBox}><Text style={s.selectedDateLabel}>Time (SAST)</Text><TextInput value={time} onChangeText={onChangeTime} placeholder="10:00" placeholderTextColor="#718078" keyboardType="numbers-and-punctuation" maxLength={5} accessibilityLabel="Event start time in SAST" style={s.timeInput}/></View></View>
+    <View style={s.selectedDateRow}><View><Text style={s.selectedDateLabel}>Selected start</Text><Text style={s.selectedDate}>{friendlyDate(value)}</Text></View><Text style={s.selectedDateLabel}>SAST</Text></View>
+    <View style={ux.timeControls}>
+      <Text style={ux.timeControlsHeader}>Choose start time</Text>
+      <View style={ux.timeStepper}>
+        <TouchableOpacity accessibilityRole="button" accessibilityLabel="Move event time fifteen minutes earlier" onPress={() => onChangeTime(shiftTime(selectedTime, -15))} style={ux.timeStep}><Text style={ux.timeStepText}>−15 min</Text></TouchableOpacity>
+        <View accessibilityLabel={`Selected event time ${selectedTime} South Africa Standard Time`} style={ux.selectedTime}><Text style={ux.selectedTimeText}>{selectedTime}</Text></View>
+        <TouchableOpacity accessibilityRole="button" accessibilityLabel="Move event time fifteen minutes later" onPress={() => onChangeTime(shiftTime(selectedTime, 15))} style={ux.timeStep}><Text style={ux.timeStepText}>+15 min</Text></TouchableOpacity>
+      </View>
+      <Text style={ux.quickTimesLabel}>Quick times</Text>
+      <View style={ux.quickTimes}>{quickEventTimes.map(option => <TouchableOpacity key={option} accessibilityRole="button" accessibilityState={{ selected: selectedTime === option }} accessibilityLabel={`Set event time to ${option}`} onPress={() => onChangeTime(option)} style={[ux.quickTime, selectedTime === option && ux.quickTimeSelected]}><Text style={[ux.quickTimeText, selectedTime === option && ux.quickTimeTextSelected]}>{option}</Text></TouchableOpacity>)}</View>
+    </View>
   </View>;
 }
 
