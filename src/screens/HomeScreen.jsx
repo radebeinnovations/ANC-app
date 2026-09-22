@@ -7,6 +7,13 @@ import { getMyPublishedEvents, subscribeToPublishedEventChanges } from '../servi
 const AVATAR_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDP7zlfBNbg5jSucUfG5tPD3BtnVuTQAY2I1kjxSuVqrYNxWqB2lpmvbct4HtE9rdYUrNvLmyCoODdPJBfEqJlKcTv1n486W4ZiNoD2hMMB6ygx62xZumjQQcA9Q5uBGXVyeqgizdBJTJZhYHK0e2jGRtVRt-uNnljNFVUKXpdgq2Cyhy3xUtsvwfSISYHxtEhER8JSmDx9fJe9hVTzN3FqNWNa4aOez8vY3D9vx2YwUd9oJmGKaKmb';
 const COMMUNITY_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAHtomXsNt6ZfeyvGZOeE5XMikoE5zxU6RquvkfvLhr4T0JYKXccFIuYI8r2T8-9ZZlaqqwWNNziIBcMoWa6jD-ILIRWc02WFG9hRmYaM5BbCiDBXKNUaGsyOhxcgb2bbd-Rzx6m0FPLxfh6dQLM5XA30dGG_LKc4u72FFmXlnnxQsZ_gmIR0jV8GlW5p6QYUO-h6qfrqHZGSfWJY6mootTuO2zTIRBZjmzjM-J9VHYQU1WxM4WEO0i';
 const NEWS_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAHR1a7BGP_bULWHfBqmlTZgAdHLDUGaQ9n42EuYpuscyM7zEqqysnBEFBchrBndc5olw-z7m9zHt8J2f1KlBsIEJcbViTOgrDKxoOMDSxwyhbm6Celjx0pd0-OYh-6kDsXNsIIzcF7FU30QbvhS_w9U5M0GZjAah-V1bZR0ig9UAONPSann0NLQ6JAl8wcx2iBNtAuzSB1IZwBp7qqfHtgzBTb68fJZD2IlcmApjWzMBVXT3-_Ba0X';
+const eventHostName = event => {
+  const explicitHost = event?.host_branch_name || event?.host_branch || event?.hosting_branch || event?.hostBranch || event?.hostingBranch;
+  if (explicitHost) return explicitHost;
+  if (event?.audience === 'national') return 'ANC National';
+  const targets = event?.target_branches?.filter(Boolean) || [];
+  return targets.length <= 1 ? event?.branch_name || targets[0] || '' : '';
+};
 
 export default function HomeScreen({ open, user }) {
   const memberName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Lerumo Thabo';
@@ -14,21 +21,34 @@ export default function HomeScreen({ open, user }) {
   const memberBranch = user?.user_metadata?.branch_name || 'Johannesburg Region';
   const [communityEvents, setCommunityEvents] = useState([]);
   const [eventsLoading, setEventsLoading] = useState(false);
+  const [eventsLoaded, setEventsLoaded] = useState(false);
+  const [eventsError, setEventsError] = useState('');
   async function loadCommunityEvents({ showLoading = false } = {}) {
-    if (!user) return;
+    if (!user) {
+      setCommunityEvents([]);
+      setEventsError('');
+      setEventsLoaded(true);
+      return;
+    }
     if (showLoading) setEventsLoading(true);
-    try { setCommunityEvents(await getMyPublishedEvents()); }
-    catch { setCommunityEvents([]); }
-    finally { if (showLoading) setEventsLoading(false); }
+    setEventsError('');
+    try {
+      setCommunityEvents(await getMyPublishedEvents());
+    } catch {
+      setCommunityEvents([]);
+      setEventsError('We could not load upcoming events right now.');
+    } finally {
+      setEventsLoaded(true);
+      if (showLoading) setEventsLoading(false);
+    }
   }
   useEffect(() => {
     if (!user) return undefined;
-    loadCommunityEvents();
+    loadCommunityEvents({ showLoading: true });
     const unsubscribe = subscribeToPublishedEventChanges(loadCommunityEvents);
     const refreshTimer = setInterval(loadCommunityEvents, 30000);
     return () => { unsubscribe(); clearInterval(refreshTimer); };
   }, [user?.id]);
-  const displayedEvents = communityEvents.length ? communityEvents : [{ id: 'demo-event', title: 'Monthly Strategy Session', venue: 'Walter Sisulu House', starts_at: null, rsvp_response: null, isDemo: true }];
   return (
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
       {/* Header Section (1:1 with Target HTML) */}
@@ -100,38 +120,56 @@ export default function HomeScreen({ open, user }) {
         </View>
       </View>
 
-      {/* Section 3: My Community (1:1 with Target HTML) */}
+      {/* Section 3: Real member-facing events */}
       <View style={s.sectionContainer}>
         <View style={s.sectionHeaderRow}>
-          <Text style={s.sectionTitle}>My Community</Text>
+          <View style={s.eventsHeading}>
+            <Text style={s.sectionTitle}>Upcoming events</Text>
+            <Text style={s.eventsScope}>National events and events targeted to your registered branch appear here.</Text>
+          </View>
           <TouchableOpacity accessibilityLabel="Refresh community events" onPress={() => loadCommunityEvents({ showLoading: true })} style={s.eventsRefresh} disabled={eventsLoading}>
             {eventsLoading ? <ActivityIndicator size="small" color="#006933" /> : <Icon name="refresh" size={19} color="#006933" />}
-            <Text style={s.eventsRefreshText}>Refresh</Text>
+            <Text style={s.eventsRefreshText}>{eventsLoading ? 'Updating' : 'Refresh'}</Text>
           </TouchableOpacity>
         </View>
 
-        {displayedEvents.map((event, index) => {
+        {!eventsLoaded ? <View style={s.eventsStatus}><ActivityIndicator size="small" color="#006933" /><Text style={s.eventsStatusText}>Loading upcoming events…</Text></View> : null}
+
+        {eventsLoaded && communityEvents.map((event, index) => {
           const eventVenue = event.venue || event.location || 'Venue to be confirmed';
           const eventSchedule = event.starts_at ? `${new Date(event.starts_at).toLocaleDateString([], { weekday: 'long', month: 'short', day: 'numeric' })} · ${new Date(event.starts_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} at ${eventVenue}` : `Saturday · 10:00 at ${eventVenue}`;
+          const eventTag = event.audience === 'national' ? 'ANC NATIONAL EVENT' : event.target_branches?.length > 1 ? 'MULTI-BRANCH EVENT' : 'BRANCH MEETING';
+          const hostBranch = eventHostName(event);
           return <View key={event.id} style={[s.communityCard, index > 0 && s.communityCardStacked]}>
             <Image source={{ uri: COMMUNITY_IMG_URL }} style={s.communityImage} resizeMode="cover" />
             <View style={s.communityBody}>
-              <Text style={s.branchMeetingTag}>{event.audience === 'national' ? 'ANC NATIONAL EVENT' : 'BRANCH MEETING'}</Text>
+              <Text style={s.branchMeetingTag}>{eventTag}</Text>
               <Text style={s.meetingTitle}>{event.title}</Text>
+              {hostBranch ? <View style={s.hostedByRow}><Icon name="account-balance" size={15} color="#006933" /><Text style={s.hostedByText}>Hosted by {hostBranch}</Text></View> : null}
               <View style={s.scheduleRow}>
                 <Icon name="schedule" size={16} color="#4A5568" />
                 <Text style={s.scheduleText}>{eventSchedule}</Text>
               </View>
               <TouchableOpacity
                 style={s.viewEventGreenBtn}
-                onPress={() => event.isDemo ? open('branch') : open('event', event)}
+                onPress={() => open('event', event)}
                 activeOpacity={0.8}
               >
-                <Text style={s.viewEventGreenBtnText}>{event.isDemo ? 'View Event & RSVP' : 'View event details'}</Text>
+                <Text style={s.viewEventGreenBtnText}>View event details</Text>
               </TouchableOpacity>
             </View>
           </View>;
         })}
+
+        {eventsLoaded && !communityEvents.length ? <View style={s.emptyEventsCard}>
+          <View style={s.emptyEventsIcon}><Icon name={eventsError ? 'error-outline' : 'event-upcoming'} size={22} color={eventsError ? '#B54708' : '#006933'} /></View>
+          <View style={s.emptyEventsCopy}>
+            <Text style={s.emptyEventsTitle}>{eventsError ? 'Events are temporarily unavailable' : user ? 'No upcoming events for your branch yet' : 'Sign in to see your upcoming events'}</Text>
+            <Text style={s.emptyEventsText}>{eventsError ? 'Tap Refresh to try again. Published national events and events targeted to your branch will appear here.' : user ? 'When an authorised organiser publishes an event for your branch, a group of branches including yours, or nationally, it will appear here automatically.' : 'Your personalised event feed becomes available after you sign in.'}</Text>
+          </View>
+        </View> : null}
+
+        {eventsLoaded && !eventsError && user ? <Text style={s.eventsSyncNote}>New events appear automatically. You can also tap Refresh at any time.</Text> : null}
       </View>
 
       {/* Section 4: Quick Services 3-Grid (1:1 with Target HTML) */}
@@ -305,17 +343,29 @@ const s = StyleSheet.create({
   viewDatesBtnText: { color: '#FECC00', fontSize: 13, fontWeight: '700', fontFamily: 'Inter' },
 
   /* SECTION 3: MY COMMUNITY */
+  eventsHeading: { flex: 1, paddingRight: 8 },
+  eventsScope: { fontSize: 12, lineHeight: 17, color: '#4A5568', fontFamily: 'Inter', marginTop: -7 },
   communityCard: { backgroundColor: '#FFFFFF', borderRadius: 16, overflow: 'hidden', borderWidth: 1, borderColor: '#E2E8F0' },
   communityCardStacked: { marginTop: 14 },
   communityImage: { width: '100%', height: 160 },
   communityBody: { padding: 16 },
   branchMeetingTag: { fontSize: 11, fontWeight: '800', color: '#006933', letterSpacing: 1, textTransform: 'uppercase', marginBottom: 4, fontFamily: 'Inter' },
   meetingTitle: { fontSize: 18, fontWeight: '700', color: '#1A1C1C', marginBottom: 6, fontFamily: 'Hanken Grotesk' },
+  hostedByRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 7, paddingRight: 4 },
+  hostedByText: { flexShrink: 1, color: '#006933', fontSize: 12, lineHeight: 17, fontWeight: '700', fontFamily: 'Inter' },
   scheduleRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 16 },
   scheduleText: { fontSize: 13, color: '#4A5568', fontFamily: 'Inter' },
   viewEventGreenBtn: { backgroundColor: '#006933', borderRadius: 10, paddingVertical: 12, alignItems: 'center' },
   viewEventGreenBtnText: { color: '#FFFFFF', fontSize: 14, fontWeight: '700', fontFamily: 'Inter' },
   eventNotice: { color: '#006933', fontSize: 12, fontWeight: '700', marginTop: 9, lineHeight: 17 },
+  eventsStatus: { minHeight: 124, borderWidth: 1, borderColor: '#DCE8DF', borderRadius: 16, backgroundColor: '#FFFFFF', alignItems: 'center', justifyContent: 'center', gap: 10, padding: 18 },
+  eventsStatusText: { color: '#4A5568', fontSize: 13, fontWeight: '700', fontFamily: 'Inter' },
+  emptyEventsCard: { minHeight: 130, borderWidth: 1, borderColor: '#DCE8DF', borderRadius: 16, backgroundColor: '#FFFFFF', flexDirection: 'row', alignItems: 'flex-start', gap: 12, padding: 16 },
+  emptyEventsIcon: { width: 44, height: 44, borderRadius: 22, backgroundColor: '#E8F5EB', alignItems: 'center', justifyContent: 'center' },
+  emptyEventsCopy: { flex: 1, paddingTop: 1 },
+  emptyEventsTitle: { color: '#1A1C1C', fontSize: 15, fontWeight: '800', lineHeight: 21, fontFamily: 'Hanken Grotesk' },
+  emptyEventsText: { color: '#4A5568', fontSize: 13, lineHeight: 19, marginTop: 4, fontFamily: 'Inter' },
+  eventsSyncNote: { color: '#4A5568', fontSize: 12, lineHeight: 17, marginTop: 10, fontFamily: 'Inter' },
 
   /* SECTION 4: QUICK SERVICES GRID */
   services3Grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },

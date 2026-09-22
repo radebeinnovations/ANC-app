@@ -39,6 +39,9 @@ export default function SideDrawer({ visible, onClose, onNavigate, onSignOut, me
               <View style={{ marginLeft: 12 }}>
                 <Text style={s.profileName}>{member?.fullName || 'ANC Member'}</Text>
                 <Text style={s.profileMeta}>{member?.membershipNumber || 'Membership pending'} • ACTIVE</Text>
+                {member?.email && member.email !== 'Not provided' ? (
+                  <Text numberOfLines={1} style={s.profileEmail}>{member.email}</Text>
+                ) : null}
               </View>
             </View>
           </View>
@@ -159,6 +162,13 @@ const s = StyleSheet.create({
     fontSize: 11,
     fontWeight: '600',
     marginTop: 2,
+  },
+  profileEmail: {
+    color: 'rgba(255, 255, 255, 0.84)',
+    fontSize: 11,
+    fontWeight: '500',
+    marginTop: 4,
+    maxWidth: 215,
   },
   menuList: {
     paddingVertical: 12,

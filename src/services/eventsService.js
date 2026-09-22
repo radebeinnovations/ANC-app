@@ -44,15 +44,82 @@ export async function getAdminDashboard() {
 }
 
 export async function createAdminEvent(event) {
-  const { data, error } = await supabase.rpc('admin_create_event', {
+  const targetBranches = Array.isArray(event.branches) ? event.branches : [];
+  const hostBranch = event.hostBranch?.trim() || null;
+  const payload = {
     event_title: event.title,
     event_description: event.description || null,
     starts_at: event.startsAt,
     ends_at: event.endsAt || null,
-    event_branch: event.branch || null,
+    event_branches: targetBranches,
     event_audience: event.audience,
     event_venue: event.venue || null,
     event_location: event.location || null,
+    event_host_branch: hostBranch,
+  };
+  let { data, error } = await supabase.rpc('admin_create_event', payload);
+
+  // A host branch is important public event metadata. Do not publish a
+  // partially-specified event when the hosting migration has not been applied.
+  if (error && /Could not find the function|PGRST202/i.test(error.message || '')) {
+    if (hostBranch) {
+      throw new Error('Event hosting needs the Supabase event_hosting.sql migration. Run it once, refresh the dashboard, then publish this event again.');
+    }
+
+    // The previous multi-branch function has no event_host_branch argument.
+    ({ data, error } = await supabase.rpc('admin_create_event', {
+      event_title: event.title,
+      event_description: event.description || null,
+      starts_at: event.startsAt,
+      ends_at: event.endsAt || null,
+      event_branches: targetBranches,
+      event_audience: event.audience,
+      event_venue: event.venue || null,
+      event_location: event.location || null,
+    }));
+  }
+
+  // Existing deployments continue to publish a one-branch or National event
+  // until the multi-branch SQL migration has been applied. Never silently
+  // reduce a multi-branch event to its first branch on an older database.
+  if (error && /Could not find the function|PGRST202/i.test(error.message || '')) {
+    if (targetBranches.length > 1) {
+      throw new Error('Multi-branch publishing needs the Supabase multi_branch_events.sql migration. Run it once, then publish this event again.');
+    }
+    ({ data, error } = await supabase.rpc('admin_create_event', {
+      event_title: event.title,
+      event_description: event.description || null,
+      starts_at: event.startsAt,
+      ends_at: event.endsAt || null,
+      event_branch: targetBranches[0] || null,
+      event_audience: event.audience,
+      event_venue: event.venue || null,
+      event_location: event.location || null,
+    }));
+  }
+  if (error) throw error;
+  return data;
+}
+
+export async function getOrganiserDirectory() {
+  const { data, error } = await supabase.rpc('admin_list_organiser_directory');
+  if (error) throw error;
+  return data || [];
+}
+
+export async function assignOrganiserRole({ userId, role, branchName = null }) {
+  const { data, error } = await supabase.rpc('admin_assign_organiser_role', {
+    target_user_id: userId,
+    target_role: role,
+    target_branch: branchName,
+  });
+  if (error) throw error;
+  return data;
+}
+
+export async function removeOrganiserRole(userId) {
+  const { data, error } = await supabase.rpc('admin_remove_organiser_role', {
+    target_user_id: userId,
   });
   if (error) throw error;
   return data;

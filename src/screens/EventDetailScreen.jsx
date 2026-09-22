@@ -13,6 +13,13 @@ const distanceInKm = (from, to) => {
   const a = Math.sin(deltaLat / 2) ** 2 + Math.cos(toRadians(from.latitude)) * Math.cos(toRadians(to.latitude)) * Math.sin(deltaLon / 2) ** 2;
   return earthRadiusKm * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 };
+const eventHostName = event => {
+  const explicitHost = event?.host_branch_name || event?.host_branch || event?.hosting_branch || event?.hostBranch || event?.hostingBranch;
+  if (explicitHost) return explicitHost;
+  if (event?.audience === 'national') return 'ANC National';
+  const targets = event?.target_branches?.filter(Boolean) || [];
+  return targets.length <= 1 ? event?.branch_name || targets[0] || '' : '';
+};
 
 export default function EventDetailScreen({ event }) {
   const [distance, setDistance] = useState(null);
@@ -27,6 +34,10 @@ export default function EventDetailScreen({ event }) {
   const address = [event.venue, event.location].filter(Boolean).join(', ') || 'ANC event venue';
   const date = event.starts_at ? new Date(event.starts_at) : null;
   const schedule = date ? `${date.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })} · ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : 'Date and time to be confirmed';
+  const targetBranches = event.target_branches?.filter(Boolean) || (event.branch_name ? [event.branch_name] : []);
+  const audienceLabel = event.audience === 'national' ? 'ANC NATIONAL EVENT' : targetBranches.length > 1 ? 'MULTI-BRANCH EVENT' : 'BRANCH EVENT';
+  const audienceValue = event.audience === 'national' ? 'All ANC Unity members' : targetBranches.join(', ') || 'Your registered branch';
+  const hostBranch = eventHostName(event);
 
   async function resolveRoute({ openMaps = false } = {}) {
     setLoadingDistance(true); setNotice('');
@@ -56,12 +67,14 @@ export default function EventDetailScreen({ event }) {
   }
 
   return <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
-    <View style={s.tagRow}><Icon name={event.audience === 'national' ? 'public' : 'groups'} size={16} color={Colors.primary}/><Text style={s.tag}>{event.audience === 'national' ? 'ANC NATIONAL EVENT' : 'BRANCH EVENT'}</Text></View>
+    <View style={s.tagRow}><Icon name={event.audience === 'national' ? 'public' : 'groups'} size={16} color={Colors.primary}/><Text style={s.tag}>{audienceLabel}</Text></View>
     <Text style={s.title}>{event.title}</Text>
     <Text style={s.description}>{event.description || 'Join fellow ANC members at this community event.'}</Text>
     <View style={s.card}>
       <DetailRow icon="schedule" label="Date and time" value={schedule}/>
       <DetailRow icon="location-on" label="Venue" value={address}/>
+      <DetailRow icon="groups" label="Visible to" value={audienceValue}/>
+      {hostBranch ? <DetailRow icon="account-balance" label="Hosted by" value={hostBranch}/> : null}
       {distance !== null ? <DetailRow icon="near-me" label="Your distance" value={`${distance < 1 ? Math.round(distance * 1000) + ' m' : distance.toFixed(1) + ' km'} away`}/> : null}
     </View>
     <TouchableOpacity onPress={rsvp} style={[s.primaryButton, rsvped && s.rsvpDone]}><Icon name={rsvped ? 'check-circle' : 'event-available'} size={19} color={Colors.white}/><Text style={s.primaryText}>{rsvped ? 'You are going' : 'RSVP — I will attend'}</Text></TouchableOpacity>
