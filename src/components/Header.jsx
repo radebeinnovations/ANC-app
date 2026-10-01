@@ -1,7 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Colors } from '../theme/colors';
 import { Icon } from './Icons';
+
+const ANC_LOGO = require('../assets/anc-logo.png');
 
 export default function Header({ screen, tab, onBack, onOpenMenu, onOpenNotifications, unreadCount = 1, stepText }) {
   if (screen !== 'main' && screen !== 'welcome') {
@@ -29,9 +31,7 @@ export default function Header({ screen, tab, onBack, onOpenMenu, onOpenNotifica
   if (tab === 'Member') {
     return (
       <View style={s.header}>
-        <View style={s.memberEmblemCircle}>
-          <Text style={s.memberEmblemText}>ANC</Text>
-        </View>
+        <View style={s.memberEmblemCircle}><Image source={ANC_LOGO} style={s.memberEmblem} resizeMode="contain" /></View>
 
         <View style={s.headerCenterLeft}>
           <Text style={s.headerTitleMember}>African National Congress</Text>
@@ -51,7 +51,7 @@ export default function Header({ screen, tab, onBack, onOpenMenu, onOpenNotifica
         <Icon name="menu" size={22} color={Colors.primary} />
       </TouchableOpacity>
 
-      <Text style={s.headerBrand}>ANC UNITY</Text>
+      <View style={s.brandLockup}><Image source={ANC_LOGO} style={s.headerLogo} resizeMode="contain" /><Text style={s.headerBrand}>ANC UNITY</Text></View>
 
       <TouchableOpacity style={s.headerIconBtn} onPress={onOpenNotifications} activeOpacity={0.7}>
         <Icon name="notifications-none" size={22} color={Colors.primary} />
@@ -73,7 +73,7 @@ function getScreenTitle(screen, stepText) {
   if (screen === 'donate') return 'ANC UNITY';
   if (screen === 'membership') return 'Membership';
   if (screen === 'profile') return 'Member Card';
-  if (screen === 'cards') return 'My Cards';
+  if (screen === 'cards') return 'Secure Payments';
   if (screen === 'branch') return 'My Branch';
   if (screen === 'event') return 'Event details';
   if (screen === 'notifications') return 'Notifications';
@@ -145,6 +145,8 @@ const s = StyleSheet.create({
     color: Colors.primary,
     letterSpacing: 0.5,
   },
+  brandLockup: { flexDirection: 'row', alignItems: 'center', gap: 7 },
+  headerLogo: { width: 29, height: 29 },
   badgeDot: {
     width: 8,
     height: 8,
@@ -158,15 +160,11 @@ const s = StyleSheet.create({
     width: 34,
     height: 34,
     borderRadius: 17,
-    backgroundColor: '#006933',
+    backgroundColor: Colors.white,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 1.5,
-    borderColor: Colors.gold,
+    borderWidth: 1,
+    borderColor: Colors.surfaceBorder,
   },
-  memberEmblemText: {
-    color: Colors.gold,
-    fontWeight: '900',
-    fontSize: 9,
-  },
+  memberEmblem: { width: 29, height: 29 },
 });

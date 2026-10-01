@@ -31,6 +31,7 @@ import EventDetailScreen from './src/screens/EventDetailScreen';
 
 import { Colors } from './src/theme/colors';
 import { isSupabaseConfigured, supabase } from './src/services/supabase';
+import { createPayFastTopUp, getMemberWallet, getMemberWalletTransactions, isYamiWalletApiConfigured, openPayFastCheckout, provisionMemberWallet } from './src/services/yamiWalletApi';
 import { getMemberProfile } from './src/utils/memberProfile';
 
 export default function App() {
@@ -79,6 +80,28 @@ function MemberApp() {
     { id: '2', title: 'Airtime Purchase', amount: 50.00, time: 'Yesterday', type: 'expense' },
     { id: '3', title: 'ANC Donation', amount: 100.00, time: '02 August 2026', type: 'expense' },
   ]);
+
+  React.useEffect(() => {
+    if (!authUser || !isYamiWalletApiConfigured()) return undefined;
+    let active = true;
+    (async () => {
+      const provisioned = await provisionMemberWallet(authUser);
+      if (!active || !provisioned.ok) return;
+      const [walletResult, transactionsResult] = await Promise.all([getMemberWallet(), getMemberWalletTransactions()]);
+      if (!active) return;
+      if (walletResult.ok) setBalance(Number(walletResult.data.availableBalance || 0));
+      if (transactionsResult.ok) {
+        setRecentActivity(transactionsResult.data.map(item => ({
+          id: item.id,
+          title: item.description || item.entryType,
+          amount: Math.abs(Number(item.amount)),
+          time: new Date(item.createdAt).toLocaleString('en-ZA'),
+          type: Number(item.amount) >= 0 ? 'deposit' : 'expense',
+        })));
+      }
+    })();
+    return () => { active = false; };
+  }, [authUser]);
 
   const [cards, setCards] = useState([
     { id: '1', title: 'ANC Member Wallet Card', last4: '4821', brand: 'VISA', exp: '12/28', color: Colors.primary, isDefault: true },
@@ -196,15 +219,17 @@ function MemberApp() {
     ]);
   };
 
-  const handleDepositFunds = (amount) => {
+  const handleDepositFunds = async (amount) => {
     const num = parseFloat(amount) || 0;
     if (num <= 0) return;
-    setBalance(prev => prev + num);
-    setRecentActivity(prev => [
-      { id: String(Date.now()), title: 'Wallet Top Up', amount: num, time: 'Just now', type: 'deposit' },
-      ...prev,
-    ]);
-    setNotice(`R${num.toFixed(2)} loaded to wallet!`);
+    const checkout = await createPayFastTopUp(num);
+    if (!checkout.ok) {
+      setNotice(checkout.error || 'PayFast checkout is not configured yet. No funds were added to the wallet.');
+      return;
+    }
+    setNotice('Opening secure PayFast checkout. Your balance remains pending until PayFast confirms the payment.');
+    const opened = await openPayFastCheckout(checkout.data.checkoutLaunchUrl);
+    if (!opened.ok) setNotice(opened.error);
   };
 
   const renderBody = () => {

@@ -1,101 +1,33 @@
-import React, { useState } from 'react';
-import { Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Button from '../components/Button';
-import Field from '../components/Field';
-import { MastercardLogo } from '../components/Icons';
+import React from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Icon } from '../components/Icons';
 import YamiFooter from '../components/YamiFooter';
 import { Colors } from '../theme/colors';
 
-export default function CardManagerScreen({ cards = [], onAddCard }) {
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [holder, setHolder] = useState('Lerumo Thabo');
-  const [cardNumber, setCardNumber] = useState('');
-  const [exp, setExp] = useState('');
-  const [cvv, setCvv] = useState('');
-
-  const submitNewCard = () => {
-    if (!cardNumber || cardNumber.length < 4) return;
-    const last4 = cardNumber.slice(-4);
-    onAddCard({
-      title: `${holder}'s Gold Card`,
-      last4,
-      brand: 'Mastercard',
-      exp: exp || '08/28',
-      color: '#0F172A',
-    });
-    setCardNumber('');
-    setExp('');
-    setCvv('');
-    setShowAddModal(false);
-  };
-
+// Card details belong exclusively to PayFast's hosted checkout. Keeping this
+// screen informational prevents accidental local card/CVV capture.
+export default function CardManagerScreen() {
   return (
     <ScrollView contentContainerStyle={s.content} showsVerticalScrollIndicator={false}>
-      <Text style={s.eyebrow}>PAYMENT METHODS</Text>
-      <Text style={s.h1}>My Cards</Text>
-      <Text style={s.muted}>Manage your linked debit/credit Mastercard for instant wallet top-ups and services.</Text>
+      <Text style={s.eyebrow}>PAYMENT SECURITY</Text>
+      <Text style={s.h1}>Secure Payments</Text>
+      <Text style={s.muted}>ANC Unity does not store your debit-card or credit-card details.</Text>
 
-      <View style={{ marginTop: 18 }}>
-        {cards.map(c => (
-          <View key={c.id} style={[s.paymentCardVisual, { backgroundColor: c.color || '#0F172A' }]}>
-            <View style={s.row}>
-              <View style={s.brandLogoRow}>
-                <MastercardLogo width={36} height={24} />
-                <Text style={s.cardBrandText}>{c.brand || 'Mastercard'}</Text>
-              </View>
-              {c.isDefault ? <Text style={s.cardDefaultChip}>DEFAULT</Text> : null}
-            </View>
-            <Text style={s.cardNumberVisual}>•••• •••• •••• {c.last4}</Text>
-            <View style={s.row}>
-              <View>
-                <Text style={s.cardHolderLabel}>CARDHOLDER</Text>
-                <Text style={s.cardHolderName}>{c.title}</Text>
-              </View>
-              <View style={{ alignItems: 'flex-end' }}>
-                <Text style={s.cardHolderLabel}>EXPIRES</Text>
-                <Text style={s.cardHolderName}>{c.exp}</Text>
-              </View>
-            </View>
-          </View>
-        ))}
+      <View style={s.securityCard}>
+        <View style={s.iconWrap}><Icon name="lock" size={26} color={Colors.primary} /></View>
+        <Text style={s.cardTitle}>PayFast hosted checkout</Text>
+        <Text style={s.cardCopy}>When you add funds, PayFast opens its secure payment page. Choose your payment method there. ANC Unity never asks for, stores, or displays your card number or CVV.</Text>
       </View>
 
-      <TouchableOpacity style={s.addCardOutlineBtn} onPress={() => setShowAddModal(true)} activeOpacity={0.7}>
-        <Text style={s.addCardOutlineBtnText}>＋  Add New Mastercard</Text>
-      </TouchableOpacity>
+      <View style={s.infoRow}>
+        <Icon name="verified-user" size={20} color={Colors.primary} />
+        <View style={s.infoBody}>
+          <Text style={s.infoTitle}>Your wallet changes after verification</Text>
+          <Text style={s.infoCopy}>A top-up stays pending until PayFast sends a verified confirmation to the ANC backend.</Text>
+        </View>
+      </View>
 
       <YamiFooter />
-
-      {/* ADD CARD MODAL */}
-      <Modal visible={showAddModal} animationType="slide" transparent>
-        <View style={s.modalBackdrop}>
-          <View style={s.modalCard}>
-            <View style={s.modalHeader}>
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                <MastercardLogo width={32} height={20} />
-                <Text style={s.modalTitle}>Link New Mastercard</Text>
-              </View>
-              <TouchableOpacity onPress={() => setShowAddModal(false)}>
-                <Text style={{ fontSize: 18, fontWeight: '800', color: Colors.muted }}>✕</Text>
-              </TouchableOpacity>
-            </View>
-
-            <Field label="CARDHOLDER NAME" value={holder} onChangeText={setHolder} placeholder="Full Name on Card" />
-            <Field label="CARD NUMBER" value={cardNumber} onChangeText={setCardNumber} placeholder="4532 •••• •••• ••••" keyboardType="numeric" />
-            
-            <View style={s.twoCol}>
-              <View style={{ flex: 1 }}>
-                <Field label="EXPIRES" value={exp} onChangeText={setExp} placeholder="MM/YY" />
-              </View>
-              <View style={{ flex: 1, marginLeft: 10 }}>
-                <Field label="CVV" value={cvv} onChangeText={setCvv} placeholder="123" keyboardType="numeric" />
-              </View>
-            </View>
-
-            <Button text="Link Mastercard" onPress={submitNewCard} disabled={!cardNumber} />
-          </View>
-        </View>
-      </Modal>
     </ScrollView>
   );
 }
@@ -106,30 +38,12 @@ const s = StyleSheet.create({
   h1: { fontSize: 26, fontWeight: '900', color: Colors.ink, marginTop: 2, marginBottom: 4, fontFamily: 'Hanken Grotesk' },
   muted: { fontSize: 13, color: Colors.muted, fontFamily: 'Inter' },
 
-  paymentCardVisual: {
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 14,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 10,
-    elevation: 4,
-  },
-  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  brandLogoRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  cardBrandText: { color: Colors.white, fontSize: 14, fontWeight: '800', letterSpacing: 1, fontFamily: 'Inter' },
-  cardDefaultChip: { backgroundColor: '#FECC00', color: '#241A00', fontSize: 9, fontWeight: '900', paddingVertical: 3, paddingHorizontal: 8, borderRadius: 4, fontFamily: 'Inter' },
-  cardNumberVisual: { color: Colors.white, fontSize: 18, fontWeight: '800', letterSpacing: 2, marginVertical: 22, fontFamily: 'monospace' },
-  cardHolderLabel: { color: 'rgba(255, 255, 255, 0.7)', fontSize: 9, fontWeight: '800', letterSpacing: 1, fontFamily: 'Inter' },
-  cardHolderName: { color: Colors.white, fontSize: 13, fontWeight: '700', marginTop: 2, fontFamily: 'Inter' },
-
-  addCardOutlineBtn: { borderWidth: 1.5, borderColor: Colors.primary, borderRadius: 10, padding: 14, alignItems: 'center', marginTop: 12 },
-  addCardOutlineBtnText: { color: Colors.primary, fontWeight: '800', fontSize: 13, fontFamily: 'Inter' },
-
-  modalBackdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-end' },
-  modalCard: { backgroundColor: Colors.white, borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20, paddingBottom: 40 },
-  modalHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
-  modalTitle: { fontSize: 18, fontWeight: '900', color: Colors.ink, fontFamily: 'Hanken Grotesk' },
-  twoCol: { flexDirection: 'row' },
+  securityCard: { marginTop: 22, padding: 20, borderRadius: 16, backgroundColor: '#F0F9F2', borderWidth: 1, borderColor: '#C7E8D1' },
+  iconWrap: { width: 48, height: 48, borderRadius: 24, backgroundColor: Colors.white, alignItems: 'center', justifyContent: 'center', marginBottom: 14 },
+  cardTitle: { color: Colors.ink, fontSize: 18, fontWeight: '900', fontFamily: 'Hanken Grotesk' },
+  cardCopy: { color: Colors.muted, fontSize: 13, lineHeight: 20, marginTop: 7, fontFamily: 'Inter' },
+  infoRow: { flexDirection: 'row', gap: 12, padding: 16, marginTop: 16, borderRadius: 14, borderWidth: 1, borderColor: Colors.surfaceBorder, backgroundColor: Colors.white },
+  infoBody: { flex: 1 },
+  infoTitle: { color: Colors.ink, fontSize: 14, fontWeight: '800', fontFamily: 'Inter' },
+  infoCopy: { color: Colors.muted, fontSize: 12, lineHeight: 18, marginTop: 4, fontFamily: 'Inter' },
 });

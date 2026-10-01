@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Button from '../components/Button';
 import Field from '../components/Field';
-import { Icon, MastercardLogo } from '../components/Icons';
+import { Icon } from '../components/Icons';
 import Pills from '../components/Pills';
 import { Colors } from '../theme/colors';
 import { getMemberProfile } from '../utils/memberProfile';
@@ -188,28 +188,24 @@ export default function MoneyScreen({ open, balance = 1500, onDepositFunds, rece
                 <Text style={{ fontSize: 18, fontWeight: '800', color: Colors.muted }}>✕</Text>
               </TouchableOpacity>
             </View>
-            <Text style={s.modalSub}>Select or enter an amount to instant top-up your ANC Member Wallet.</Text>
+            <Text style={s.modalSub}>Select an amount to continue to PayFast’s secure checkout. Your balance changes only after the payment provider confirms it.</Text>
 
             <Field label="AMOUNT (ZAR)" value={depositAmount} onChangeText={setDepositAmount} keyboardType="numeric" placeholder="Enter amount" />
             <Pills value={depositAmount} setValue={setDepositAmount} options={[100, 250, 500, 1000]} />
 
-            {/* Linked Mastercard Payment Source */}
-            <Text style={s.paymentMethodLabel}>FUNDING PAYMENT SOURCE</Text>
+            <Text style={s.paymentMethodLabel}>SECURE PAYMENT</Text>
             <View style={s.linkedCardRow}>
               <View style={s.cardDarkIconBox}>
-                <MastercardLogo width={32} height={20} />
+                <Icon name="lock" size={20} color={Colors.white} />
               </View>
               <View style={{ flex: 1, marginLeft: 12 }}>
-                <Text style={s.cardTitleText}>Standard Bank Gold Mastercard</Text>
-                <Text style={s.cardSubText}>•••• •••• •••• 4892 · Exp 08/28</Text>
-              </View>
-              <View style={s.defaultCardBadge}>
-                <Text style={s.defaultCardBadgeText}>DEFAULT</Text>
+                <Text style={s.cardTitleText}>PayFast hosted checkout</Text>
+                <Text style={s.cardSubText}>Choose your payment method securely in PayFast. ANC never stores card details.</Text>
               </View>
             </View>
 
             <View style={{ marginTop: 20 }}>
-              <Button text={`＋ Deposit R${depositAmount}`} onPress={handleDeposit} />
+              <Button text={`Continue to PayFast · R${depositAmount}`} onPress={handleDeposit} />
             </View>
           </View>
         </View>

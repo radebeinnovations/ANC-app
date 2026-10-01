@@ -4,6 +4,7 @@ import { Colors } from '../theme/colors';
 import { Icon } from './Icons';
 
 const AVATAR_IMG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDP7zlfBNbg5jSucUfG5tPD3BtnVuTQAY2I1kjxSuVqrYNxWqB2lpmvbct4HtE9rdYUrNvLmyCoODdPJBfEqJlKcTv1n486W4ZiNoD2hMMB6ygx62xZumjQQcA9Q5uBGXVyeqgizdBJTJZhYHK0e2jGRtVRt-uNnljNFVUKXpdgq2Cyhy3xUtsvwfSISYHxtEhER8JSmDx9fJe9hVTzN3FqNWNa4aOez8vY3D9vx2YwUd9oJmGKaKmb';
+const ANC_LOGO = require('../assets/anc-logo.png');
 
 export default function SideDrawer({ visible, onClose, onNavigate, onSignOut, member }) {
   if (!visible) return null;
@@ -28,7 +29,7 @@ export default function SideDrawer({ visible, onClose, onNavigate, onSignOut, me
           {/* Header Banner */}
           <View style={s.drawerHeader}>
             <View style={s.brandRow}>
-              <Text style={s.brandTitle}>ANC UNITY</Text>
+              <View style={s.brandLockup}><View style={s.logoPlate}><Image source={ANC_LOGO} style={s.ancLogo} resizeMode="contain" /></View><Text style={s.brandTitle}>ANC UNITY</Text></View>
               <TouchableOpacity onPress={onClose} style={s.closeBtn} activeOpacity={0.7}>
                 <Icon name="close" size={20} color={Colors.white} />
               </TouchableOpacity>
@@ -133,6 +134,9 @@ const s = StyleSheet.create({
     fontWeight: '900',
     letterSpacing: 1,
   },
+  brandLockup: { flexDirection: 'row', alignItems: 'center', gap: 9 },
+  logoPlate: { width: 36, height: 36, borderRadius: 8, backgroundColor: Colors.white, alignItems: 'center', justifyContent: 'center' },
+  ancLogo: { width: 31, height: 31 },
   closeBtn: {
     width: 32,
     height: 32,

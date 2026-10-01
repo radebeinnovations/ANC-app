@@ -31,42 +31,14 @@ export const WalletService = {
   },
 
   /**
-   * Deposit funds to ANC Member Money wallet
+   * Client-side balance mutation is deliberately disabled. A real top-up must
+   * be created by the ASP.NET API and credited only after a verified PayFast
+   * ITN. See yamiWalletApi.js for the client integration boundary.
    */
   async depositFunds(memberId = 'ANC-1234567', amount = 0) {
     const num = parseFloat(amount) || 0;
     if (num <= 0) return { success: false, message: 'Invalid deposit amount' };
-
-    if (!isSupabaseConfigured()) {
-      return { success: true, newBalance: null };
-    }
-
-    try {
-      // 1. Get current balance
-      const currentBalance = await this.getBalance(memberId);
-      const newBalance = currentBalance + num;
-
-      // 2. Update wallet balance
-      const { error: walletErr } = await supabase
-        .from('wallets')
-        .upsert({ member_id: memberId, balance: newBalance });
-
-      if (walletErr) throw walletErr;
-
-      // 3. Log transaction
-      await supabase.from('transactions').insert({
-        member_id: memberId,
-        type: 'deposit',
-        title: 'Wallet Top Up',
-        amount: num,
-        reference: `DEP-${Date.now()}`,
-      });
-
-      return { success: true, newBalance };
-    } catch (err) {
-      console.error('Deposit error:', err);
-      return { success: false, message: err.message };
-    }
+    return { success: false, message: 'Wallet top-ups must be initiated through the secure PayFast checkout.' };
   },
 
   /**
@@ -76,45 +48,7 @@ export const WalletService = {
     const num = parseFloat(amount) || 0;
     if (num <= 0) return { success: false, message: 'Invalid payment amount' };
 
-    if (!isSupabaseConfigured()) {
-      return { success: true, message: `${title} processed successfully!` };
-    }
-
-    try {
-      // 1. Check current balance
-      const currentBalance = await this.getBalance(memberId);
-      if (currentBalance < num) {
-        return { success: false, message: 'Insufficient wallet funds. Please top up.' };
-      }
-
-      const newBalance = Math.max(0, currentBalance - num);
-
-      // 2. Call Serverless Backend Endpoint (VAS Provider Integration Point)
-      const res = await fetch('/api/services/purchase', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ memberId, type, title, amount: num, recipient, network }),
-      });
-
-      if (!res.ok) {
-        // Fallback to direct DB deduction if API route serverless is pending deployment
-        await supabase.from('wallets').upsert({ member_id: memberId, balance: newBalance });
-        await supabase.from('transactions').insert({
-          member_id: memberId,
-          type: 'expense',
-          title,
-          amount: num,
-          reference: `PAY-${Date.now()}`,
-          recipient,
-          network,
-        });
-      }
-
-      return { success: true, newBalance, message: `${title} completed successfully!` };
-    } catch (err) {
-      console.error('Service purchase error:', err);
-      return { success: false, message: err.message };
-    }
+    return { success: false, message: 'Airtime, data, electricity and supplier payments are not available until their verified backend provider integrations are complete.' };
   },
 
   /**

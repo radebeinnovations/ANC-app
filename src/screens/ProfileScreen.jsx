@@ -172,7 +172,7 @@ export default function ProfileScreen({ cards = [], onOpenCards, setStepText, us
           <List badge="MOB" title={member.phoneNumber} sub="Registered mobile number" />
           <List badge="EML" title={member.email} sub="Verified email address" />
           <List badge="LOC" title={member.branchName} sub="Home branch" />
-          <List badge="CRD" title="Saved Payment Cards" sub={`${cards.length} linked cards`} onPress={onOpenCards} />
+          <List badge="PAY" title="Secure Payments" sub="PayFast keeps card details private" onPress={onOpenCards} />
           <List badge="SET" title="App Settings & Security" sub="Biometrics & PIN lock" />
         </View>
       )}

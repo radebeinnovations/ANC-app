@@ -1,9 +1,10 @@
 import React from 'react';
-import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Icon } from '../components/Icons';
 import { Colors } from '../theme/colors';
 
-const HERO_BG_URL = 'https://lh3.googleusercontent.com/aida-public/AB6AXuBN3H6Yd862DnxiZW2i8O8QgGc57wxohqEr3xBreEmMt0v6JnU-VjcsxluSl_bfMbwH2RMcBeBk1a8JI64uNW2CXnn9s4fDlQHmSBEqN8tRIHR1d-101dU1nW1o7F4ygPloyPnRNUeqpq2cCOxlqlXebEf5ee3nN61gw-Q39c3vdjB73ctwEwbzlfhWBfJDlOc6t0OBx_Reea4wX4f0LEZycmny-cJhSHrF4apeZJkNd-cbqwJR0y6o';
+const HERO_BG = require('../assets/welcome-community-hero.png');
+const ANC_LOGO = require('../assets/anc-logo.png');
 
 export default function WelcomeScreen({ open, onGetStarted, onSignInClick }) {
   const handleSignIn = () => {
@@ -22,26 +23,24 @@ export default function WelcomeScreen({ open, onGetStarted, onSignInClick }) {
   };
 
   return (
-    <ImageBackground source={{ uri: HERO_BG_URL }} style={s.container} resizeMode="cover">
+    <ImageBackground source={HERO_BG} style={s.container} resizeMode="cover">
       {/* Light Overlay Scrim for text readability - pointerEvents="none" ensures buttons receive click events! */}
       <View style={s.scrimOverlay} pointerEvents="none" />
 
-      {/* Top Header / Brand Anchor */}
-      <View style={s.headerBar}>
-        <View style={s.logoBadge}>
-          <Icon name="flag" size={20} color={Colors.white} />
+      {/* Centred ANC brand anchor */}
+      <View style={s.heroBrand} accessibilityRole="image" accessibilityLabel="African National Congress logo">
+        <View style={s.logoHalo}>
+          <View style={s.heroLogoPlate}>
+            <Image source={ANC_LOGO} style={s.heroLogo} resizeMode="contain" />
+          </View>
         </View>
-        <Text style={s.brandTitle}>ANC MEMBER</Text>
+        <View style={s.goldRule} />
+        <Text style={s.brandTitle}>AFRICAN NATIONAL CONGRESS</Text>
+        <Text style={s.sloganText}>A Better Life for All</Text>
       </View>
 
       {/* Bottom Main Content */}
       <View style={s.bottomContent}>
-        <Text style={s.headlineText}>
-          Your ANC.{'\n'}
-          Your Community.{'\n'}
-          Your Voice.
-        </Text>
-
         <View style={s.yamiTag}>
           <Text style={s.yamiTagText}>
             Powered by <Text style={s.yamiGoldText}>YAMI</Text>
@@ -74,15 +73,17 @@ export default function WelcomeScreen({ open, onGetStarted, onSignInClick }) {
 
 const s = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.background, justifyContent: 'space-between', padding: 20, paddingBottom: 40 },
-  scrimOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(247, 249, 246, 0.72)' },
+  scrimOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(247, 249, 246, 0.34)' },
 
-  headerBar: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 40, zIndex: 10 },
-  logoBadge: { width: 38, height: 38, borderRadius: 10, backgroundColor: Colors.primary, alignItems: 'center', justifyContent: 'center' },
-  brandTitle: { fontSize: 18, fontWeight: '900', color: Colors.primary, letterSpacing: 0.5 },
+  heroBrand: { position: 'absolute', top: '13%', left: 0, right: 0, alignItems: 'center', zIndex: 10 },
+  logoHalo: { width: 288, height: 288, borderRadius: 144, backgroundColor: 'rgba(254,204,0,0.92)', alignItems: 'center', justifyContent: 'center', padding: 7, shadowColor: '#12351f', shadowOpacity: 0.28, shadowRadius: 24, shadowOffset: { width: 0, height: 12 }, elevation: 9 },
+  heroLogoPlate: { width: '100%', height: '100%', borderRadius: 140, backgroundColor: 'rgba(255,255,255,0.98)', alignItems: 'center', justifyContent: 'center', borderWidth: 3, borderColor: Colors.primary },
+  heroLogo: { width: 238, height: 238 },
+  goldRule: { width: 46, height: 4, borderRadius: 2, backgroundColor: Colors.gold, marginTop: 15, marginBottom: 9 },
+  brandTitle: { fontSize: 17, fontWeight: '900', color: Colors.primary, letterSpacing: 0.9, textAlign: 'center', textShadowColor: 'rgba(255,255,255,0.85)', textShadowRadius: 2 },
+  sloganText: { marginTop: 4, fontSize: 16, fontWeight: '800', color: Colors.ink, textAlign: 'center', textShadowColor: 'rgba(255,255,255,0.85)', textShadowRadius: 2 },
 
   bottomContent: { zIndex: 10, marginTop: 'auto' },
-  headlineText: { fontSize: 36, fontWeight: '900', color: Colors.ink, lineHeight: 42, marginBottom: 10 },
-
   yamiTag: { backgroundColor: 'rgba(0,0,0,0.5)', paddingVertical: 4, paddingHorizontal: 10, borderRadius: 12, alignSelf: 'flex-start', marginBottom: 12 },
   yamiTagText: { color: Colors.white, fontSize: 11, fontWeight: '700' },
   yamiGoldText: { color: Colors.gold, fontWeight: '900' },

@@ -20,8 +20,8 @@ The application is currently configured to boot directly into a demonstration lo
 
 - **Digital Membership Card:** Instant access to your verified ANC membership card with a scannable QR code and active status indicator.
 - **My Branch Hub:** Connect with your local branch. RSVP for upcoming Branch General Meetings (BGMs), view announcements, contact Branch Executive Committee (BEC) members, and report local ward service delivery issues.
-- **Digital Wallet (MzansiPay Integration):** Deposit funds via Mastercard and manage your app balance securely.
-- **Everyday Services:** Purchase Airtime, Data, and Prepaid Electricity (STS 20-digit tokens) seamlessly using your wallet balance.
+- **Digital Wallet:** PayFast-ready wallet top-up journey. Until the ASP.NET API and PayFast merchant account are configured, it remains unavailable and never adds funds locally.
+- **Everyday Services:** Airtime, data and electricity screens are local product demos only; supplier fulfilment is not enabled.
 - **Subscription Management:** Easily pay your annual ANC membership subscription fees.
 - **ANC Community Chats:** Local demo chat UI with direct messages, group creation, suggested members, and Supabase Realtime-ready messaging/presence.
 
@@ -33,6 +33,17 @@ The chat UI works with realistic local demo data until Supabase is configured. T
 2. Add `EXPO_PUBLIC_SUPABASE_URL` and `EXPO_PUBLIC_SUPABASE_ANON_KEY` to your local environment. Never place a Supabase service-role key in the app.
 3. Replace the demo sign-in flow with Supabase Auth. At registration, store `full_name`, `membership_number`, and `branch_name` in user metadata. Chat shows the registered **full name** (name and surname) to other members.
 4. Test RLS as two distinct member accounts before release. Configure Supabase Realtime quotas, abuse reporting/moderation, retention, and a privacy policy before onboarding real members.
+
+## 💳 Prepare ANC Member Money
+
+The app only connects to the secure ASP.NET wallet API when both values below are present. They are public routing/auth configuration—not PayFast credentials:
+
+```bash
+EXPO_PUBLIC_YAMI_API_URL=https://YOUR_PUBLIC_API_HOST
+EXPO_PUBLIC_SUPABASE_URL=https://YOUR_SUPABASE_PROJECT.supabase.co
+```
+
+The backend validates the Supabase member session, creates a zero-balance wallet for the signed-in member, then creates a short-lived PayFast checkout launch URL. PayFast merchant ID, key, passphrase, database credentials, and webhook configuration belong only in the backend's managed secret store. The app does not collect or store card details, and it never credits a wallet until the backend has received a verified PayFast confirmation.
 
 ## 🛠️ Technology Stack
 
