@@ -7,7 +7,7 @@ import Pills from '../components/Pills';
 import { Colors } from '../theme/colors';
 import { getMemberProfile } from '../utils/memberProfile';
 
-export default function MoneyScreen({ open, balance = 1500, onDepositFunds, recentActivity = [], user }) {
+export default function MoneyScreen({ open, balance = 0, onDepositFunds, recentActivity = [], user }) {
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [depositAmount, setDepositAmount] = useState('500');
   const [showAllActivity, setShowAllActivity] = useState(false);
@@ -21,14 +21,7 @@ export default function MoneyScreen({ open, balance = 1500, onDepositFunds, rece
     }
   };
 
-  const defaultActivity = [
-    { id: '1', title: 'Received from Thabo Mokoena', amount: 500.00, time: 'Today, 14:32', type: 'deposit', icon: 'arrow-downward' },
-    { id: '2', title: 'Electricity', amount: 250.00, time: 'Today, 10:15', type: 'expense', icon: 'bolt' },
-    { id: '3', title: 'Airtime', amount: 50.00, time: 'Yesterday', type: 'expense', icon: 'smartphone' },
-  ];
-
-  const displayList = recentActivity.length > 0 ? recentActivity : defaultActivity;
-  const visibleActivity = showAllActivity ? displayList : displayList.slice(0, 3);
+  const visibleActivity = showAllActivity ? recentActivity : recentActivity.slice(0, 3);
   const member = getMemberProfile(user);
 
   return (
@@ -155,7 +148,15 @@ export default function MoneyScreen({ open, balance = 1500, onDepositFunds, rece
       </View>
 
       <View style={s.activityList}>
-        {visibleActivity.map((item, idx) => {
+        {visibleActivity.length === 0 ? (
+          <View style={s.emptyActivity}>
+            <View style={s.emptyActivityIcon}>
+              <Icon name="account-balance-wallet" size={20} color={Colors.primary} />
+            </View>
+            <Text style={s.emptyActivityTitle}>No wallet activity yet</Text>
+            <Text style={s.emptyActivityCopy}>Verified deposits and payments will appear here.</Text>
+          </View>
+        ) : visibleActivity.map((item, idx) => {
           const isDeposit = item.type === 'deposit';
           return (
             <View key={item.id || idx} style={s.activityRow}>
@@ -331,6 +332,10 @@ const s = StyleSheet.create({
   activityHeaderRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   viewAllText: { fontSize: 12, fontWeight: '800', color: Colors.primary, fontFamily: 'Inter' },
   activityList: { backgroundColor: Colors.white, borderRadius: 14, borderWidth: 1, borderColor: Colors.surfaceBorder, padding: 14, marginBottom: 16 },
+  emptyActivity: { alignItems: 'center', paddingVertical: 18 },
+  emptyActivityIcon: { width: 42, height: 42, borderRadius: 21, backgroundColor: '#F0F9F2', alignItems: 'center', justifyContent: 'center', marginBottom: 9 },
+  emptyActivityTitle: { fontSize: 14, fontWeight: '800', color: Colors.ink, fontFamily: 'Inter' },
+  emptyActivityCopy: { marginTop: 4, fontSize: 11, color: Colors.muted, textAlign: 'center', fontFamily: 'Inter' },
   activityRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: Colors.line },
   activityIconCircle: { width: 32, height: 32, borderRadius: 16, backgroundColor: '#EEEEEE', alignItems: 'center', justifyContent: 'center' },
   depositCircle: { backgroundColor: '#F0F9F2' },

@@ -3,7 +3,7 @@ import { Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View 
 import { Icon } from '../components/Icons';
 import { Colors } from '../theme/colors';
 
-export default function TransferMoneyScreen({ finish, balance = 1500, onDeductBalance, setStepText, setNotice }) {
+export default function TransferMoneyScreen({ finish, balance = 0, onDeductBalance, setStepText, setNotice }) {
   const [step, setStep] = useState(1); // 1: Form | 2: Select Destination | 3: Review | 4: Success
   const [destination, setDestination] = useState('Savings Vault'); // Default destination or null
   const [showDestModal, setShowDestModal] = useState(false);

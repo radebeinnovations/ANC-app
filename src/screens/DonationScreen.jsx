@@ -8,7 +8,7 @@ import { Colors } from '../theme/colors';
 const COMMUNITY_HERO_IMG = require('../assets/community_garden.jpg');
 const NATIONAL_FUND_IMG = require('../assets/community_hero_banner.png');
 
-export default function DonationScreen({ finish, cards = [], balance = 1500, onDeductBalance, setStepText, initialStep = 0 }) {
+export default function DonationScreen({ finish, cards = [], balance = 0, onDeductBalance, setStepText, initialStep = 0 }) {
   const [step, setStep] = useState(initialStep); // 0: Dashboard -> 1: Campaign Details -> 2: Make Donation Form -> 3: Review -> 4: Success
   const [selectedCause, setSelectedCause] = useState('Community Development');
   const [frequency, setFrequency] = useState('one-time'); // 'one-time' | 'monthly'

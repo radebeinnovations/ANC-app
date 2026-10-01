@@ -73,13 +73,9 @@ function MemberApp() {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Interactive Demo Wallet Balance & Transactions State
-  const [balance, setBalance] = useState(1500.00);
-  const [recentActivity, setRecentActivity] = useState([
-    { id: '1', title: 'Deposit', amount: 500.00, time: 'Today, 10:23 AM', type: 'deposit' },
-    { id: '2', title: 'Airtime Purchase', amount: 50.00, time: 'Yesterday', type: 'expense' },
-    { id: '3', title: 'ANC Donation', amount: 100.00, time: '02 August 2026', type: 'expense' },
-  ]);
+  // Wallet data starts empty and is populated only from the verified backend.
+  const [balance, setBalance] = useState(0);
+  const [recentActivity, setRecentActivity] = useState([]);
 
   React.useEffect(() => {
     if (!authUser || !isYamiWalletApiConfigured()) return undefined;

@@ -6,7 +6,7 @@ import { getMemberProfile } from '../utils/memberProfile';
 
 const rand = (n) => `R${Number(n || 0).toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
-export default function MembershipScreen({ finish, balance = 1500, onDeductBalance, user }) {
+export default function MembershipScreen({ finish, balance = 0, onDeductBalance, user }) {
   const [amount, setAmount] = useState('250');
   const [frequency, setFrequency] = useState('Monthly');
   const [isCustom, setIsCustom] = useState(false);

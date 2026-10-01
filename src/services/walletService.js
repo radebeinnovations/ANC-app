@@ -12,7 +12,7 @@ export const WalletService = {
    */
   async getBalance(memberId = 'ANC-1234567') {
     if (!isSupabaseConfigured()) {
-      return 1500; // Local state fallback
+      return 0;
     }
 
     try {
@@ -22,11 +22,11 @@ export const WalletService = {
         .eq('member_id', memberId)
         .single();
 
-      if (error || !data) return 1500;
+      if (error || !data) return 0;
       return data.balance;
     } catch (err) {
       console.warn('Error fetching wallet balance:', err);
-      return 1500;
+      return 0;
     }
   },
 

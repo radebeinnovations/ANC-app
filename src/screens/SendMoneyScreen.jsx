@@ -11,7 +11,7 @@ const AVATAR_2 = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w
 const AVATAR_3 = 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80';
 const AVATAR_4 = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80';
 
-export default function SendMoneyScreen({ finish, balance = 1500, onDeductBalance, setStepText }) {
+export default function SendMoneyScreen({ finish, balance = 0, onDeductBalance, setStepText }) {
   const [step, setStep] = useState(1); // 1: Select Recipient -> 2: Enter Amount -> 3: Success Screen
   const [search, setSearch] = useState('');
   const [selectedContactId, setSelectedContactId] = useState('a1');
